@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+<meta name="theme-color" content="#0f0c29">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pointures">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Pointures">
+<meta name="msapplication-TileColor" content="#0f0c29">
+<meta name="apple-touch-fullscreen" content="yes">
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-startup-image" href="icons/icon-512.png">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>🎯 Les Pointures des fléchettes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --c-bg: #0f0c29; --c-surface: #1b1644; --c-primary: #e94560; --c-accent: #f9d342; --c-text: #ffffff;
+            --c-variant: #4834d4;
+        }
+        .p-color-0 { --p-col: #ff4757; } .p-color-1 { --p-col: #2ed573; }
+        .p-color-2 { --p-col: #1e90ff; } .p-color-3 { --p-col: #ffa502; }
+        .p-color-4 { --p-col: #e056fd; } .p-color-5 { --p-col: #7bed9f; }
+        .p-color-6 { --p-col: #70a1ff; } .p-color-7 { --p-col: #535c68; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: var(--c-text); min-height: 100vh; overflow-x: hidden; }
+        .container { max-width: 950px; margin: 0 auto; padding: 15px; }
+        
+        .header { text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; }
+        .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.8rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); }
+
+        .card { background: var(--c-surface); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        
+        .manche-info { background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 10px; border: 1px solid var(--c-primary); display: inline-block; }
+
+        /* Game Selector Grid */
+        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .game-item { position: relative; display: flex; align-items: stretch; }
+        .game-btn { flex: 1; padding: 12px 5px; border-radius: 10px 0 0 10px; border: 2px solid var(--c-primary); background: transparent; color: white; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        .game-btn.active { background: var(--c-primary); box-shadow: 0 0 10px var(--c-primary); }
+        .info-btn { width: 40px; border: 2px solid var(--c-primary); border-left: none; border-radius: 0 10px 10px 0; background: rgba(255,255,255,0.1); color: var(--c-accent); font-weight: bold; cursor: pointer; font-size: 1.1rem; }
+
+        .btn { padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .btn-primary { background: var(--c-primary); color: white; width: 100%; box-shadow: 0 4px 0 #a31d34; font-size: 1.1rem; }
+        .btn-add { background: var(--c-accent); color: #000; width: 100%; margin-top: 5px; }
+
+        .selector { background: #241f4a; color: white; border: 1px solid var(--c-accent); padding: 10px; border-radius: 10px; width: 100%; margin: 5px 0; font-size: 1rem; }
+
+        .numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 10px; }
+        .num-btn { background: #3a3471; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 18px 2px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 3px 0 #241f4a; }
+        .num-btn:active { background: var(--c-accent); color: #000; transform: translateY(2px); box-shadow: none; }
+
+        /* Modale */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .modal-content { background: var(--c-surface); margin: 5% auto; padding: 25px; border: 2px solid var(--c-accent); width: 90%; max-width: 600px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 24px; color: var(--c-primary); cursor: pointer; }
+        .modal-content h2 { color: var(--c-accent); margin-bottom: 15px; border-bottom: 1px solid var(--c-primary); padding-bottom: 5px; }
+        .modal-content p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; text-align: justify; }
+        .modal-content b { color: var(--c-primary); }
+
+        /* Rest of the styles */
+        .player-tag { background: rgba(0,0,0,0.4); padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; border-left: 5px solid var(--p-col); margin-bottom: 8px; }
+        .player-name { flex: 1; font-weight: 600; color: var(--p-col); }
+        .reorder-btns { display: flex; flex-direction: column; gap: 2px; }
+        .reorder-btn { background: none; border: none; color: var(--c-accent); cursor: pointer; padding: 2px 5px; font-size: 1.2rem; }
+        .current-p-box { text-align: center; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 20px; border: 3px solid var(--p-col); margin-bottom: 10px; }
+        .mult-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .m-btn { flex: 1; min-width: 80px; padding: 12px; border-radius: 10px; border: 2px solid var(--c-primary); background: transparent; color: white; font-weight: bold; font-size: 0.85rem; }
+        .m-btn.active { background: var(--c-primary); box-shadow: 0 0 10px var(--c-primary); }
+        .v-btn { flex: 1; min-width: 100px; padding: 10px; border-radius: 10px; border: 2px solid var(--c-variant); background: transparent; color: white; font-weight: bold; font-size: 0.85rem; }
+        .v-btn.active { background: var(--c-variant); box-shadow: 0 0 10px var(--c-variant); }
+        .pyramid { display: flex; flex-direction: column-reverse; align-items: center; gap: 4px; margin: 10px auto; }
+        .pyramid-row { display: flex; gap: 4px; justify-content: center; }
+        .brick { width: 28px; height: 18px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; background: rgba(255,255,255,0.03); }
+        .brick.filled { background: var(--p-brick-col); box-shadow: 0 0 8px var(--p-brick-col); border-color: white; }
+        .cricket-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .cricket-table th, .cricket-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .active-row { background: rgba(255,255,255,0.1); font-weight: bold; }
+        .mark { font-size: 1.4rem; font-weight: bold; }
+        .mark-2 { color: var(--c-accent); } .mark-3 { color: #00ff00; }
+        .target-badge { position: absolute; top: 10px; right: 10px; background: var(--c-accent); color: #000; padding: 5px 15px; border-radius: 12px; text-align: center; border: 2px solid #fff; z-index: 10; }
+        .target-val { font-size: 1.8rem; font-weight: 900; line-height: 1; display: block; }
+
+        /* BUST overlay */
+        .bust-overlay { position: fixed; z-index: 200; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); animation: bustFadeIn 0.15s ease; pointer-events: none; }
+        .bust-text { font-family: 'Luckiest Guy', cursive; font-size: clamp(5rem, 20vw, 10rem); color: #e94560; text-shadow: 0 0 40px #e94560, 4px 4px 0 #7a0f20; animation: bustShake 0.5s ease; letter-spacing: 4px; }
+        @keyframes bustFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bustShake { 0%,100%{transform:rotate(-3deg) scale(1.1)} 20%{transform:rotate(4deg) scale(1.15)} 40%{transform:rotate(-4deg) scale(1.2)} 60%{transform:rotate(3deg) scale(1.15)} 80%{transform:rotate(-2deg) scale(1.1)} }
+
+        /* Checkout panel */
+        .checkout-box { background: rgba(249,211,66,0.12); border: 1px solid var(--c-accent); border-radius: 14px; padding: 10px 14px; margin-top: 8px; }
+        .checkout-title { font-size: 0.7rem; color: var(--c-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .checkout-combo { font-size: 0.82rem; color: #fff; margin: 3px 0; display: flex; gap: 6px; flex-wrap: wrap; }
+        .dart-chip { background: rgba(255,255,255,0.12); border-radius: 6px; padding: 2px 7px; font-weight: 600; }
+        .dart-chip.dbl { background: rgba(233,69,96,0.35); color: #ff8fa3; }
+        .dart-chip.tpl { background: rgba(72,52,212,0.45); color: #a89dff; }
+        .dart-chip.bull { background: rgba(249,211,66,0.3); color: var(--c-accent); }
+    </style>
+</head>
+<body>
+
+<div id="app" class="container"></div>
+
+<div id="rulesModal" class="modal">
+    <div class="modal-content" id="modalBody">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div id="modalText"></div>
+    </div>
+</div>
+
+<script>
+    let HISTORY = [];
+    let PLAYER_DB = JSON.parse(localStorage.getItem('darts_db')) || [];
+    let CURRENT_PLAYERS = JSON.parse(localStorage.getItem('darts_current')) || [];
+    const PLAYER_COLORS = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#e056fd', '#7bed9f', '#70a1ff', '#535c68'];
+
+    const GAMES = {
+        x01: { 
+            name: 'X01', variants: ['201', '301', '501'],
+            rules: `<b>Objectif Fondamental :</b> Le but du jeu est d'atteindre exactement le score de zéro en partant d'un capital de points défini (201, 301 ou 501). C'est le mode de compétition le plus pratiqué au monde. Chaque point marqué est déduit de votre total.<br><br>
+            <b>Mécaniques de Jeu :</b> Chaque joueur dispose d'une volée de 3 fléchettes par tour. La somme des points obtenus (Simple, Double, Triple) est soustraite du reliquat actuel. Si un lancer vous amène en dessous de zéro, ou à un seul point (impossible de finir par un double), vous êtes déclaré "Bust" (Casse) : votre tour s'arrête immédiatement et votre score revient à ce qu'il était au début du tour.<br><br>
+            <b>La Fin de Partie (Double Out) :</b> Pour remporter la manche, vous devez impérativement atteindre zéro en touchant un secteur "Double" ou le centre de la cible (Bull's Eye). Cette règle exige une précision chirurgicale en fin de parcours. Par exemple, s'il vous reste 32 points, vous devez viser le Double 16. Si vous touchez un simple 16, il vous reste 16, et vous devez alors viser le Double 8.<br><br>
+            <b>Stratégies :</b> Les joueurs expérimentés visent souvent le Triple 20 (60 points) pour descendre rapidement, mais anticipent leurs "sorties" dès qu'ils atteignent 170 points pour préparer les combinaisons de fin de match les plus simples techniquement.`
+        },
+        cricket: { 
+            name: 'Cricket', variants: ['Standard', 'Inversé'],
+            rules: `<b>L'Essence du Cricket :</b> Le Cricket est un jeu de contrôle de territoire. L'objectif est de "fermer" les numéros clés allant de 15 à 20, ainsi que le Centre (Bulle), tout en accumulant un score supérieur (ou inférieur en mode inversé) à ses adversaires.<br><br>
+            <b>Règles de Fermeture :</b> Pour fermer un numéro, un joueur doit le toucher trois fois. Un simple compte pour 1, un double pour 2 et un triple pour 3. Une fois qu'un numéro est fermé par vous, chaque touche supplémentaire sur ce secteur vous rapporte des points correspondant à la valeur du numéro, à condition que vos adversaires n'aient pas encore fermé ce même numéro.<br><br>
+            <b>Conditions de Victoire :</b> Le jeu s'arrête lorsqu'un joueur a fermé tous les secteurs requis (15-20 + Bulle). À ce moment-là, deux cas de figure se présentent : 
+            1. En mode <b>Standard</b>, le vainqueur est celui qui a fermé tous les chiffres ET possède le score le plus élevé. 
+            2. En mode <b>Inversé (Cut-Throat)</b>, l'objectif est d'avoir le score le plus BAS. Lorsque vous marquez sur un numéro que vous avez fermé, les points sont ajoutés aux scores de vos adversaires qui ne l'ont pas encore fermé.<br><br>
+            <b>Tactique :</b> Il faut jongler entre la fermeture rapide des chiffres pour empêcher l'adversaire de marquer, et le "pilonnage" des chiffres déjà fermés pour creuser l'écart au score.`
+        },
+        capital: {
+            name: 'Capital', variants: ['Standard'],
+            rules: `<b>Le Concept :</b> Le Capital est un jeu de survie et de précision redoutable. Chaque joueur commence la partie avec un capital de points identique. Le but est de terminer la partie avec le capital le plus élevé possible après une série de cibles imposées.<br><br>
+            <b>Déroulement Chronologique :</b> Le jeu se déroule en plusieurs manches fixes. À chaque manche, tous les joueurs doivent viser un secteur spécifique dans l'ordre suivant : 15, 16, Double (n'importe lequel), 17, 18, Triple (n'importe lequel), 19, 20 et enfin la Bulle (Centre).<br><br>
+            <b>Le Risque de la Division :</b> Durant son tour (3 fléchettes), le joueur tente de toucher la cible en cours autant de fois que possible. Les points cumulés s'ajoutent à son capital. Cependant, si le joueur échoue totalement lors de ses 3 lancers (aucune fléchette ne touche la cible), son capital accumulé jusque-là est <b>divisé par deux</b> immédiatement !<br><br>
+            <b>Impact Psychologique :</b> La tension monte lors des manches "Double" et "Bulle", car rater ces secteurs peut anéantir une avance confortable. Le gagnant est celui qui préserve son capital jusqu'à la fin de la séquence. C'est un jeu idéal pour apprendre à gérer la pression du résultat sur des cibles spécifiques.`
+        },
+        chateau: { 
+            name: 'Château', variants: ['15 Briques'],
+            rules: `<b>La Guerre des Châteaux :</b> Dans ce mode ludique et interactif, chaque joueur possède un château virtuel composé de 15 briques. Le premier à construire l'intégralité de son édifice gagne la bataille.<br><br>
+            <b>Phase de Construction :</b> Au début du match, chaque joueur doit choisir un numéro cible secret ou attitré (généralement entre 1 et 20). Une fois les cibles définies, toucher votre propre numéro ajoute des briques à votre château : un Simple vaut 1 brique, un Double 2, et un Triple 3.<br><br>
+            <b>Phase de Destruction :</b> C'est là que le jeu devient cruel. Si vous touchez le numéro cible d'un adversaire, vous ne construisez rien pour vous, mais vous détruisez les briques de son château ! Chaque touche réussie sur son secteur lui retire le nombre de briques correspondant à la zone touchée (Simple/Double/Triple).<br><br>
+            <b>Conditions de Triomphe :</b> Il ne suffit pas de viser juste, il faut aussi savoir quand attaquer pour empêcher un concurrent de finir son château. La partie se termine dès qu'un joueur atteint le total de 15 briques. C'est un mélange parfait d'adresse et de diplomatie (ou de trahison) entre amis.`
+        },
+        killer: { 
+            name: 'Killer', variants: ['3 Vies', '5 Vies'],
+            rules: `<b>Devenir le Prédateur :</b> Le Killer est un jeu d'élimination directe. Chaque joueur se voit attribuer un numéro cible unique en début de partie. Le jeu se divise en deux phases distinctes.<br><br>
+            <b>Phase 1 - L'Initiation :</b> Vous devez d'abord toucher votre propre numéro pour accumuler des vies. Tant que vous n'avez pas atteint le nombre maximum de vies (3 ou 5 selon la variante), vous êtes un simple civil. Une fois le quota de vies atteint, vous changez de statut et devenez officiellement un "Killer".<br><br>
+            <b>Phase 2 - La Traque :</b> En tant que Killer, votre objectif change. Vous ne visez plus votre numéro, mais ceux de vos adversaires. Chaque fois que vous touchez le numéro d'un rival, vous lui retirez une vie (ou plus si vous touchez un double/triple). Un joueur qui perd toutes ses vies est définitivement éliminé de la partie.<br><br>
+            <b>Règles de Survie :</b> Si un Killer touche par erreur son propre numéro, il perd une vie et peut même perdre son statut de tueur s'il retombe sous le seuil requis. Le dernier survivant sur la cible remporte la victoire. C'est le jeu idéal pour les groupes qui aiment la compétition directe.`
+        },
+        follow: { 
+            name: 'Follow Me', variants: ['Standard'],
+            rules: `<b>Objectif :</b> Être le dernier joueur à avoir encore une vie. Chaque joueur commence avec 3 vies.<br><br>
+            <b>Définir la cible :</b> Le 1er joueur lance <b>une seule fléchette</b> de sa main non-dominante (pour donner une chance aux autres). La zone exacte touchée devient la cible : Simple Petit (SP), Simple Grand (SG), Double (D) ou Triple (T), notée avec la valeur — ex : SP5, T20, D25.<br><br>
+            <b>Les joueurs suivants</b> ont <b>3 fléchettes</b> pour toucher exactement la même zone. S'ils y arrivent, les fléchettes restantes leur permettent de définir une <b>nouvelle cible</b> — la dernière fléchette lancée devient la nouvelle cible. Le joueur peut <b>s'arrêter à tout moment</b> après avoir matché et choisir de ne pas lancer les fléchettes restantes.<br><br>
+            <b>Attention :</b> Si la dernière fléchette lancée (en phase de définition) rate le tableau (Hors Cible), le joueur <b>perd une vie</b> et la cible précédente est restaurée.<br><br>
+            <b>Perte de vie :</b> Un joueur qui rate la cible avec ses 3 fléchettes perd une vie. La cible reste inchangée pour le suivant.<br><br>
+            <b>Le setter :</b> Quand c'est à nouveau le tour du joueur qui a posé la cible, il peut choisir de <b>Passer</b> (garder la cible) ou risquer de lancer. S'il lance, il est soumis aux mêmes règles que les autres.`
+        },
+        batard: { 
+            name: 'Bâtard', variants: ['10 Tours'],
+            rules: `<b>Le Calcul Mental :</b> Le Bâtard est un jeu original qui récompense la régularité et punit sévèrement l'imprécision. La partie se déroule sur un format fixe de 10 tours, chaque tour consistant en 3 fléchettes.<br><br>
+            <b>La Fléchette de Référence :</b> À chaque nouveau tour, la toute première fléchette lancée sert de "mètre étalon". Les points de cette fléchette sont ajoutés à votre score total. Pour les deux fléchettes suivantes (la 2ème et la 3ème), tout change : si la valeur de la fléchette est supérieure ou égale à la première, on AJOUTE les points. Si elle est inférieure, on les SOUSTRAIT de votre total.<br><br>
+            <b>Sanction Hors-Cible :</b> Attention, toute fléchette qui atterrit en dehors des zones scorables (Hors-Cible) entraîne une pénalité immédiate et forfaitaire de -10 points. Cette règle s'applique même pour la fléchette de référence.<br><br>
+            <b>Objectif Final :</b> Le but est d'accumuler le plus grand nombre de points possible à l'issue des 10 rotations. Il faut donc être capable de viser un score "moyen" avec la première fléchette pour s'assurer de pouvoir faire mieux avec les deux suivantes, ou prendre le risque de viser haut dès le départ.`
+        },
+        shanghai: { 
+            name: 'Shanghai', variants: ['Standard (7)'],
+            rules: `<b>La Course aux Chiffres :</b> Le Shanghai est une progression numérique sur la cible. On joue traditionnellement sur les chiffres 1 à 7 (ou plus selon les envies). Au tour 1, seul le numéro 1 compte, au tour 2, seul le 2 compte, et ainsi de suite.<br><br>
+            <b>Scoring Classique :</b> Chaque touche sur le numéro du tour rapporte des points (le double compte double, le triple compte triple). Le joueur qui accumule le plus de points à la fin du 7ème tour est déclaré vainqueur par points.<br><br>
+            <b>Le Coup d'Éclat "Shanghai" :</b> Il existe une règle de victoire automatique qui donne son nom au jeu. Si un joueur parvient, durant le même tour, à toucher le Simple, le Double ET le Triple du numéro en cours, il réalise un "Shanghai". Dans ce cas, la partie s'arrête instantanément et ce joueur gagne le match, quel que soit l'écart de points au classement général.<br><br>
+            <b>Aptitudes :</b> Ce mode de jeu est excellent pour l'entraînement car il oblige à parcourir toute la cible et à maîtriser les zones de multiplication. Il garde tout le monde en haleine car même un joueur très retardé au score peut techniquement gagner sur un dernier coup de génie.`
+        }
+    };
+
+    let S = {
+        screen: 'setup', game: 'x01', variant: '301', matchType: 1, 
+        players: CURRENT_PLAYERS, wins: {}, winnersHistory: [], cp: 0, scores: {}, throws: [], multiplier: 1, 
+        winner: null, round: 1, currentManche: 1, setupPhase: false, setupIndex: 0, targetValue: 0,
+        followTarget: null, followSetter: -1, followPhase: 'set', bust: false
+    };
+
+    function showRules(gameKey) {
+        const game = GAMES[gameKey];
+        document.getElementById('modalText').innerHTML = `<h2>${game.name}</h2><p>${game.rules}</p>`;
+        document.getElementById('rulesModal').style.display = "block";
+    }
+
+    function closeModal() { document.getElementById('rulesModal').style.display = "none"; }
+    window.onclick = (e) => { if(e.target == document.getElementById('rulesModal')) closeModal(); }
+
+    function pushHistory() { HISTORY.push(JSON.stringify(S)); }
+    function undo() { if (HISTORY.length > 0) { S = JSON.parse(HISTORY.pop()); render(); } }
+    function endGame() { if(confirm("Terminer la partie ?")) location.reload(); }
+
+    // ── Checkout table X01 (Double Out, max 3 fléchettes) ──────────────────
+    const CHECKOUT_TABLE = {
+        2:['D1'], 3:['S1 D1'], 4:['D2'], 5:['S1 D2'], 6:['D3'], 7:['S3 D2'], 8:['D4'],
+        9:['S1 D4'], 10:['D5'], 11:['S3 D4'], 12:['D6'], 13:['S5 D4'], 14:['D7'],
+        15:['S7 D4'], 16:['D8'], 17:['S9 D4'], 18:['D9'], 19:['S3 D8'], 20:['D10'],
+        21:['S5 D8'], 22:['D11'], 23:['S7 D8'], 24:['D12'], 25:['S9 D8'], 26:['D13'],
+        27:['S19 D4'], 28:['D14'], 29:['S11 D9'], 30:['D15'], 31:['S13 D9'], 32:['D16'],
+        33:['S17 D8'], 34:['D17'], 35:['S19 D8'], 36:['D18'], 37:['S5 D16'], 38:['D19'],
+        39:['S7 D16'], 40:['D20'], 41:['S9 D16'], 42:['D21 = S5 D17'], 43:['S3 D20'],
+        44:['D22 = S4 D20'], 45:['S13 D16'], 46:['D23 = S6 D20'], 47:['S15 D16'],
+        48:['D24 = S8 D20'], 49:['S17 D16'], 50:['D25 (BULL)'],
+        51:['S11 D20'], 52:['D20 D6 = S12 D20'], 53:['S13 D20'], 54:['S14 D20'],
+        55:['S15 D20'], 56:['S16 D20'], 57:['S17 D20'], 58:['S18 D20'], 59:['S19 D20'],
+        60:['S20 D20'], 61:['S1 T20 = S13 D24'], 62:['S2 T20'], 63:['S3 T20'],
+        64:['S4 T20'], 65:['S5 T20 = T15 D5'], 66:['S6 T20'], 67:['S7 T20'],
+        68:['S8 T20'], 69:['S9 T20'], 70:['S10 T20 = T18 D8'],
+        71:['S11 T20'], 72:['S12 T20'], 73:['S13 T20'], 74:['S14 T20'],
+        75:['S15 T20 = T17 D12'], 76:['S16 T20'], 77:['S17 T20'],
+        78:['S18 T20'], 79:['S19 T20'], 80:['S20 T20 = T20 D10'],
+        81:['T19 D12 = S1 T20 D20'], 82:['T14 D20'], 83:['T17 D16'],
+        84:['T20 D12'], 85:['T15 D20'], 86:['T18 D16'], 87:['T17 D18'],
+        88:['T16 D20'], 89:['T19 D16'], 90:['T18 D18 = T20 D15'],
+        91:['T17 D20'], 92:['T20 D16'], 93:['T19 D18'], 94:['T18 D20'],
+        95:['T19 D19 = T15 D25'], 96:['T20 D18'], 97:['T19 D20'],
+        98:['T20 D19'], 99:['T19 D21 = T17 D24'], 100:['T20 D20'],
+        101:['T17 D25 = T20 S1 D20'], 102:['T20 S2 D20'], 103:['T19 S6 D20'],
+        104:['T18 S10 D20'], 105:['T20 S5 D20'], 106:['T20 S6 D20'],
+        107:['T19 S10 D20'], 108:['T20 S8 D20'], 109:['T20 S9 D20'],
+        110:['T20 S10 D20'], 111:['T19 S14 D20'], 112:['T20 S12 D20'],
+        113:['T19 S16 D20'], 114:['T20 S14 D20'], 115:['T20 S15 D20'],
+        116:['T20 S16 D20'], 117:['T20 S17 D20'], 118:['T20 S18 D20'],
+        119:['T19 T12 D13'], 120:['T20 S20 D20'], 121:['T20 S11 D25'],
+        122:['T18 S16 D20 = T18 D26 = T14 T12 D8'], 123:['T19 S16 D20'],
+        124:['T20 D12 S4'], 125:['T18 S9 D25 = T19 D19 S10'],
+        126:['T19 S9 D25'], 127:['T20 S7 D25'], 128:['T18 S14 D25'],
+        129:['T19 S12 D25'], 130:['T20 S10 D25'], 131:['T19 S14 D25'],
+        132:['T20 S12 D25'], 133:['T19 S16 D25'], 134:['T20 S14 D25'],
+        135:['T20 S15 D25'], 136:['T20 S16 D25'], 137:['T20 S17 D25'],
+        138:['T20 S18 D25'], 139:['T19 T12 D25 = T19 S12 D2 = T20 S19 D10 = T20 T1 D20'],
+        140:['T20 S20 D20 = T20 T20 D10'], 141:['T20 T19 D12 = T20 T1 D25'],
+        142:['T20 T18 D14'], 143:['T20 T17 D16'], 144:['T20 T16 D18'],
+        145:['T20 T15 D20'], 146:['T20 T18 D16'], 147:['T20 T17 D18'],
+        148:['T20 T16 D20'], 149:['T20 T19 D16'], 150:['T20 T18 D18'],
+        151:['T20 T17 D20'], 152:['T20 T20 D16'], 153:['T20 T19 D18'],
+        154:['T20 T18 D20'], 155:['T20 T19 D19'], 156:['T20 T20 D18'],
+        157:['T20 T19 D20'], 158:['T20 T20 D19'], 160:['T20 T20 D20'],
+        161:['T20 T17 D25'], 164:['T20 T18 D25'], 167:['T20 T19 D25'],
+        170:['T20 T20 D25 (BULL)']
+    };
+
+    function getCheckouts(score) {
+        if (score < 2 || score > 170 || score === 159 || score === 162 || score === 163 || score === 165 || score === 166 || score === 168 || score === 169) return null;
+        return CHECKOUT_TABLE[score] || null;
+    }
+
+    function renderCheckout(score) {
+        const combos = getCheckouts(score);
+        if (!combos) return '';
+        // Parse combo string into chips
+        function chipify(str) {
+            return str.split(' ').map(part => {
+                if (part === '=') return `<span style="opacity:0.5">/</span>`;
+                const cls = part.startsWith('T') ? 'tpl' : (part.startsWith('D') ? 'dbl' : (part.includes('BULL') ? 'bull' : ''));
+                return `<span class="dart-chip ${cls}">${part}</span>`;
+            }).join('');
+        }
+        return `<div class="checkout-box">
+            <div class="checkout-title">🎯 Checkout possible</div>
+            ${combos.map(c => `<div class="checkout-combo">${chipify(c)}</div>`).join('')}
+        </div>`;
+    }
+
+    function addPlayer(name) {
+        if (!name) return;
+        if (!PLAYER_DB.includes(name)) { PLAYER_DB.push(name); localStorage.setItem('darts_db', JSON.stringify(PLAYER_DB)); }
+        if (S.players.length < 8) { S.players.push({ name }); localStorage.setItem('darts_current', JSON.stringify(S.players)); render(); }
+    }
+
+    function movePlayer(idx, dir) {
+        let nIdx = idx + dir;
+        if (nIdx >= 0 && nIdx < S.players.length) {
+            [S.players[idx], S.players[nIdx]] = [S.players[nIdx], S.players[idx]];
+            render();
+        }
+    }
+
+    function initGame(isNewMatch = true) {
+        if (S.players.length < 1) return alert("Ajoutez des joueurs !");
+        if (isNewMatch) { S.players.forEach(p => S.wins[p.name] = 0); S.winnersHistory = []; S.currentManche = 1; }
+        S.cp = 0; S.throws = []; S.round = 1; S.winner = null; S.targetValue = 0; S.bust = false;
+        S.followTarget = null; S.followSetter = -1; S.followPhase = 'set';
+        
+        S.players.forEach(p => {
+            if (S.game === 'x01') S.scores[p.name] = { score: parseInt(S.variant) };
+            else if (S.game === 'cricket') S.scores[p.name] = { points: 0, 20:0, 19:0, 18:0, 17:0, 16:0, 15:0, 25:0 };
+            else if (S.game === 'capital') S.scores[p.name] = { points: 40 };
+            else if (S.game === 'chateau') S.scores[p.name] = { bricks: 0, target: null };
+            else if (S.game === 'killer') S.scores[p.name] = { lives: 0, target: null, isKiller: false, out: false, maxLives: parseInt(S.variant) };
+            else if (S.game === 'follow') S.scores[p.name] = { lives: 3, out: false };
+            else S.scores[p.name] = { points: 0 };
+        });
+        
+        S.setupPhase = (S.game === 'chateau' || S.game === 'killer');
+        S.setupIndex = 0;
+        S.screen = 'game'; 
+        render();
+    }
+
+    function handleInput(val, isMiss = false) {
+        if (S.winner || S.bust) return;
+        if (S.setupPhase) {
+            const p = S.players[S.setupIndex].name;
+            const taken = S.players.map(pl => S.scores[pl.name].target);
+            if (val > 0 && !taken.includes(val)) {
+                pushHistory();
+                S.scores[p].target = val;
+                S.setupIndex++;
+                if (S.setupIndex >= S.players.length) S.setupPhase = false;
+                render();
+            }
+            return;
+        }
+        pushHistory();
+        const p = S.players[S.cp].name;
+        const m = S.multiplier;
+        const total = isMiss ? -10 : (val * m);
+
+        if (S.game === 'x01' && !isMiss) {
+            let left = S.scores[p].score - total;
+            if (left === 0 && (m === 2 || val === 25)) { S.scores[p].score = 0; finalizeManche(p); return; }
+            else if (left >= 2) S.scores[p].score = left;
+            else {
+                // BUST : score < 0 ou = 1 → score inchangé, tour terminé après animation
+                S.bust = true;
+                S.throws.push({v: val, m: m, isMiss: false});
+                S.multiplier = 1;
+                render();
+                setTimeout(() => { S.bust = false; nextTurn(); }, 1400);
+                return;
+            }
+        } 
+        else if (S.game === 'cricket' && !isMiss && [20,19,18,17,16,15,25].includes(val)) {
+            let hits = m; let cur = S.scores[p][val];
+            if (cur < 3) { let add = Math.min(3-cur, hits); S.scores[p][val] += add; hits -= add; }
+            if (hits > 0) {
+                const allClosed = S.players.every(pl => S.scores[pl.name][val] >= 3);
+                if (!allClosed) {
+                    if (S.variant === 'Standard') S.scores[p].points += (hits * val);
+                    else S.players.forEach(pl => { if(pl.name!==p && S.scores[pl.name][val]<3) S.scores[pl.name].points += (hits * val); });
+                }
+            }
+        }
+        else if (S.game === 'capital') {
+            const targets = [15, 16, 100, 17, 18, 200, 19, 20, 25]; // 100=Double, 200=Triple
+            const target = targets[S.round - 1];
+            let hit = false;
+            if (target === 100) hit = (m === 2);
+            else if (target === 200) hit = (m === 3);
+            else hit = (val === target);
+
+            if (hit) S.scores[p].tempRoundPoints = (S.scores[p].tempRoundPoints || 0) + total;
+        }
+        else if (S.game === 'chateau' && !isMiss) {
+            if (val === S.scores[p].target) S.scores[p].bricks = Math.min(15, S.scores[p].bricks + m);
+            else S.players.forEach(o => { if (o.name !== p && S.scores[o.name].target === val) S.scores[o.name].bricks = Math.max(0, S.scores[o.name].bricks - m); });
+        }
+        else if (S.game === 'killer' && !isMiss) {
+            let s = S.scores[p];
+            if (val === s.target && !s.isKiller) {
+                s.lives = Math.min(s.maxLives, s.lives + m);
+                if (s.lives >= s.maxLives) s.isKiller = true;
+            } else if (s.isKiller) {
+                S.players.forEach(o => {
+                    if (o.name !== p && S.scores[o.name].target === val) {
+                        S.scores[o.name].lives = Math.max(0, S.scores[o.name].lives - m);
+                        if (S.scores[o.name].lives <= 0) S.scores[o.name].out = true;
+                    }
+                });
+            }
+        }
+        else if (S.game === 'follow') {
+            const target = S.followTarget;
+            if (S.followPhase === 'set') {
+                // Premier lancer : définit la cible (val + multiplicateur)
+                if (isMiss) {
+                    // hors cible sur le lancer de définition : on repose une cible nulle
+                    S.followTarget = null;
+                } else {
+                    S.followTarget = { val: val, m: m };
+                    S.followSetter = S.cp;
+                    S.followPhase = 'follow';
+                }
+                S.throws.push({v: val, m: m, isMiss: isMiss});
+                S.multiplier = 1;
+                nextTurn();
+                return;
+            } else if (S.followPhase === 'follow') {
+                const hit = !isMiss && val === target.val && m === target.m;
+                if (!hit) {
+                    // pas encore matché → on enregistre le lancer
+                    S.throws.push({v: val, m: m, isMiss: isMiss});
+                    S.multiplier = 1;
+                    if (S.throws.length >= 3) {
+                        // raté avec les 3 fléchettes → perd une vie
+                        S.scores[p].lives--;
+                        if (S.scores[p].lives <= 0) S.scores[p].out = true;
+                        nextTurn();
+                    } else {
+                        checkWinner(); render();
+                    }
+                    return;
+                } else {
+                    // Matché ! On passe en phase 'define' : les fléchettes restantes définissent une nouvelle cible
+                    S.throws.push({v: val, m: m, isMiss: isMiss});
+                    S.multiplier = 1;
+                    S.followPhase = 'define';
+                    // Le joueur peut s'arrêter ou continuer — on render pour afficher le bouton "Rester"
+                    checkWinner(); render();
+                    return;
+                }
+            } else if (S.followPhase === 'define') {
+                // Le joueur définit une nouvelle cible avec les fléchettes restantes
+                // La dernière fléchette lancée devient la cible
+                // Si hors cible → perd une vie, cible inchangée
+                S.throws.push({v: val, m: m, isMiss: isMiss});
+                S.multiplier = 1;
+                if (isMiss) {
+                    S.scores[p].lives--;
+                    if (S.scores[p].lives <= 0) S.scores[p].out = true;
+                    // cible inchangée
+                } else {
+                    S.followTarget = { val: val, m: m };
+                    S.followSetter = S.cp;
+                }
+                nextTurn();
+                return;
+            }
+        }
+        else if (S.game === 'batard') {
+            if (isMiss) S.scores[p].points -= 10;
+            else {
+                if (S.throws.length === 0) S.scores[p].points += total;
+                else {
+                    const ref = S.throws[0];
+                    const refVal = ref.isMiss ? -10 : (ref.v * ref.m);
+                    if (total >= refVal) S.scores[p].points += total;
+                    else S.scores[p].points -= total;
+                }
+            }
+        }
+        else if (S.game === 'shanghai' && !isMiss && val === S.round) S.scores[p].points += total;
+
+        S.throws.push({v: val, m: m, isMiss: isMiss});
+        S.multiplier = 1;
+
+        if (S.game === 'shanghai') {
+            const hits = S.throws.filter(t => !t.isMiss && t.v === S.round);
+            if (hits.some(t => t.m === 1) && hits.some(t => t.m === 2) && hits.some(t => t.m === 3)) { finalizeManche(p); return; }
+        }
+
+        if (S.game !== 'follow' && S.throws.length === (S.game==='follow'?1:3)) {
+            if (S.game === 'capital') {
+                if (!(S.scores[p].tempRoundPoints > 0)) S.scores[p].points = Math.floor(S.scores[p].points / 2);
+                else S.scores[p].points += S.scores[p].tempRoundPoints;
+                delete S.scores[p].tempRoundPoints;
+            }
+            nextTurn();
+        } else { checkWinner(); render(); }
+    }
+
+    function followPass() {
+        // Le setter choisit de ne pas lancer — son tour est simplement sauté
+        pushHistory();
+        nextTurn();
+    }
+
+    function followStay() {
+        // En phase define, le joueur choisit de garder la dernière cible posée sans lancer plus
+        pushHistory();
+        nextTurn();
+    }
+
+    function nextTurn() {
+        S.throws = [];
+        do { S.cp = (S.cp + 1) % S.players.length; if (S.cp === 0) S.round++; } 
+        while (S.scores[S.players[S.cp].name].out && S.players.filter(pl => !S.scores[pl.name].out).length > 1);
+        if (S.game === 'follow') S.followPhase = (S.followTarget ? 'follow' : 'set');
+        checkWinner(); render();
+    }
+
+    function checkWinner() {
+        if (S.winner) return;
+        const active = S.players.filter(p => !S.scores[p.name].out);
+        if (S.game === 'cricket') {
+            S.players.forEach(pObj => {
+                const p = pObj.name;
+                const closed = [20,19,18,17,16,15,25].every(v => S.scores[p][v] >= 3);
+                const pts = S.scores[p].points;
+                const others = S.players.filter(o => o.name!==p).map(o => S.scores[o.name].points);
+                if (closed && ((S.variant==='Standard' && pts >= Math.max(...others)) || (S.variant==='Inversé' && pts <= Math.min(...others)))) finalizeManche(p);
+            });
+        }
+        else if (S.game === 'capital' && S.round > 9) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
+        else if (S.game === 'chateau') { S.players.forEach(p => { if(S.scores[p.name].bricks >= 15) finalizeManche(p.name); }); }
+        else if ((S.game === 'killer' || S.game === 'follow') && active.length === 1) finalizeManche(active[0].name);
+        else if (S.game === 'batard' && S.round > 10) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
+        else if (S.game === 'shanghai' && S.round > 7) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
+    }
+
+    function finalizeManche(pName) {
+        S.wins[pName]++;
+        S.winnersHistory.push({ manche: S.currentManche, winner: pName });
+        if (S.wins[pName] >= S.matchType) S.winner = pName;
+        else { alert("Manche gagnée par " + pName + " !"); S.currentManche++; initGame(false); }
+        render();
+    }
+
+    function renderPyramid(pName, pIdx) {
+        const score = S.scores[pName].bricks;
+        const pCol = PLAYER_COLORS[pIdx % PLAYER_COLORS.length];
+        let count = 0, html = `<div class="pyramid" style="--p-brick-col: ${pCol}">`;
+        [5,4,3,2,1].forEach(num => {
+            html += `<div class="pyramid-row">`;
+            for(let i=0; i<num; i++) { count++; html += `<div class="brick ${score >= count ? 'filled' : ''}"></div>`; }
+            html += `</div>`;
+        });
+        return html + `</div>`;
+    }
+
+    function renderSetup() {
+        let dbOpt = PLAYER_DB.filter(n => !S.players.some(p => p.name === n));
+        return `
+            <div class="header"><h1>🎯 Les Pointures des fléchettes</h1>
+            <p>Lucko's Darts Team</p>
+            </p>© Cyrille de Chanteloup</div>
+            <div class="card">
+                <label>Mode de jeu :</label>
+                <div class="game-grid">
+                    ${Object.keys(GAMES).map(g => `
+                        <div class="game-item">
+                            <button class="game-btn ${S.game===g?'active':''}" onclick="S.game='${g}'; S.variant='${GAMES[g].variants[0]}'; render()">${GAMES[g].name}</button>
+                            <button class="info-btn" onclick="showRules('${g}')">ⓘ</button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <label>Variante :</label>
+                <div class="mult-row">${GAMES[S.game].variants.map(v => `<button class="v-btn ${S.variant===v?'active':''}" onclick="S.variant='${v}'; render()">${v}</button>`).join('')}</div>
+                
+                <label>Format du match :</label>
+                <div class="mult-row">${[1,2,3].map(n => `<button class="m-btn ${S.matchType===n?'active':''}" onclick="S.matchType=${n}; render()">${n} Manche${n>1?'s':''}</button>`).join('')}</div>
+
+                <div style="margin:15px 0">${S.players.map((p, i) => `<div class="player-tag p-color-${i}"><span class="player-name">${p.name}</span><div class="reorder-btns"><button class="reorder-btn" onclick="movePlayer(${i},-1)">▲</button><button class="reorder-btn" onclick="movePlayer(${i},1)">▼</button></div><span onclick="S.players.splice(${i},1); render()" style="color:red; font-weight:bold; cursor:pointer">✕</span></div>`).join('')}</div>
+                ${dbOpt.length > 0 ? `<select class="selector" onchange="addPlayer(this.value); this.value=''"><option value="">+ Reprendre...</option>${dbOpt.map(n=>`<option>${n}</option>`)}</select>` : ''}
+                <button class="btn btn-add" onclick="addPlayer(prompt('Nom :'))">+ Nouveau Joueur</button>
+                <button class="btn btn-primary" style="margin-top:20px" onclick="initGame()">Lancer le match 🚀</button>
+            </div>
+        `;
+    }
+
+    function renderGame() {
+        if (S.winner) return `<div class="card" style="text-align:center; padding:40px"><h1>🏆 VAINQUEUR</h1><h2 class="p-color-0">${S.winner}</h2><button class="btn btn-primary" onclick="location.reload()">RETOUR ACCUEIL</button></div>`;
+        if (S.setupPhase) {
+            const p = S.players[S.setupIndex].name;
+            return `<div class="card" style="text-align:center"><h2 class="p-color-${S.setupIndex}">${p}</h2><p>Choisis ton numéro cible :</p><div class="numpad">${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}</div></div>`;
+        }
+
+        const p = S.players[S.cp], sc = S.scores[p.name];
+        let target = "";
+        if (S.game === 'shanghai') target = S.round;
+        if (S.game === 'capital') {
+            const targets = [15, 16, "DBL", 17, 18, "TPL", 19, 20, "BULL"];
+            target = targets[S.round - 1];
+        }
+        if (S.game === 'follow') {
+            if (!S.followTarget) {
+                target = "1er lancer →";
+            } else {
+                const ft = S.followTarget;
+                const mLabel = ft.m === 2 ? 'D' : (ft.m === 3 ? 'T' : (ft.val === 25 ? '' : 'S'));
+                target = mLabel + (ft.val === 25 ? 'BULL' : ft.val);
+            }
+        }
+        if (S.game === 'batard') target = S.throws.length > 0 ? "Réf: " + (S.throws[0].isMiss ? -10 : S.throws[0].v * S.throws[0].m) : "Lancer Ref.";
+        if (S.game === 'killer') target = sc.target ? "Cible: " + sc.target : "?";
+
+        return `
+            <div class="manche-info">Manche ${S.currentManche} | Tour ${S.round} ${S.game==='batard'?'/ 10':(S.game==='shanghai'?'/ 7':(S.game==='capital'?'/ 9':''))}</div>
+            <div class="current-p-box p-color-${S.cp}">
+                <h2 style="color:var(--p-col)">${p.name} ${sc.isKiller?'💀':''}</h2>
+                <div style="font-size:3rem; color:var(--c-accent); font-weight:800">${S.game==='chateau'?(sc.target ? 'Cible: '+sc.target : 'Choix...'):(S.game==='follow'?'❤️ '+sc.lives:(S.game==='killer'?'❤️ '+sc.lives:(S.game==='x01'?sc.score:sc.points)))}</div>
+                ${S.game==='x01' && sc.score <= 170 ? renderCheckout(sc.score) : ''}
+                ${S.game==='follow' ? `<div style="font-size:0.9rem; color:rgba(255,255,255,0.6)">${S.followPhase==='set'?'Lance une fléchette pour définir la cible':(S.followPhase==='define'?'🎯 Matché ! Lance pour poser une nouvelle cible':(S.cp===S.followSetter?'Tu as posé cette cible — tu peux PASSER':'Reproduis la cible en 3 fléchettes'))}</div>` : ''}
+                <div style="font-size:1.5rem">${S.throws.map(t=>t.isMiss?'❌':'📍').join(' ')}</div>
+            </div>
+            <div class="card">
+                ${target ? `<div class="target-badge"><span class="target-val" style="font-size:0.8rem">${target}</span></div>` : ''}
+                ${S.game==='cricket' ? renderCricketTable() : renderSimpleTable()}
+            </div>
+            <div class="mult-row">
+                <button class="m-btn ${S.multiplier===2?'active':''}" onclick="S.multiplier=2; render()">DOUBLE</button>
+                <button class="m-btn ${S.multiplier===3?'active':''}" onclick="S.multiplier=3; render()">TRIPLE</button>
+            </div>
+            ${S.game==='follow' && S.followPhase==='follow' && S.cp===S.followSetter ? `<div class="mult-row"><button class="m-btn" style="background:var(--c-variant); border-color:var(--c-variant); width:100%" onclick="followPass()">⏭ PASSER (garder ma cible)</button></div>` : ''}
+            ${S.game==='follow' && S.followPhase==='define' ? `<div class="mult-row"><button class="m-btn" style="background:#27ae60; border-color:#27ae60; width:100%" onclick="followStay()">✅ RESTER sur cette cible</button></div>` : ''}
+            <div class="numpad">
+                ${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}
+                <button class="num-btn" style="background:var(--c-primary)" onclick="handleInput(25)">BULL</button>
+                <button class="num-btn" onclick="handleInput(0)">ZÉRO</button>
+                <button class="num-btn" style="background:black; color:white; grid-column: span 2;" onclick="handleInput(0, true)">❌ HORS CIBLE</button>
+                <button class="num-btn" style="grid-column:span 2; background:#555" onclick="undo()">↩ ANNULER</button>
+                <button class="num-btn" style="background:#e94560; font-size:0.7rem" onclick="endGame()">FIN PARTIE</button>
+            </div>
+            ${S.bust ? `<div class="bust-overlay"><div class="bust-text">BUST !</div></div>` : ''}
+        `;
+    }
+
+    function renderCricketTable() {
+        const M = ["", "/", "X", "ⓧ"];
+        return `<table class="cricket-table"><tr><th></th>${[20,19,18,17,16,15,25].map(v=>`<th>${v==25?'B':v}</th>`).join('')}<th>Pts</th></tr>
+        ${S.players.map((pObj, i) => `<tr class="${S.cp===i?'active-row':''}">
+        <td style="color:var(--p-col); border-left:3px solid var(--p-col)" class="p-color-${i}">${pObj.name}</td>
+        ${[20,19,18,17,16,15,25].map(v => `<td class="mark mark-${S.scores[pObj.name][v]}">${M[S.scores[pObj.name][v]]}</td>`).join('')}
+        <td>${S.scores[pObj.name].points}</td></tr>`).join('')}</table>`;
+    }
+
+    function renderSimpleTable() {
+        return `<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px">
+        ${S.players.map((pObj, i) => {
+            const sco = S.scores[pObj.name];
+            return `<div class="p-color-${i}" style="text-align:center; padding:10px; border-radius:15px; border:${S.cp===i?'2px solid var(--p-col)':'1px solid #444'}; opacity:${sco.out?0.3:1}">
+            <div style="font-size:0.8rem; color:var(--p-col); font-weight:bold">${pObj.name}${sco.isKiller ? ' 💀' : ''}</div>
+            ${S.game === 'chateau' ? renderPyramid(pObj.name, i) : `<div style="font-weight:bold; font-size:1.2rem">${S.game==='x01'?sco.score:(S.game==='killer'?(sco.target ? '🎯 '+sco.target : '?'):(S.game==='follow'?'❤️ '+sco.lives:sco.points))}</div>`}
+            ${S.game==='killer'?`<div>❤️ ${sco.lives}</div>`:''}</div>`
+        }).join('')}</div>`;
+    }
+
+    function render() { document.getElementById('app').innerHTML = (S.screen === 'setup') ? renderSetup() : renderGame(); }
+    render();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('Service Worker enregistré', reg))
+            .catch(err => console.log('Erreur SW', err));
+    });
+}
+</script>
+
+</body>
+</html>
