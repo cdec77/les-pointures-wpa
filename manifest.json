@@ -1,6 +1,6 @@
 {
   "name": "Les Pointures des Fléchettes",
-  "short_name": "Pointures",
+  "short_name": "Fléchettes",
   "description": "Application de gestion de parties de fléchettes multijeux",
   "start_url": "./index.html",
   "scope": "./",
