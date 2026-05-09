@@ -1,4 +1,4 @@
-const CACHE_NAME = 'darts-v1';
+const CACHE_NAME = 'Lucko's Darts';
 const ASSETS = [
   './index.html',
   './manifest.json',
