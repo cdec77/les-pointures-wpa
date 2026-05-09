@@ -2,22 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-
-<meta name="theme-color" content="#0f0c29">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Pointures">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="Pointures">
-<meta name="msapplication-TileColor" content="#0f0c29">
-<meta name="apple-touch-fullscreen" content="yes">
-
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="apple-touch-startup-image" href="icons/icon-512.png">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>🎯 Les Pointures des fléchettes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎯 Les Pointures des fléchette</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e94560">
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,12 +19,12 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: var(--c-text); min-height: 100vh; overflow-x: hidden; }
-        .container { max-width: 950px; margin: 0 auto; padding: 15px; }
+        .container { max-width: 950px; margin: 0 auto; padding: 8px; }
         
-        .header { text-align: center; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; }
+        .header { text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; }
         .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.8rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); }
 
-        .card { background: var(--c-surface); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        .card { background: var(--c-surface); padding: 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         
         .manche-info { background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 10px; border: 1px solid var(--c-primary); display: inline-block; }
 
@@ -53,9 +41,14 @@
 
         .selector { background: #241f4a; color: white; border: 1px solid var(--c-accent); padding: 10px; border-radius: 10px; width: 100%; margin: 5px 0; font-size: 1rem; }
 
-        .numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 10px; }
-        .num-btn { background: #3a3471; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 18px 2px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 3px 0 #241f4a; }
+        .numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 6px; }
+        .num-btn { background: #3a3471; border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 2px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 2px 0 #241f4a; }
         .num-btn:active { background: var(--c-accent); color: #000; transform: translateY(2px); box-shadow: none; }
+        /* Coloration numpad selon multiplicateur */
+        .numpad.mult-2 .num-btn:not(.special-btn) { border-color: var(--c-primary); color: var(--c-primary); }
+        .numpad.mult-3 .num-btn:not(.special-btn) { border-color: #a89dff; color: #a89dff; }
+        .numpad.mult-2 .num-btn:not(.special-btn):active { background: var(--c-primary); color: #fff; }
+        .numpad.mult-3 .num-btn:not(.special-btn):active { background: #4834d4; color: #fff; }
 
         /* Modale */
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
@@ -70,16 +63,20 @@
         .player-name { flex: 1; font-weight: 600; color: var(--p-col); }
         .reorder-btns { display: flex; flex-direction: column; gap: 2px; }
         .reorder-btn { background: none; border: none; color: var(--c-accent); cursor: pointer; padding: 2px 5px; font-size: 1.2rem; }
-        .current-p-box { text-align: center; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 20px; border: 3px solid var(--p-col); margin-bottom: 10px; }
+        .current-p-box { text-align: center; background: rgba(255,255,255,0.07); padding: 8px; border-radius: 16px; border: 3px solid var(--p-col); margin-bottom: 10px; box-shadow: 0 0 24px var(--p-col), inset 0 0 18px rgba(255,255,255,0.04); animation: pulseBox 2s ease-in-out infinite; }
+        @keyframes pulseBox { 0%,100%{ box-shadow: 0 0 18px var(--p-col), inset 0 0 12px rgba(255,255,255,0.03); } 50%{ box-shadow: 0 0 38px var(--p-col), inset 0 0 22px rgba(255,255,255,0.07); } }
+        .turn-badge { display: inline-block; background: var(--p-col); color: #000; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; padding: 3px 12px; border-radius: 20px; margin-bottom: 6px; }
+        .dart-throw { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 4px; }
+        .active-player-card { box-shadow: 0 0 16px var(--p-col) !important; transform: scale(1.04); transition: transform 0.2s; }
         .mult-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-        .m-btn { flex: 1; min-width: 80px; padding: 12px; border-radius: 10px; border: 2px solid var(--c-primary); background: transparent; color: white; font-weight: bold; font-size: 0.85rem; }
+        .m-btn { flex: 1; min-width: 80px; padding: 8px; border-radius: 10px; border: 2px solid var(--c-primary); background: transparent; color: white; font-weight: bold; font-size: 0.85rem; }
         .m-btn.active { background: var(--c-primary); box-shadow: 0 0 10px var(--c-primary); }
         .v-btn { flex: 1; min-width: 100px; padding: 10px; border-radius: 10px; border: 2px solid var(--c-variant); background: transparent; color: white; font-weight: bold; font-size: 0.85rem; }
         .v-btn.active { background: var(--c-variant); box-shadow: 0 0 10px var(--c-variant); }
-        .pyramid { display: flex; flex-direction: column-reverse; align-items: center; gap: 4px; margin: 10px auto; }
-        .pyramid-row { display: flex; gap: 4px; justify-content: center; }
-        .brick { width: 28px; height: 18px; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; background: rgba(255,255,255,0.03); }
-        .brick.filled { background: var(--p-brick-col); box-shadow: 0 0 8px var(--p-brick-col); border-color: white; }
+        .pyramid { display: flex; flex-direction: column-reverse; align-items: center; gap: var(--brick-gap, 4px); margin: 10px auto; }
+        .pyramid-row { display: flex; gap: var(--brick-gap, 4px); justify-content: center; }
+        .brick { width: var(--brick-w, 28px); height: var(--brick-h, 18px); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; background: rgba(255,255,255,0.03); }
+        .brick.filled { background: var(--p-brick-col); box-shadow: 0 0 6px var(--p-brick-col); border-color: white; }
         .cricket-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
         .cricket-table th, .cricket-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .active-row { background: rgba(255,255,255,0.1); font-weight: bold; }
@@ -95,14 +92,91 @@
         @keyframes bustShake { 0%,100%{transform:rotate(-3deg) scale(1.1)} 20%{transform:rotate(4deg) scale(1.15)} 40%{transform:rotate(-4deg) scale(1.2)} 60%{transform:rotate(3deg) scale(1.15)} 80%{transform:rotate(-2deg) scale(1.1)} }
 
         /* Checkout panel */
-        .checkout-box { background: rgba(249,211,66,0.12); border: 1px solid var(--c-accent); border-radius: 14px; padding: 10px 14px; margin-top: 8px; }
-        .checkout-title { font-size: 0.7rem; color: var(--c-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-        .checkout-combo { font-size: 0.82rem; color: #fff; margin: 3px 0; display: flex; gap: 6px; flex-wrap: wrap; }
-        .dart-chip { background: rgba(255,255,255,0.12); border-radius: 6px; padding: 2px 7px; font-weight: 600; }
-        .dart-chip.dbl { background: rgba(233,69,96,0.35); color: #ff8fa3; }
-        .dart-chip.tpl { background: rgba(72,52,212,0.45); color: #a89dff; }
-        .dart-chip.bull { background: rgba(249,211,66,0.3); color: var(--c-accent); }
-    </style>
+        .checkout-box { background: rgba(249,211,66,0.15); border: 2px solid var(--c-accent); border-radius: 16px; padding: 12px 16px; margin-top: 8px; box-shadow: 0 0 18px rgba(249,211,66,0.25); text-align: center; }
+        .checkout-title { font-size: 0.85rem; color: var(--c-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .checkout-combo { font-size: 1.05rem; color: #fff; margin: 5px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: center; }
+        .dart-chip { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 5px 12px; font-weight: 700; font-size: 1.05rem; }
+        .dart-chip.dbl { background: rgba(233,69,96,0.45); color: #ff8fa3; border: 1px solid #ff8fa3; }
+        .dart-chip.tpl { background: rgba(72,52,212,0.55); color: #c4b9ff; border: 1px solid #a89dff; }
+        .dart-chip.bull { background: rgba(249,211,66,0.35); color: var(--c-accent); border: 1px solid var(--c-accent); }
+    
+.numpad.mult-2 .num-btn:not(.special-btn){
+background:#f9d342 !important;
+color:#000 !important;
+border:2px solid #39ff14 !important;
+box-shadow:0 0 12px #39ff14 !important;
+}
+.numpad.mult-3 .num-btn:not(.special-btn){
+background:#f9d342 !important;
+color:#000 !important;
+border:2px solid #ff3131 !important;
+box-shadow:0 0 12px #ff3131 !important;
+}
+
+</style>
+
+<style>
+.winner-overlay{
+position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;
+display:flex;align-items:center;justify-content:center;flex-direction:column;
+animation:fadeIn .4s ease;
+}
+.winner-box{
+background:#1b1644;border:4px solid gold;border-radius:30px;
+padding:40px;text-align:center;box-shadow:0 0 40px gold;
+}
+.winner-box h1{font-size:4rem;color:gold}
+.confetti{
+position:absolute;font-size:2rem;animation:fall 4s linear infinite;
+}
+@keyframes fall{
+0%{transform:translateY(-100vh) rotate(0deg);}
+100%{transform:translateY(100vh) rotate(360deg);}
+}
+.m-btn.active-double{
+background:#39ff14 !important;
+border-color:#39ff14 !important;
+color:#000 !important;
+box-shadow:0 0 20px #39ff14 !important;
+}
+.m-btn.active-triple{
+background:#ff3131 !important;
+border-color:#ff3131 !important;
+color:#fff !important;
+box-shadow:0 0 20px #ff3131 !important;
+}
+.target-badge{
+transform:scale(1.3);
+right:20px!important;
+top:20px!important;
+}
+.target-inline{
+display:inline-block;
+background:#f9d342;
+color:#000;
+padding:10px 20px;
+border-radius:15px;
+margin-left:15px;
+font-size:1.5rem;
+font-weight:900;
+border:3px solid #fff;
+}
+
+.numpad.mult-2 .num-btn:not(.special-btn){
+background:#f9d342 !important;
+color:#000 !important;
+border:2px solid #39ff14 !important;
+box-shadow:0 0 12px #39ff14 !important;
+}
+.numpad.mult-3 .num-btn:not(.special-btn){
+background:#f9d342 !important;
+color:#000 !important;
+border:2px solid #ff3131 !important;
+box-shadow:0 0 12px #ff3131 !important;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -139,18 +213,18 @@
             <b>Tactique :</b> Il faut jongler entre la fermeture rapide des chiffres pour empêcher l'adversaire de marquer, et le "pilonnage" des chiffres déjà fermés pour creuser l'écart au score.`
         },
         capital: {
-            name: 'Capital', variants: ['Standard'],
+            name: 'Capital', variants: ['Départ 40', 'Départ 0'],
             rules: `<b>Le Concept :</b> Le Capital est un jeu de survie et de précision redoutable. Chaque joueur commence la partie avec un capital de points identique. Le but est de terminer la partie avec le capital le plus élevé possible après une série de cibles imposées.<br><br>
             <b>Déroulement Chronologique :</b> Le jeu se déroule en plusieurs manches fixes. À chaque manche, tous les joueurs doivent viser un secteur spécifique dans l'ordre suivant : 15, 16, Double (n'importe lequel), 17, 18, Triple (n'importe lequel), 19, 20 et enfin la Bulle (Centre).<br><br>
             <b>Le Risque de la Division :</b> Durant son tour (3 fléchettes), le joueur tente de toucher la cible en cours autant de fois que possible. Les points cumulés s'ajoutent à son capital. Cependant, si le joueur échoue totalement lors de ses 3 lancers (aucune fléchette ne touche la cible), son capital accumulé jusque-là est <b>divisé par deux</b> immédiatement !<br><br>
             <b>Impact Psychologique :</b> La tension monte lors des manches "Double" et "Bulle", car rater ces secteurs peut anéantir une avance confortable. Le gagnant est celui qui préserve son capital jusqu'à la fin de la séquence. C'est un jeu idéal pour apprendre à gérer la pression du résultat sur des cibles spécifiques.`
         },
         chateau: { 
-            name: 'Château', variants: ['15 Briques'],
-            rules: `<b>La Guerre des Châteaux :</b> Dans ce mode ludique et interactif, chaque joueur possède un château virtuel composé de 15 briques. Le premier à construire l'intégralité de son édifice gagne la bataille.<br><br>
-            <b>Phase de Construction :</b> Au début du match, chaque joueur doit choisir un numéro cible secret ou attitré (généralement entre 1 et 20). Une fois les cibles définies, toucher votre propre numéro ajoute des briques à votre château : un Simple vaut 1 brique, un Double 2, et un Triple 3.<br><br>
-            <b>Phase de Destruction :</b> C'est là que le jeu devient cruel. Si vous touchez le numéro cible d'un adversaire, vous ne construisez rien pour vous, mais vous détruisez les briques de son château ! Chaque touche réussie sur son secteur lui retire le nombre de briques correspondant à la zone touchée (Simple/Double/Triple).<br><br>
-            <b>Conditions de Triomphe :</b> Il ne suffit pas de viser juste, il faut aussi savoir quand attaquer pour empêcher un concurrent de finir son château. La partie se termine dès qu'un joueur atteint le total de 15 briques. C'est un mélange parfait d'adresse et de diplomatie (ou de trahison) entre amis.`
+            name: 'Château', variants: ['5 Tours', '10 Tours', '15 Tours', '20 Tours'],
+            rules: `<b>La Guerre des Châteaux :</b> Dans ce mode ludique et interactif, chaque joueur possède un château virtuel composé de 15 briques. La partie se joue sur un nombre de tours choisi au départ (5, 10, 15 ou 20 tours).<br><br>
+            <b>Phase de Construction :</b> Au début du match, chaque joueur choisit un numéro cible (entre 1 et 20). Toucher votre propre numéro ajoute des briques à votre château : un Simple vaut 1 brique, un Double 2, et un Triple 3.<br><br>
+            <b>Phase de Destruction :</b> C'est là que le jeu devient cruel. Si vous touchez le numéro cible d'un adversaire, vous détruisez les briques de son château ! Chaque touche réussie lui retire le nombre de briques correspondant (Simple/Double/Triple). Un château ne peut pas descendre sous 0 briques.<br><br>
+            <b>Conditions de Victoire :</b> Le premier joueur à atteindre <b>15 briques remporte immédiatement la partie</b>, même avant la fin des tours. Si aucun joueur n'atteint 15 briques, la partie dure le nombre de tours choisi et le joueur avec le plus de briques à la fin remporte la manche. En cas d'égalité, un tour supplémentaire départage les joueurs.`,
         },
         killer: { 
             name: 'Killer', variants: ['3 Vies', '5 Vies'],
@@ -161,22 +235,22 @@
         },
         follow: { 
             name: 'Follow Me', variants: ['Standard'],
-            rules: `<b>Objectif :</b> Être le dernier joueur à avoir encore une vie. Chaque joueur commence avec 3 vies.<br><br>
-            <b>Définir la cible :</b> Le 1er joueur lance <b>une seule fléchette</b> de sa main non-dominante (pour donner une chance aux autres). La zone exacte touchée devient la cible : Simple Petit (SP), Simple Grand (SG), Double (D) ou Triple (T), notée avec la valeur — ex : SP5, T20, D25.<br><br>
-            <b>Les joueurs suivants</b> ont <b>3 fléchettes</b> pour toucher exactement la même zone. S'ils y arrivent, les fléchettes restantes leur permettent de définir une <b>nouvelle cible</b> — la dernière fléchette lancée devient la nouvelle cible. Le joueur peut <b>s'arrêter à tout moment</b> après avoir matché et choisir de ne pas lancer les fléchettes restantes.<br><br>
-            <b>Attention :</b> Si la dernière fléchette lancée (en phase de définition) rate le tableau (Hors Cible), le joueur <b>perd une vie</b> et la cible précédente est restaurée.<br><br>
-            <b>Perte de vie :</b> Un joueur qui rate la cible avec ses 3 fléchettes perd une vie. La cible reste inchangée pour le suivant.<br><br>
-            <b>Le setter :</b> Quand c'est à nouveau le tour du joueur qui a posé la cible, il peut choisir de <b>Passer</b> (garder la cible) ou risquer de lancer. S'il lance, il est soumis aux mêmes règles que les autres.`
+            rules: `<b>Objectif :</b> Marquer le plus de points possible en 10 tours. Le joueur avec le score le plus élevé à la fin remporte la manche.<br><br>
+            <b>Démarrage :</b> Avant le premier tour, le programme tire au sort <b>3 chiffres cibles</b> affichés à l'écran pour tous les joueurs.<br><br>
+            <b>Déroulement d'un tour :</b> Chaque joueur lance <b>3 fléchettes</b>. Pour chaque fléchette, si le chiffre touché figure parmi les 3 cibles affichées, les points sont comptabilisés — <b>Simple, Double et Triple comptent tous</b> (ex : Triple 20 sur une cible "20" rapporte 60 pts). Une fléchette qui ne touche pas l'une des 3 cibles ne rapporte rien. Les fléchettes hors cible (❌) ne rapportent rien non plus.<br><br>
+            <b>Transmission des cibles :</b> Après les 3 lancers d'un joueur, les nouvelles cibles pour le joueur suivant sont les <b>chiffres réellement touchés</b> par ce joueur. Si un joueur a touché moins de 3 chiffres distincts, les cibles manquantes sont <b>complétées aléatoirement</b>.<br><br>
+            <b>Stratégie :</b> Bien viser rapporte des points mais impose des chiffres faciles au joueur suivant. Viser des triples difficiles complique la tâche du suivant — mais rapporte gros si réussi !<br><br>
+            <b>Fin de partie :</b> Après 10 tours complets, le joueur ayant accumulé le plus de points est déclaré vainqueur.`
         },
         batard: { 
-            name: 'Bâtard', variants: ['10 Tours'],
+            name: 'Bâtard', variants: ['10 Tours', '15 Tours', '20 Tours'],
             rules: `<b>Le Calcul Mental :</b> Le Bâtard est un jeu original qui récompense la régularité et punit sévèrement l'imprécision. La partie se déroule sur un format fixe de 10 tours, chaque tour consistant en 3 fléchettes.<br><br>
             <b>La Fléchette de Référence :</b> À chaque nouveau tour, la toute première fléchette lancée sert de "mètre étalon". Les points de cette fléchette sont ajoutés à votre score total. Pour les deux fléchettes suivantes (la 2ème et la 3ème), tout change : si la valeur de la fléchette est supérieure ou égale à la première, on AJOUTE les points. Si elle est inférieure, on les SOUSTRAIT de votre total.<br><br>
             <b>Sanction Hors-Cible :</b> Attention, toute fléchette qui atterrit en dehors des zones scorables (Hors-Cible) entraîne une pénalité immédiate et forfaitaire de -10 points. Cette règle s'applique même pour la fléchette de référence.<br><br>
             <b>Objectif Final :</b> Le but est d'accumuler le plus grand nombre de points possible à l'issue des 10 rotations. Il faut donc être capable de viser un score "moyen" avec la première fléchette pour s'assurer de pouvoir faire mieux avec les deux suivantes, ou prendre le risque de viser haut dès le départ.`
         },
         shanghai: { 
-            name: 'Shanghai', variants: ['Standard (7)'],
+            name: 'Shanghai', variants: ['7 Tours', '14 Tours', '20 Tours'],
             rules: `<b>La Course aux Chiffres :</b> Le Shanghai est une progression numérique sur la cible. On joue traditionnellement sur les chiffres 1 à 7 (ou plus selon les envies). Au tour 1, seul le numéro 1 compte, au tour 2, seul le 2 compte, et ainsi de suite.<br><br>
             <b>Scoring Classique :</b> Chaque touche sur le numéro du tour rapporte des points (le double compte double, le triple compte triple). Le joueur qui accumule le plus de points à la fin du 7ème tour est déclaré vainqueur par points.<br><br>
             <b>Le Coup d'Éclat "Shanghai" :</b> Il existe une règle de victoire automatique qui donne son nom au jeu. Si un joueur parvient, durant le même tour, à toucher le Simple, le Double ET le Triple du numéro en cours, il réalise un "Shanghai". Dans ce cas, la partie s'arrête instantanément et ce joueur gagne le match, quel que soit l'écart de points au classement général.<br><br>
@@ -188,7 +262,7 @@
         screen: 'setup', game: 'x01', variant: '301', matchType: 1, 
         players: CURRENT_PLAYERS, wins: {}, winnersHistory: [], cp: 0, scores: {}, throws: [], multiplier: 1, 
         winner: null, round: 1, currentManche: 1, setupPhase: false, setupIndex: 0, targetValue: 0,
-        followTarget: null, followSetter: -1, followPhase: 'set', bust: false
+        followTarget: null, followSetter: -1, followPhase: 'set', bust: false, chateauMaxTours: 10, shanghaiMaxTours: 7, batardMaxTours: 10
     };
 
     function showRules(gameKey) {
@@ -206,52 +280,168 @@
 
     // ── Checkout table X01 (Double Out, max 3 fléchettes) ──────────────────
     const CHECKOUT_TABLE = {
-        2:['D1'], 3:['S1 D1'], 4:['D2'], 5:['S1 D2'], 6:['D3'], 7:['S3 D2'], 8:['D4'],
-        9:['S1 D4'], 10:['D5'], 11:['S3 D4'], 12:['D6'], 13:['S5 D4'], 14:['D7'],
-        15:['S7 D4'], 16:['D8'], 17:['S9 D4'], 18:['D9'], 19:['S3 D8'], 20:['D10'],
-        21:['S5 D8'], 22:['D11'], 23:['S7 D8'], 24:['D12'], 25:['S9 D8'], 26:['D13'],
-        27:['S19 D4'], 28:['D14'], 29:['S11 D9'], 30:['D15'], 31:['S13 D9'], 32:['D16'],
-        33:['S17 D8'], 34:['D17'], 35:['S19 D8'], 36:['D18'], 37:['S5 D16'], 38:['D19'],
-        39:['S7 D16'], 40:['D20'], 41:['S9 D16'], 42:['D21 = S5 D17'], 43:['S3 D20'],
-        44:['D22 = S4 D20'], 45:['S13 D16'], 46:['D23 = S6 D20'], 47:['S15 D16'],
-        48:['D24 = S8 D20'], 49:['S17 D16'], 50:['D25 (BULL)'],
-        51:['S11 D20'], 52:['D20 D6 = S12 D20'], 53:['S13 D20'], 54:['S14 D20'],
-        55:['S15 D20'], 56:['S16 D20'], 57:['S17 D20'], 58:['S18 D20'], 59:['S19 D20'],
-        60:['S20 D20'], 61:['S1 T20 = S13 D24'], 62:['S2 T20'], 63:['S3 T20'],
-        64:['S4 T20'], 65:['S5 T20 = T15 D5'], 66:['S6 T20'], 67:['S7 T20'],
-        68:['S8 T20'], 69:['S9 T20'], 70:['S10 T20 = T18 D8'],
-        71:['S11 T20'], 72:['S12 T20'], 73:['S13 T20'], 74:['S14 T20'],
-        75:['S15 T20 = T17 D12'], 76:['S16 T20'], 77:['S17 T20'],
-        78:['S18 T20'], 79:['S19 T20'], 80:['S20 T20 = T20 D10'],
-        81:['T19 D12 = S1 T20 D20'], 82:['T14 D20'], 83:['T17 D16'],
-        84:['T20 D12'], 85:['T15 D20'], 86:['T18 D16'], 87:['T17 D18'],
-        88:['T16 D20'], 89:['T19 D16'], 90:['T18 D18 = T20 D15'],
-        91:['T17 D20'], 92:['T20 D16'], 93:['T19 D18'], 94:['T18 D20'],
-        95:['T19 D19 = T15 D25'], 96:['T20 D18'], 97:['T19 D20'],
-        98:['T20 D19'], 99:['T19 D21 = T17 D24'], 100:['T20 D20'],
-        101:['T17 D25 = T20 S1 D20'], 102:['T20 S2 D20'], 103:['T19 S6 D20'],
-        104:['T18 S10 D20'], 105:['T20 S5 D20'], 106:['T20 S6 D20'],
-        107:['T19 S10 D20'], 108:['T20 S8 D20'], 109:['T20 S9 D20'],
-        110:['T20 S10 D20'], 111:['T19 S14 D20'], 112:['T20 S12 D20'],
-        113:['T19 S16 D20'], 114:['T20 S14 D20'], 115:['T20 S15 D20'],
-        116:['T20 S16 D20'], 117:['T20 S17 D20'], 118:['T20 S18 D20'],
-        119:['T19 T12 D13'], 120:['T20 S20 D20'], 121:['T20 S11 D25'],
-        122:['T18 S16 D20 = T18 D26 = T14 T12 D8'], 123:['T19 S16 D20'],
-        124:['T20 D12 S4'], 125:['T18 S9 D25 = T19 D19 S10'],
-        126:['T19 S9 D25'], 127:['T20 S7 D25'], 128:['T18 S14 D25'],
-        129:['T19 S12 D25'], 130:['T20 S10 D25'], 131:['T19 S14 D25'],
-        132:['T20 S12 D25'], 133:['T19 S16 D25'], 134:['T20 S14 D25'],
-        135:['T20 S15 D25'], 136:['T20 S16 D25'], 137:['T20 S17 D25'],
-        138:['T20 S18 D25'], 139:['T19 T12 D25 = T19 S12 D2 = T20 S19 D10 = T20 T1 D20'],
-        140:['T20 S20 D20 = T20 T20 D10'], 141:['T20 T19 D12 = T20 T1 D25'],
-        142:['T20 T18 D14'], 143:['T20 T17 D16'], 144:['T20 T16 D18'],
-        145:['T20 T15 D20'], 146:['T20 T18 D16'], 147:['T20 T17 D18'],
-        148:['T20 T16 D20'], 149:['T20 T19 D16'], 150:['T20 T18 D18'],
-        151:['T20 T17 D20'], 152:['T20 T20 D16'], 153:['T20 T19 D18'],
-        154:['T20 T18 D20'], 155:['T20 T19 D19'], 156:['T20 T20 D18'],
-        157:['T20 T19 D20'], 158:['T20 T20 D19'], 160:['T20 T20 D20'],
-        161:['T20 T17 D25'], 164:['T20 T18 D25'], 167:['T20 T19 D25'],
-        170:['T20 T20 D25 (BULL)']
+        2:['D1'],
+        3:['S1 D1'],
+        4:['D2','D1 D1','S2 D1'],
+        5:['T1 D1','S1 D2','S3 D1'],
+        6:['D3','D1 D2','D2 D1','S2 D2','S4 D1'],
+        7:['T1 D2','S1 D3','S3 D2','S5 D1'],
+        8:['D4','D1 D3','T2 D1','D2 D2','S2 D3','T1 T1 D1'],
+        9:['T1 D3','S1 D4','S3 D3','S5 D2'],
+        10:['D5','D1 D4','T2 D2','D2 D3','S2 D4','T1 T1 D2'],
+        11:['T1 D4','S1 D5','T3 D1','S3 D4','T1 T2 D1','T2 T1 D1'],
+        12:['D6','D1 D5','T2 D3','D2 D4','S2 D5','T1 T1 D3'],
+        13:['T1 D5','S1 D6','T3 D2','S3 D5','T1 T2 D2','T2 T1 D2'],
+        14:['D7','D1 D6','T2 D4','D2 D5','S2 D6','T1 T1 D4','T1 T3 D1','T2 T2 D1','T3 T1 D1'],
+        15:['T1 D6','S1 D7','T3 D3','S3 D6','T1 T2 D3','T2 T1 D3'],
+        16:['D8','D1 D7','T2 D5','D2 D6','S2 D7','T1 T1 D5','T1 T3 D2','T2 T2 D2','T3 T1 D2'],
+        17:['T1 D7','S1 D8','T3 D4','S3 D7','T1 T2 D4','T1 T4 D1','T2 T1 D4','T2 T3 D1','T3 T2 D1','T4 T1 D1'],
+        18:['D9','D1 D8','T2 D6','D2 D7','S2 D8','T1 T1 D6','T1 T3 D3','T2 T2 D3','T3 T1 D3'],
+        19:['T1 D8','S1 D9','T3 D5','S3 D8','T1 T2 D5','T1 T4 D2','T2 T1 D5','T2 T3 D2','T3 T2 D2','T4 T1 D2'],
+        20:['D10','D1 D9','T2 D7','D2 D8','S2 D9','T1 T1 D7','T1 T3 D4','T1 T5 D1','T2 T2 D4','T2 T4 D1','T3 T1 D4'],
+        21:['T1 D9','S1 D10','T3 D6','S3 D9','T1 T2 D6','T1 T4 D3','T2 T1 D6','T2 T3 D3','T3 T2 D3','T4 T1 D3'],
+        22:['D11','D1 D10','T2 D8','D2 D9','S2 D10','T1 T1 D8','T1 T3 D5','T1 T5 D2','T2 T2 D5','T2 T4 D2','T3 T1 D5'],
+        23:['T1 D10','S1 D11','T3 D7','S3 D10','T1 T2 D7','T1 T4 D4','T1 T6 D1','T2 T1 D7','T2 T3 D4','T2 T5 D1'],
+        24:['D12','D1 D11','T2 D9','D2 D10','S2 D11','T1 T1 D9','T1 T3 D6','T1 T5 D3','T2 T2 D6','T2 T4 D3','T3 T1 D6'],
+        25:['T1 D11','S1 D12','T3 D8','S3 D11','T1 T2 D8','T1 T4 D5','T1 T6 D2','T2 T1 D8','T2 T3 D5','T2 T5 D2'],
+        26:['D13','D1 D12','T2 D10','D2 D11','S2 D12','T1 T1 D10','T1 T3 D7','T1 T5 D4','T1 T7 D1','T2 T2 D7','T2 T4 D4'],
+        27:['BULL D1','T1 D12','S1 D13','T3 D9','T1 T2 D9','T1 T4 D6','T1 T6 D3','T2 T1 D9','T2 T3 D6','T2 T5 D3'],
+        28:['D14','D1 D13','T2 D11','D2 D12','S2 D13','T1 T1 D11','T1 T3 D8','T1 T5 D5','T1 T7 D2','T2 T2 D8','T2 T4 D5'],
+        29:['BULL D2','T1 D13','S1 D14','T3 D10','T1 T2 D10','T1 T4 D7','T1 T6 D4','T1 T8 D1','T2 T1 D10','T2 T3 D7'],
+        30:['D15','D1 D14','T2 D12','D2 D13','S2 D14','T1 T1 D12','T1 T3 D9','T1 T5 D6','T1 T7 D3','T2 T2 D9','T2 T4 D6'],
+        31:['BULL D3','T1 D14','S1 D15','T3 D11','T1 T2 D11','T1 T4 D8','T1 T6 D5','T1 T8 D2','T2 T1 D11','T2 T3 D8'],
+        32:['D16','D1 D15','T2 D13','D2 D14','S2 D15','T1 T1 D13','T1 T3 D10','T1 T5 D7','T1 T7 D4','T1 T9 D1','T2 T2 D10'],
+        33:['BULL D4','T1 D15','S1 D16','T3 D12','T1 T2 D12','T1 T4 D9','T1 T6 D6','T1 T8 D3','T2 T1 D12','T2 T3 D9'],
+        34:['D17','D1 D16','T2 D14','D2 D15','S2 D16','T1 T1 D14','T1 T3 D11','T1 T5 D8','T1 T7 D5','T1 T9 D2','T2 T2 D11'],
+        35:['BULL D5','T1 D16','S1 D17','T3 D13','T1 T2 D13','T1 T4 D10','T1 T6 D7','T1 T8 D4','T1 T10 D1','T2 T1 D13'],
+        36:['D18','D1 D17','T2 D15','D2 D16','S2 D17','T1 T1 D15','T1 T3 D12','T1 T5 D9','T1 T7 D6','T1 T9 D3','T2 T2 D12'],
+        37:['BULL D6','T1 D17','S1 D18','T3 D14','T1 T2 D14','T1 T4 D11','T1 T6 D8','T1 T8 D5','T1 T10 D2','T2 T1 D14'],
+        38:['D19','D1 D18','T2 D16','D2 D17','S2 D18','T1 T1 D16','T1 T3 D13','T1 T5 D10','T1 T7 D7','T1 T9 D4','T1 T11 D1'],
+        39:['BULL D7','T1 D18','S1 D19','T3 D15','T1 T2 D15','T1 T4 D12','T1 T6 D9','T1 T8 D6','T1 T10 D3','T2 T1 D15'],
+        40:['D20','D1 D19','T2 D17','D2 D18','S2 D19','T1 T1 D17','T1 T3 D14','T1 T5 D11','T1 T7 D8','T1 T9 D5','T1 T11 D2'],
+        41:['BULL D8','T1 D19','S1 D20','T3 D16','T1 T2 D16','T1 T4 D13','T1 T6 D10','T1 T8 D7','T1 T10 D4','T1 T12 D1'],
+        42:['D1 D20','T2 D18','D2 D19','S2 D20','T1 T1 D18','T1 T3 D15','T1 T5 D12','T1 T7 D9','T1 T9 D6','T1 T11 D3'],
+        43:['BULL D9','T1 D20','T3 D17','S3 D20','T1 T2 D17','T1 T4 D14','T1 T6 D11','T1 T8 D8','T1 T10 D5','T1 T12 D2'],
+        44:['T2 D19','D2 D20','D3 D19','T4 D16','T1 T1 D19','T1 T3 D16','T1 T5 D13','T1 T7 D10','T1 T9 D7','T1 T11 D4'],
+        45:['BULL D10','T3 D18','T5 D15','S5 D20','T1 T2 D18','T1 T4 D15','T1 T6 D12','T1 T8 D9','T1 T10 D6','T1 T12 D3'],
+        46:['T2 D20','D3 D20','T4 D17','D4 D19','T1 T1 D20','T1 T3 D17','T1 T5 D14','T1 T7 D11','T1 T9 D8','T1 T11 D5'],
+        47:['BULL D11','T3 D19','T5 D16','T7 D13','T1 T2 D19','T1 T4 D16','T1 T6 D13','T1 T8 D10','T1 T10 D7','T1 T12 D4'],
+        48:['T4 D18','D4 D20','D5 D19','T6 D15','T1 T3 D18','T1 T5 D15','T1 T7 D12','T1 T9 D9','T1 T11 D6','T1 T13 D3'],
+        49:['BULL D12','T3 D20','T5 D17','T7 D14','T1 T2 D20','T1 T4 D17','T1 T6 D14','T1 T8 D11','T1 T10 D8','T1 T12 D5'],
+        50:['BULL','T4 D19','D5 D20','T6 D16','D6 D19','T1 T3 D19','T1 T5 D16','T1 T7 D13','T1 T9 D10','T1 T11 D7','T1 T13 D4'],
+        51:['BULL D13','S1 BULL','T5 D18','T7 D15','T1 T4 D18','T1 T6 D15','T1 T8 D12','T1 T10 D9','T1 T12 D6','T1 T14 D3'],
+        52:['D1 BULL','S2 BULL','T4 D20','T6 D17','T1 T3 D20','T1 T5 D17','T1 T7 D14','T1 T9 D11','T1 T11 D8','T1 T13 D5'],
+        53:['BULL D14','T1 BULL','S3 BULL','T5 D19','T1 T4 D19','T1 T6 D16','T1 T8 D13','T1 T10 D10','T1 T12 D7','T1 T14 D4'],
+        54:['D2 BULL','S4 BULL','T6 D18','D7 D20','T1 T5 D18','T1 T7 D15','T1 T9 D12','T1 T11 D9','T1 T13 D6','T1 T15 D3'],
+        55:['BULL D15','T5 D20','S5 BULL','T7 D17','T1 T4 D20','T1 T6 D17','T1 T8 D14','T1 T10 D11','T1 T12 D8','T1 T14 D5'],
+        56:['T2 BULL','D3 BULL','T6 D19','S6 BULL','T1 T1 BULL','T1 T5 D19','T1 T7 D16','T1 T9 D13','T1 T11 D10','T1 T13 D7'],
+        57:['BULL D16','T7 D18','S7 BULL','T9 D15','T1 T6 D18','T1 T8 D15','T1 T10 D12','T1 T12 D9','T1 T14 D6','T1 T16 D3'],
+        58:['D4 BULL','T6 D20','T8 D17','S8 BULL','T1 T5 D20','T1 T7 D17','T1 T9 D14','T1 T11 D11','T1 T13 D8','T1 T15 D5'],
+        59:['BULL D17','T3 BULL','T7 D19','T9 D16','T1 T2 BULL','T1 T6 D19','T1 T8 D16','T1 T10 D13','T1 T12 D10','T1 T14 D7'],
+        60:['D5 BULL','T8 D18','T10 D15','D10 D20','T1 T7 D18','T1 T9 D15','T1 T11 D12','T1 T13 D9','T1 T15 D6','T1 T17 D3'],
+        61:['BULL D18','T7 D20','T9 D17','T11 D14','T1 T6 D20','T1 T8 D17','T1 T10 D14','T1 T12 D11','T1 T14 D8','T1 T16 D5'],
+        62:['T4 BULL','D6 BULL','T8 D19','T10 D16','T1 T3 BULL','T1 T7 D19','T1 T9 D16','T1 T11 D13','T1 T13 D10','T1 T15 D7'],
+        63:['BULL D19','T9 D18','T11 D15','T13 D12','T1 T8 D18','T1 T10 D15','T1 T12 D12','T1 T14 D9','T1 T16 D6','T1 T18 D3'],
+        64:['D7 BULL','T8 D20','T10 D17','T12 D14','T1 T7 D20','T1 T9 D17','T1 T11 D14','T1 T13 D11','T1 T15 D8','T1 T17 D5'],
+        65:['BULL D20','T5 BULL','T9 D19','T11 D16','T1 T4 BULL','T1 T8 D19','T1 T10 D16','T1 T12 D13','T1 T14 D10','T1 T16 D7'],
+        66:['D8 BULL','T10 D18','T12 D15','D13 D20','T1 T9 D18','T1 T11 D15','T1 T13 D12','T1 T15 D9','T1 T17 D6','T1 T19 D3'],
+        67:['T9 D20','T11 D17','T13 D14','T15 D11','T1 T8 D20','T1 T10 D17','T1 T12 D14','T1 T14 D11','T1 T16 D8','T1 T18 D5'],
+        68:['T6 BULL','D9 BULL','T10 D19','T12 D16','T1 T5 BULL','T1 T9 D19','T1 T11 D16','T1 T13 D13','T1 T15 D10','T1 T17 D7'],
+        69:['T11 D18','T13 D15','T15 D12','T17 D9','T1 T10 D18','T1 T12 D15','T1 T14 D12','T1 T16 D9','T1 T18 D6','T1 T20 D3'],
+        70:['T10 D20','D10 BULL','T12 D17','T14 D14','T1 T9 D20','T1 T11 D17','T1 T13 D14','T1 T15 D11','T1 T17 D8','T1 T19 D5'],
+        71:['T7 BULL','T11 D19','T13 D16','T15 D13','T1 T6 BULL','T1 T10 D19','T1 T12 D16','T1 T14 D13','T1 T16 D10','T1 T18 D7'],
+        72:['D11 BULL','T12 D18','T14 D15','T16 D12','T1 T11 D18','T1 T13 D15','T1 T15 D12','T1 T17 D9','T1 T19 D6','T2 T10 D18'],
+        73:['T11 D20','T13 D17','T15 D14','T17 D11','T1 T10 D20','T1 T12 D17','T1 T14 D14','T1 T16 D11','T1 T18 D8','T1 T20 D5'],
+        74:['T8 BULL','T12 D19','D12 BULL','T14 D16','T1 T7 BULL','T1 T11 D19','T1 T13 D16','T1 T15 D13','T1 T17 D10','T1 T19 D7'],
+        75:['BULL BULL','T13 D18','T15 D15','T17 D12','T1 T12 D18','T1 T14 D15','T1 T16 D12','T1 T18 D9','T1 T20 D6','T1 BULL D11'],
+        76:['T12 D20','D13 BULL','T14 D17','T16 D14','T1 T11 D20','T1 T13 D17','T1 T15 D14','T1 T17 D11','T1 T19 D8','T2 T10 D20'],
+        77:['T9 BULL','T13 D19','T15 D16','T17 D13','T1 T8 BULL','T1 T12 D19','T1 T14 D16','T1 T16 D13','T1 T18 D10','T1 T20 D7'],
+        78:['T14 D18','D14 BULL','T16 D15','T18 D12','T1 T13 D18','T1 T15 D15','T1 T17 D12','T1 T19 D9','T2 T12 D18','T2 T14 D15'],
+        79:['T13 D20','T15 D17','T17 D14','T19 D11','T1 T12 D20','T1 T14 D17','T1 T16 D14','T1 T18 D11','T1 T20 D8','T1 BULL D13'],
+        80:['T10 BULL','T14 D19','D15 BULL','T16 D16','T1 T9 BULL','T1 T13 D19','T1 T15 D16','T1 T17 D13','T1 T19 D10','T2 T8 BULL'],
+        81:['T15 D18','T17 D15','T19 D12','T1 T14 D18','T1 T16 D15','T1 T18 D12','T1 T20 D9','T1 BULL D14','T2 T13 D18'],
+        82:['T14 D20','T16 D17','D16 BULL','T18 D14','T1 T13 D20','T1 T15 D17','T1 T17 D14','T1 T19 D11','T2 T12 D20','T2 T14 D17'],
+        83:['T11 BULL','T15 D19','T17 D16','T19 D13','T1 T10 BULL','T1 T14 D19','T1 T16 D16','T1 T18 D13','T1 T20 D10','T1 BULL D15'],
+        84:['T16 D18','D17 BULL','T18 D15','T20 D12','T1 T15 D18','T1 T17 D15','T1 T19 D12','T2 T14 D18','T2 T16 D15','T2 T18 D12'],
+        85:['T15 D20','T17 D17','T19 D14','T1 T14 D20','T1 T16 D17','T1 T18 D14','T1 T20 D11','T1 BULL D16','T2 T13 D20'],
+        86:['T12 BULL','T16 D19','T18 D16','D18 BULL','T1 T11 BULL','T1 T15 D19','T1 T17 D16','T1 T19 D13','T2 T10 BULL','T2 T14 D19'],
+        87:['T17 D18','T19 D15','T1 T16 D18','T1 T18 D15','T1 T20 D12','T1 BULL D17','T2 T15 D18','T2 T17 D15'],
+        88:['T16 D20','T18 D17','D19 BULL','T20 D14','T1 T15 D20','T1 T17 D17','T1 T19 D14','T2 T14 D20','T2 T16 D17','T2 T18 D14'],
+        89:['T13 BULL','T17 D19','T19 D16','T1 T12 BULL','T1 T16 D19','T1 T18 D16','T1 T20 D13','T1 BULL D18','T2 T11 BULL'],
+        90:['T18 D18','T20 D15','D20 BULL','BULL D20','T1 T17 D18','T1 T19 D15','T2 T16 D18','T2 T18 D15','T2 T20 D12','T2 BULL D17'],
+        91:['T17 D20','T19 D17','T1 T16 D20','T1 T18 D17','T1 T20 D14','T1 BULL D19','T2 T15 D20','T2 T17 D17'],
+        92:['T14 BULL','T18 D19','T20 D16','T1 T13 BULL','T1 T17 D19','T1 T19 D16','T2 T12 BULL','T2 T16 D19','T2 T18 D16'],
+        93:['T19 D18','T1 T18 D18','T1 T20 D15','T1 BULL D20','T2 T17 D18','T2 T19 D15','T3 T16 D18'],
+        94:['T18 D20','T20 D17','T1 T17 D20','T1 T19 D17','T2 T16 D20','T2 T18 D17','T2 T20 D14','T2 BULL D19'],
+        95:['T15 BULL','T19 D19','T1 T14 BULL','T1 T18 D19','T1 T20 D16','T2 T13 BULL','T2 T17 D19','T2 T19 D16'],
+        96:['T20 D18','T1 T19 D18','T2 T18 D18','T2 T20 D15','T2 BULL D20','T3 T17 D18','T3 T19 D15'],
+        97:['T19 D20','T1 T18 D20','T1 T20 D17','T2 T17 D20','T2 T19 D17','T3 T16 D20','T3 T18 D17'],
+        98:['T16 BULL','T20 D19','T1 T15 BULL','T1 T19 D19','T2 T14 BULL','T2 T18 D19','T2 T20 D16','T3 T13 BULL'],
+        99:['T1 T20 D18','T2 T19 D18','T3 T18 D18','T3 T20 D15','T3 BULL D20','T4 T17 D18'],
+        100:['T20 D20','BULL BULL','T1 T19 D20','T2 T18 D20','T2 T20 D17','T3 T17 D20','T3 T19 D17','T4 T16 D20'],
+        101:['T17 BULL','T1 T16 BULL','T1 T20 D19','T2 T15 BULL','T2 T19 D19','T3 T14 BULL','T3 T18 D19'],
+        102:['T2 T20 D18','T3 T19 D18','T4 T18 D18','T4 T20 D15','T4 BULL D20','T5 T17 D18'],
+        103:['T1 T20 D20','T1 BULL BULL','T2 T19 D20','T3 T18 D20','T3 T20 D17','T4 T17 D20'],
+        104:['T18 BULL','T1 T17 BULL','T2 T16 BULL','T2 T20 D19','T3 T15 BULL','T3 T19 D19','T4 T14 BULL'],
+        105:['T3 T20 D18','T4 T19 D18','T5 T18 D18','T5 T20 D15','T5 BULL D20','T6 T17 D18'],
+        106:['T2 T20 D20','T2 BULL BULL','T3 T19 D20','T4 T18 D20','T4 T20 D17','T5 T17 D20'],
+        107:['T19 BULL','T1 T18 BULL','T2 T17 BULL','T3 T16 BULL','T3 T20 D19','T4 T15 BULL','T4 T19 D19'],
+        108:['T4 T20 D18','T5 T19 D18','T6 T18 D18','T6 T20 D15','T6 BULL D20','T7 T17 D18'],
+        109:['T3 T20 D20','T3 BULL BULL','T4 T19 D20','T5 T18 D20','T5 T20 D17','T6 T17 D20'],
+        110:['T20 BULL','T1 T19 BULL','T2 T18 BULL','T3 T17 BULL','T4 T16 BULL','T4 T20 D19','T5 T15 BULL'],
+        111:['T5 T20 D18','T6 T19 D18','T7 T18 D18','T7 T20 D15','T7 BULL D20','T8 T17 D18'],
+        112:['T4 T20 D20','T4 BULL BULL','T5 T19 D20','T6 T18 D20','T6 T20 D17','T7 T17 D20'],
+        113:['T1 T20 BULL','T2 T19 BULL','T3 T18 BULL','T4 T17 BULL','T5 T16 BULL','T5 T20 D19'],
+        114:['T6 T20 D18','T7 T19 D18','T8 T18 D18','T8 T20 D15','T8 BULL D20','T9 T17 D18'],
+        115:['T5 T20 D20','T5 BULL BULL','T6 T19 D20','T7 T18 D20','T7 T20 D17','T8 T17 D20'],
+        116:['T2 T20 BULL','T3 T19 BULL','T4 T18 BULL','T5 T17 BULL','T6 T16 BULL','T6 T20 D19'],
+        117:['T7 T20 D18','T8 T19 D18','T9 T18 D18','T9 T20 D15','T9 BULL D20','T10 T17 D18'],
+        118:['T6 T20 D20','T6 BULL BULL','T7 T19 D20','T8 T18 D20','T8 T20 D17','T9 T17 D20'],
+        119:['T3 T20 BULL','T4 T19 BULL','T5 T18 BULL','T6 T17 BULL','T7 T16 BULL','T7 T20 D19'],
+        120:['T8 T20 D18','T9 T19 D18','T10 T18 D18','T10 T20 D15','T10 BULL D20','T11 T17 D18'],
+        121:['T7 T20 D20','T7 BULL BULL','T8 T19 D20','T9 T18 D20','T9 T20 D17','T10 T17 D20'],
+        122:['T4 T20 BULL','T5 T19 BULL','T6 T18 BULL','T7 T17 BULL','T8 T16 BULL','T8 T20 D19'],
+        123:['T9 T20 D18','T10 T19 D18','T11 T18 D18','T11 T20 D15','T11 BULL D20','T12 T17 D18'],
+        124:['T8 T20 D20','T8 BULL BULL','T9 T19 D20','T10 T18 D20','T10 T20 D17','T11 T17 D20'],
+        125:['T5 T20 BULL','T6 T19 BULL','T7 T18 BULL','T8 T17 BULL','T9 T16 BULL','T9 T20 D19'],
+        126:['T10 T20 D18','T11 T19 D18','T12 T18 D18','T12 T20 D15','T12 BULL D20','T13 T17 D18'],
+        127:['T9 T20 D20','T9 BULL BULL','T10 T19 D20','T11 T18 D20','T11 T20 D17','T12 T17 D20'],
+        128:['T6 T20 BULL','T7 T19 BULL','T8 T18 BULL','T9 T17 BULL','T10 T16 BULL','T10 T20 D19'],
+        129:['T11 T20 D18','T12 T19 D18','T13 T18 D18','T13 T20 D15','T13 BULL D20','T14 T17 D18'],
+        130:['T10 T20 D20','T10 BULL BULL','T11 T19 D20','T12 T18 D20','T12 T20 D17','T13 T17 D20'],
+        131:['T7 T20 BULL','T8 T19 BULL','T9 T18 BULL','T10 T17 BULL','T11 T16 BULL','T11 T20 D19'],
+        132:['T12 T20 D18','T13 T19 D18','T14 T18 D18','T14 T20 D15','T14 BULL D20','T15 T17 D18'],
+        133:['T11 T20 D20','T11 BULL BULL','T12 T19 D20','T13 T18 D20','T13 T20 D17','T14 T17 D20'],
+        134:['T8 T20 BULL','T9 T19 BULL','T10 T18 BULL','T11 T17 BULL','T12 T16 BULL','T12 T20 D19'],
+        135:['T13 T20 D18','T14 T19 D18','T15 T18 D18','T15 T20 D15','T15 BULL D20','T16 T17 D18'],
+        136:['T12 T20 D20','T12 BULL BULL','T13 T19 D20','T14 T18 D20','T14 T20 D17','T15 T17 D20'],
+        137:['T9 T20 BULL','T10 T19 BULL','T11 T18 BULL','T12 T17 BULL','T13 T16 BULL','T13 T20 D19'],
+        138:['T14 T20 D18','T15 T19 D18','T16 T18 D18','T16 T20 D15','T16 BULL D20','T17 T17 D18'],
+        139:['T13 T20 D20','T13 BULL BULL','T14 T19 D20','T15 T18 D20','T15 T20 D17','T16 T17 D20'],
+        140:['T10 T20 BULL','T11 T19 BULL','T12 T18 BULL','T13 T17 BULL','T14 T16 BULL','T14 T20 D19'],
+        141:['T15 T20 D18','T16 T19 D18','T17 T18 D18','T17 T20 D15','T17 BULL D20','T18 T17 D18'],
+        142:['T14 T20 D20','T14 BULL BULL','T15 T19 D20','T16 T18 D20','T16 T20 D17','T17 T17 D20'],
+        143:['T11 T20 BULL','T12 T19 BULL','T13 T18 BULL','T14 T17 BULL','T15 T16 BULL','T15 T20 D19'],
+        144:['T16 T20 D18','T17 T19 D18','T18 T18 D18','T18 T20 D15','T18 BULL D20','T19 T17 D18'],
+        145:['T15 T20 D20','T15 BULL BULL','T16 T19 D20','T17 T18 D20','T17 T20 D17','T18 T17 D20'],
+        146:['T12 T20 BULL','T13 T19 BULL','T14 T18 BULL','T15 T17 BULL','T16 T16 BULL','T16 T20 D19'],
+        147:['T17 T20 D18','T18 T19 D18','T19 T18 D18','T19 T20 D15','T19 BULL D20','T20 T17 D18'],
+        148:['T16 T20 D20','T16 BULL BULL','T17 T19 D20','T18 T18 D20','T18 T20 D17','T19 T17 D20'],
+        149:['T13 T20 BULL','T14 T19 BULL','T15 T18 BULL','T16 T17 BULL','T17 T16 BULL','T17 T20 D19'],
+        150:['T18 T20 D18','T19 T19 D18','T20 T18 D18','T20 T20 D15','T20 BULL D20','BULL T20 D20'],
+        151:['T17 T20 D20','T17 BULL BULL','T18 T19 D20','T19 T18 D20','T19 T20 D17','T20 T17 D20'],
+        152:['T14 T20 BULL','T15 T19 BULL','T16 T18 BULL','T17 T17 BULL','T18 T16 BULL','T18 T20 D19'],
+        153:['T19 T20 D18','T20 T19 D18'],
+        154:['T18 T20 D20','T18 BULL BULL','T19 T19 D20','T20 T18 D20','T20 T20 D17','BULL T18 BULL'],
+        155:['T15 T20 BULL','T16 T19 BULL','T17 T18 BULL','T18 T17 BULL','T19 T16 BULL','T19 T20 D19'],
+        156:['T20 T20 D18'],
+        157:['T19 T20 D20','T19 BULL BULL','T20 T19 D20','BULL T19 BULL'],
+        158:['T16 T20 BULL','T17 T19 BULL','T18 T18 BULL','T19 T17 BULL','T20 T16 BULL','T20 T20 D19'],
+        160:['T20 T20 D20','T20 BULL BULL','BULL T20 BULL'],
+        161:['T17 T20 BULL','T18 T19 BULL','T19 T18 BULL','T20 T17 BULL'],
+        164:['T18 T20 BULL','T19 T19 BULL','T20 T18 BULL'],
+        167:['T19 T20 BULL','T20 T19 BULL'],
+        170:['T20 T20 BULL']
     };
 
     function getCheckouts(score) {
@@ -259,24 +449,35 @@
         return CHECKOUT_TABLE[score] || null;
     }
 
-    function renderCheckout(score) {
-        const combos = getCheckouts(score);
-        if (!combos) return '';
-        // Parse combo string into chips
-        function chipify(str) {
-            return str.split(' ').map(part => {
-                if (part === '=') return `<span style="opacity:0.5">/</span>`;
-                const cls = part.startsWith('T') ? 'tpl' : (part.startsWith('D') ? 'dbl' : (part.includes('BULL') ? 'bull' : ''));
-                return `<span class="dart-chip ${cls}">${part}</span>`;
-            }).join('');
-        }
-        return `<div class="checkout-box">
-            <div class="checkout-title">🎯 Checkout possible</div>
-            ${combos.map(c => `<div class="checkout-combo">${chipify(c)}</div>`).join('')}
-        </div>`;
+    function renderCheckout(score, dartsLeft) {
+    const combos = getCheckouts(score);
+    if (!combos) return '';
+
+    function dartCount(combo) {
+        return combo.split(' ').filter(p => p !== '=').length;
     }
 
-    function addPlayer(name) {
+    function chipify(str) {
+        return str.split(' ').map(part => {
+            if (part === '=') return '';
+            const cls = part.startsWith('T') ? 'tpl' : (part.startsWith('D') ? 'dbl' : (part.includes('BULL') ? 'bull' : ''));
+            return `<span class="dart-chip ${cls}">${part}</span>`;
+        }).filter(Boolean).join('');
+    }
+
+    // Filtrer EXACTEMENT sur le nombre de fléchettes restantes, max 3 combos
+    console.log('[CHECKOUT] score='+score+' dartsLeft='+dartsLeft+' throws='+S.throws.length+' combos='+JSON.stringify(combos.slice(0,3)));
+    const darts = Math.max(1, dartsLeft);
+    const filtered = combos.filter(c => dartCount(c) <= darts).slice(0, 3);
+    if (filtered.length === 0) return '';
+
+    const label = darts === 1 ? '1 flèche restante' : `${darts} flèches restantes`;
+
+    return `<div class="checkout-box">
+        <div class="checkout-title">🎯 CHECKOUT — ${label}</div>
+        ${filtered.map(c => `<div class="checkout-combo">${chipify(c)}</div>`).join('')}
+    </div>`;
+}function addPlayer(name) {
         if (!name) return;
         if (!PLAYER_DB.includes(name)) { PLAYER_DB.push(name); localStorage.setItem('darts_db', JSON.stringify(PLAYER_DB)); }
         if (S.players.length < 8) { S.players.push({ name }); localStorage.setItem('darts_current', JSON.stringify(S.players)); render(); }
@@ -294,15 +495,18 @@
         if (S.players.length < 1) return alert("Ajoutez des joueurs !");
         if (isNewMatch) { S.players.forEach(p => S.wins[p.name] = 0); S.winnersHistory = []; S.currentManche = 1; }
         S.cp = 0; S.throws = []; S.round = 1; S.winner = null; S.targetValue = 0; S.bust = false;
-        S.followTarget = null; S.followSetter = -1; S.followPhase = 'set';
+        S.followTargets = generateRandomContract().map(v => ({val:v, m:1})); S.followPhase = 'set'; S.followSetter = 0; S.mancheCount = 0;
+        if (S.game === 'chateau') S.chateauMaxTours = parseInt(S.variant) || 10;
+        if (S.game === 'shanghai') S.shanghaiMaxTours = parseInt(S.variant) || 7;
+        if (S.game === 'batard') S.batardMaxTours = parseInt(S.variant) || 10;
         
         S.players.forEach(p => {
             if (S.game === 'x01') S.scores[p.name] = { score: parseInt(S.variant) };
             else if (S.game === 'cricket') S.scores[p.name] = { points: 0, 20:0, 19:0, 18:0, 17:0, 16:0, 15:0, 25:0 };
-            else if (S.game === 'capital') S.scores[p.name] = { points: 40 };
+            else if (S.game === 'capital') S.scores[p.name] = { points: S.variant === 'Départ 0' ? 0 : 40 };
             else if (S.game === 'chateau') S.scores[p.name] = { bricks: 0, target: null };
             else if (S.game === 'killer') S.scores[p.name] = { lives: 0, target: null, isKiller: false, out: false, maxLives: parseInt(S.variant) };
-            else if (S.game === 'follow') S.scores[p.name] = { lives: 3, out: false };
+            else if (S.game === 'follow') S.scores[p.name] = { points:0, rounds:0 };
             else S.scores[p.name] = { points: 0 };
         });
         
@@ -314,6 +518,11 @@
 
     function handleInput(val, isMiss = false) {
         if (S.winner || S.bust) return;
+        // Interdit : Triple Bull (val=25 avec multiplicateur 3)
+        if (val === 25 && S.multiplier === 3) {
+            alert("Le Triple Bull n'existe pas sur une cible de fléchettes !");
+            return;
+        }
         if (S.setupPhase) {
             const p = S.players[S.setupIndex].name;
             const taken = S.players.map(pl => S.scores[pl.name].target);
@@ -364,7 +573,10 @@
             else if (target === 200) hit = (m === 3);
             else hit = (val === target);
 
-            if (hit) S.scores[p].tempRoundPoints = (S.scores[p].tempRoundPoints || 0) + total;
+            if (hit) {
+    S.scores[p].tempRoundPoints = (S.scores[p].tempRoundPoints || 0) + total;
+    S.scores[p].points += total;
+}
         }
         else if (S.game === 'chateau' && !isMiss) {
             if (val === S.scores[p].target) S.scores[p].bricks = Math.min(15, S.scores[p].bricks + m);
@@ -373,74 +585,68 @@
         else if (S.game === 'killer' && !isMiss) {
             let s = S.scores[p];
             if (val === s.target && !s.isKiller) {
+                // Phase initiation : gagner des vies sur sa propre cible
                 s.lives = Math.min(s.maxLives, s.lives + m);
                 if (s.lives >= s.maxLives) s.isKiller = true;
             } else if (s.isKiller) {
-                S.players.forEach(o => {
-                    if (o.name !== p && S.scores[o.name].target === val) {
-                        S.scores[o.name].lives = Math.max(0, S.scores[o.name].lives - m);
-                        if (S.scores[o.name].lives <= 0) S.scores[o.name].out = true;
-                    }
-                });
+                if (val === s.target) {
+                    // Le killer touche sa propre cible : perd le statut killer ET une vie
+                    s.isKiller = false;
+                    s.lives = Math.max(0, s.lives - 1);
+                } else {
+                    // Le killer vise les adversaires
+                    S.players.forEach(o => {
+                        if (o.name !== p && S.scores[o.name].target === val) {
+                            S.scores[o.name].lives = Math.max(0, S.scores[o.name].lives - m);
+                            if (S.scores[o.name].lives < S.scores[o.name].maxLives) S.scores[o.name].isKiller = false;
+                            if (S.scores[o.name].lives <= 0) S.scores[o.name].out = true;
+                        }
+                    });
+                }
             }
         }
         else if (S.game === 'follow') {
-            const target = S.followTarget;
-            if (S.followPhase === 'set') {
-                // Premier lancer : définit la cible (val + multiplicateur)
-                if (isMiss) {
-                    // hors cible sur le lancer de définition : on repose une cible nulle
-                    S.followTarget = null;
-                } else {
-                    S.followTarget = { val: val, m: m };
-                    S.followSetter = S.cp;
-                    S.followPhase = 'follow';
-                }
-                S.throws.push({v: val, m: m, isMiss: isMiss});
-                S.multiplier = 1;
-                nextTurn();
-                return;
-            } else if (S.followPhase === 'follow') {
-                const hit = !isMiss && val === target.val && m === target.m;
-                if (!hit) {
-                    // pas encore matché → on enregistre le lancer
-                    S.throws.push({v: val, m: m, isMiss: isMiss});
-                    S.multiplier = 1;
-                    if (S.throws.length >= 3) {
-                        // raté avec les 3 fléchettes → perd une vie
-                        S.scores[p].lives--;
-                        if (S.scores[p].lives <= 0) S.scores[p].out = true;
-                        nextTurn();
-                    } else {
-                        checkWinner(); render();
+            if (!S.followTargets || S.followTargets.length !== 3) {
+                S.followTargets = generateRandomContract().map(v => ({val:v,m:1}));
+            }
+
+            // Règle : si le chiffre touché figure parmi les 3 cibles (au moins une fois), on score.
+            // Toutes les fléchettes sur ce chiffre scorent, peu importe le multiplicateur.
+            const cibleVals = S.followTargets.map(ft => typeof ft === 'object' ? ft.val : ft);
+            const hit = !isMiss && cibleVals.includes(val);
+            if (hit) { S.scores[p].points += total; }
+
+            S.throws.push({v: val, m: m, isMiss: isMiss, hit: hit, targetIndex: cibleVals.indexOf(val)});
+            S.multiplier = 1;
+
+            if(S.throws.length >= 3){
+                // Les nouvelles cibles = les 3 chiffres réellement lancés, doublons autorisés
+                // Si miss → chiffre aléatoire pour compléter
+                const nextTargets = S.throws.map(d => {
+                    if (d.isMiss || d.v === 0) {
+                        return Math.floor(Math.random() * 20) + 1;
                     }
-                    return;
-                } else {
-                    // Matché ! On passe en phase 'define' : les fléchettes restantes définissent une nouvelle cible
-                    S.throws.push({v: val, m: m, isMiss: isMiss});
-                    S.multiplier = 1;
-                    S.followPhase = 'define';
-                    // Le joueur peut s'arrêter ou continuer — on render pour afficher le bouton "Rester"
-                    checkWinner(); render();
+                    return d.v;
+                });
+
+                S.followTargets = nextTargets.map(v => ({val:v, m:1}));
+
+                if (S.cp === S.players.length - 1) {
+                    S.round++;
+                }
+
+                if (S.round > 10) {
+                    finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
                     return;
                 }
-            } else if (S.followPhase === 'define') {
-                // Le joueur définit une nouvelle cible avec les fléchettes restantes
-                // La dernière fléchette lancée devient la cible
-                // Si hors cible → perd une vie, cible inchangée
-                S.throws.push({v: val, m: m, isMiss: isMiss});
-                S.multiplier = 1;
-                if (isMiss) {
-                    S.scores[p].lives--;
-                    if (S.scores[p].lives <= 0) S.scores[p].out = true;
-                    // cible inchangée
-                } else {
-                    S.followTarget = { val: val, m: m };
-                    S.followSetter = S.cp;
-                }
+
                 nextTurn();
                 return;
             }
+
+            checkWinner();
+            render();
+            return;
         }
         else if (S.game === 'batard') {
             if (isMiss) S.scores[p].points -= 10;
@@ -467,7 +673,7 @@
         if (S.game !== 'follow' && S.throws.length === (S.game==='follow'?1:3)) {
             if (S.game === 'capital') {
                 if (!(S.scores[p].tempRoundPoints > 0)) S.scores[p].points = Math.floor(S.scores[p].points / 2);
-                else S.scores[p].points += S.scores[p].tempRoundPoints;
+                else S.scores[p].points += 0;
                 delete S.scores[p].tempRoundPoints;
             }
             nextTurn();
@@ -490,7 +696,7 @@
         S.throws = [];
         do { S.cp = (S.cp + 1) % S.players.length; if (S.cp === 0) S.round++; } 
         while (S.scores[S.players[S.cp].name].out && S.players.filter(pl => !S.scores[pl.name].out).length > 1);
-        if (S.game === 'follow') S.followPhase = (S.followTarget ? 'follow' : 'set');
+        if (S.game === 'follow') S.followPhase = 'follow';
         checkWinner(); render();
     }
 
@@ -507,10 +713,20 @@
             });
         }
         else if (S.game === 'capital' && S.round > 9) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
-        else if (S.game === 'chateau') { S.players.forEach(p => { if(S.scores[p.name].bricks >= 15) finalizeManche(p.name); }); }
-        else if ((S.game === 'killer' || S.game === 'follow') && active.length === 1) finalizeManche(active[0].name);
-        else if (S.game === 'batard' && S.round > 10) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
-        else if (S.game === 'shanghai' && S.round > 7) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
+        else if (S.game === 'chateau') {
+            // Victoire immédiate si un joueur atteint 15 briques
+            const at15 = S.players.find(p => S.scores[p.name].bricks >= 15);
+            if (at15) { finalizeManche(at15.name); return; }
+            // Sinon fin des tours : le plus de briques gagne
+            if (S.round > S.chateauMaxTours) {
+                const chWinner = S.players.reduce((a,b) => S.scores[a.name].bricks >= S.scores[b.name].bricks ? a : b);
+                finalizeManche(chWinner.name);
+            }
+        }
+        else if (S.game === 'killer' && active.length === 1) finalizeManche(active[0].name);
+        else if (S.game === 'follow' && S.round > 10) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
+        else if (S.game === 'batard' && S.round > S.batardMaxTours) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
+        else if (S.game === 'shanghai' && S.round > S.shanghaiMaxTours) finalizeManche(S.players.reduce((a,b) => S.scores[a.name].points > S.scores[b.name].points ? a : b).name);
     }
 
     function finalizeManche(pName) {
@@ -536,9 +752,7 @@
     function renderSetup() {
         let dbOpt = PLAYER_DB.filter(n => !S.players.some(p => p.name === n));
         return `
-            <div class="header"><h1>🎯 Les Pointures des fléchettes</h1>
-            <p>Lucko's Darts Team</p>
-            </p>© Cyrille de Chanteloup</div>
+            <div class="header"><h1>🎯 Les Pointures des fléchettes</h1><p>Lucko's Darts Team</p></p>© Cyrille de Chanteloup</div>
             <div class="card">
                 <label>Mode de jeu :</label>
                 <div class="game-grid">
@@ -565,7 +779,16 @@
     }
 
     function renderGame() {
-        if (S.winner) return `<div class="card" style="text-align:center; padding:40px"><h1>🏆 VAINQUEUR</h1><h2 class="p-color-0">${S.winner}</h2><button class="btn btn-primary" onclick="location.reload()">RETOUR ACCUEIL</button></div>`;
+        if (S.winner) return `
+<div class="winner-overlay">
+
+<div class="winner-box">
+<h1>🏆</h1>
+<h2 style="font-size:3rem;color:#fff">${S.winner}</h2>
+<p style="font-size:1.5rem;color:gold">VAINQUEUR</p>
+<button class="btn btn-primary" onclick="location.reload()">Retour accueil</button>
+</div>
+</div>`;
         if (S.setupPhase) {
             const p = S.players[S.setupIndex].name;
             return `<div class="card" style="text-align:center"><h2 class="p-color-${S.setupIndex}">${p}</h2><p>Choisis ton numéro cible :</p><div class="numpad">${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}</div></div>`;
@@ -579,43 +802,44 @@
             target = targets[S.round - 1];
         }
         if (S.game === 'follow') {
-            if (!S.followTarget) {
-                target = "1er lancer →";
-            } else {
-                const ft = S.followTarget;
-                const mLabel = ft.m === 2 ? 'D' : (ft.m === 3 ? 'T' : (ft.val === 25 ? '' : 'S'));
-                target = mLabel + (ft.val === 25 ? 'BULL' : ft.val);
-            }
+            target = ""; // affiché directement sous le nom via renderFollowChips
         }
         if (S.game === 'batard') target = S.throws.length > 0 ? "Réf: " + (S.throws[0].isMiss ? -10 : S.throws[0].v * S.throws[0].m) : "Lancer Ref.";
         if (S.game === 'killer') target = sc.target ? "Cible: " + sc.target : "?";
 
         return `
-            <div class="manche-info">Manche ${S.currentManche} | Tour ${S.round} ${S.game==='batard'?'/ 10':(S.game==='shanghai'?'/ 7':(S.game==='capital'?'/ 9':''))}</div>
+            <div class="manche-info">Manche ${S.currentManche} | Tour ${S.round} ${S.game==='batard'?'/ '+S.batardMaxTours:(S.game==='shanghai'?'/ '+S.shanghaiMaxTours:(S.game==='capital'?'/ 9':(S.game==='follow'?'/ 10':(S.game==='chateau'?'/ '+S.chateauMaxTours:''))))}</div>
             <div class="current-p-box p-color-${S.cp}">
-                <h2 style="color:var(--p-col)">${p.name} ${sc.isKiller?'💀':''}</h2>
-                <div style="font-size:3rem; color:var(--c-accent); font-weight:800">${S.game==='chateau'?(sc.target ? 'Cible: '+sc.target : 'Choix...'):(S.game==='follow'?'❤️ '+sc.lives:(S.game==='killer'?'❤️ '+sc.lives:(S.game==='x01'?sc.score:sc.points)))}</div>
-                ${S.game==='x01' && sc.score <= 170 ? renderCheckout(sc.score) : ''}
-                ${S.game==='follow' ? `<div style="font-size:0.9rem; color:rgba(255,255,255,0.6)">${S.followPhase==='set'?'Lance une fléchette pour définir la cible':(S.followPhase==='define'?'🎯 Matché ! Lance pour poser une nouvelle cible':(S.cp===S.followSetter?'Tu as posé cette cible — tu peux PASSER':'Reproduis la cible en 3 fléchettes'))}</div>` : ''}
-                <div style="font-size:1.5rem">${S.throws.map(t=>t.isMiss?'❌':'📍').join(' ')}</div>
+                <div class="turn-badge">🎮 ${GAMES[S.game].name}</div><div class="turn-badge">🎯 À toi de jouer !</div>
+                <h2 style="color:var(--p-col); font-size:1.6rem; text-shadow:0 0 12px var(--p-col)">
+${p.name} ${sc.isKiller?'<span style="font-size:3em;display:inline-block">💀</span>':''}
+${target ? `<span class="target-inline">${target}</span>` : ''}
+</h2>
+                <div style="font-size:3rem; color:var(--c-accent); font-weight:800">${S.game==='chateau'?(sc.target ? 'Cible: '+sc.target : 'Choix...'):(S.game==='follow'?sc.points:(S.game==='killer'?'❤️ '+sc.lives:(S.game==='x01'?sc.score:sc.points)))}</div>
+                ${S.game==='x01' && S.throws.length < 3 ? renderCheckout(sc.score, 3-S.throws.length) : ''}
+                ${S.game==='follow' ? renderFollowChips() : ''}
+                <div class="dart-throw">${S.throws.map(t => t.isMiss
+    ? '<span style="font-size:1.6rem">❌</span>'
+    : '<svg width="28" height="28" viewBox="0 0 28 28" style="filter:drop-shadow(0 0 4px var(--p-col))"><g transform="rotate(-45,14,14)"><rect x="12.5" y="4" width="3" height="13" rx="1" fill="var(--p-col)"/><polygon points="14,1 11,6 17,6" fill="white"/><rect x="12.5" y="17" width="3" height="5" rx="0.5" fill="#aaa"/><polygon points="11,22 14,26 17,22" fill="#888"/><rect x="10" y="19" width="2" height="3" rx="0.5" fill="var(--p-col)" transform="rotate(45,11,20.5)"/><rect x="16" y="19" width="2" height="3" rx="0.5" fill="var(--p-col)" transform="rotate(-45,17,20.5)"/></g></svg>'
+  ).join('')}</div>
             </div>
             <div class="card">
                 ${target ? `<div class="target-badge"><span class="target-val" style="font-size:0.8rem">${target}</span></div>` : ''}
                 ${S.game==='cricket' ? renderCricketTable() : renderSimpleTable()}
             </div>
             <div class="mult-row">
-                <button class="m-btn ${S.multiplier===2?'active':''}" onclick="S.multiplier=2; render()">DOUBLE</button>
-                <button class="m-btn ${S.multiplier===3?'active':''}" onclick="S.multiplier=3; render()">TRIPLE</button>
+                <button class="m-btn ${S.multiplier===2?'active-double':''}" onclick="S.multiplier=(S.multiplier===2?1:2); if(S.multiplier===2){S.multiplier=2;} render()">DOUBLE</button>
+                <button class="m-btn ${S.multiplier===3?'active-triple':''}" onclick="S.multiplier=(S.multiplier===3?1:3); if(S.multiplier===3){S.multiplier=3;} render()">TRIPLE</button>
             </div>
-            ${S.game==='follow' && S.followPhase==='follow' && S.cp===S.followSetter ? `<div class="mult-row"><button class="m-btn" style="background:var(--c-variant); border-color:var(--c-variant); width:100%" onclick="followPass()">⏭ PASSER (garder ma cible)</button></div>` : ''}
-            ${S.game==='follow' && S.followPhase==='define' ? `<div class="mult-row"><button class="m-btn" style="background:#27ae60; border-color:#27ae60; width:100%" onclick="followStay()">✅ RESTER sur cette cible</button></div>` : ''}
-            <div class="numpad">
+            
+            <div class="numpad${S.multiplier===2?' mult-2':(S.multiplier===3?' mult-3':'')}">
                 ${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}
-                <button class="num-btn" style="background:var(--c-primary)" onclick="handleInput(25)">BULL</button>
-                <button class="num-btn" onclick="handleInput(0)">ZÉRO</button>
-                <button class="num-btn" style="background:black; color:white; grid-column: span 2;" onclick="handleInput(0, true)">❌ HORS CIBLE</button>
-                <button class="num-btn" style="grid-column:span 2; background:#555" onclick="undo()">↩ ANNULER</button>
-                <button class="num-btn" style="background:#e94560; font-size:0.7rem" onclick="endGame()">FIN PARTIE</button>
+                <button class="num-btn special-btn" style="background:var(--c-primary)" onclick="handleInput(25)">BULL</button>
+                <button class="num-btn special-btn" onclick="handleInput(0)">ZÉRO</button>
+                <button class="num-btn special-btn" style="background:black; color:white; grid-column: span 2;" onclick="handleInput(0, true)">❌ HORS CIBLE</button>
+                <button class="num-btn special-btn" style="grid-column:span 3; background:#1a237e; color:#fff; font-size:0.72rem; border:2px solid #e53935;" onclick="rienBayern()">⚽ Rien (Bayern)</button>
+                <button class="num-btn special-btn" style="grid-column:span 2; background:#555" onclick="undo()">↩ ANNULER</button>
+                <button class="num-btn special-btn" style="background:#e94560; font-size:0.7rem" onclick="endGame()">FIN PARTIE</button>
             </div>
             ${S.bust ? `<div class="bust-overlay"><div class="bust-text">BUST !</div></div>` : ''}
         `;
@@ -631,29 +855,103 @@
     }
 
     function renderSimpleTable() {
-        return `<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px">
+        const n = S.players.length;
+        let brickStyle = '';
+        if (S.game === 'chateau') {
+            const bw = n <= 2 ? 28 : n <= 3 ? 22 : n <= 4 ? 17 : n <= 5 ? 14 : n <= 6 ? 11 : 9;
+            const bh = Math.round(bw * 0.65);
+            const gap = n <= 4 ? 3 : 2;
+            brickStyle = `style="--brick-w:${bw}px; --brick-h:${bh}px; --brick-gap:${gap}px"`;
+        }
+        return `<div style="display:grid; grid-template-columns: repeat(${n}, 1fr); gap:6px">
         ${S.players.map((pObj, i) => {
             const sco = S.scores[pObj.name];
-            return `<div class="p-color-${i}" style="text-align:center; padding:10px; border-radius:15px; border:${S.cp===i?'2px solid var(--p-col)':'1px solid #444'}; opacity:${sco.out?0.3:1}">
-            <div style="font-size:0.8rem; color:var(--p-col); font-weight:bold">${pObj.name}${sco.isKiller ? ' 💀' : ''}</div>
-            ${S.game === 'chateau' ? renderPyramid(pObj.name, i) : `<div style="font-weight:bold; font-size:1.2rem">${S.game==='x01'?sco.score:(S.game==='killer'?(sco.target ? '🎯 '+sco.target : '?'):(S.game==='follow'?'❤️ '+sco.lives:sco.points))}</div>`}
+            return `<div class="p-color-${i} ${S.cp===i?'active-player-card':''}" ${brickStyle} style="text-align:center; padding:${S.game==='chateau'?'6px':'10px'}; border-radius:15px; border:${S.cp===i?'2px solid var(--p-col)':'1px solid #444'}; opacity:${sco.out?0.3:1}">
+            <div style="font-size:0.75rem; color:var(--p-col); font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${pObj.name}${sco.isKiller ? ' <span style="font-size:3em">💀</span>' : ''}</div>
+            ${S.game === 'chateau' ? renderPyramid(pObj.name, i) : `<div style="font-weight:bold; font-size:1.2rem">${S.game==='x01'?sco.score:(S.game==='killer'?(sco.target ? '🎯 '+sco.target : '?'):(S.game==='follow'?sco.points:sco.points))}</div>`}
             ${S.game==='killer'?`<div>❤️ ${sco.lives}</div>`:''}</div>`
         }).join('')}</div>`;
     }
 
+    function rienBayern() {
+        pushHistory();
+        nextTurn();
+    }
+
+    function renderFollowChips() {
+        var targets = S.followTargets || [];
+        var html = '<div style="margin:8px 0 4px">';
+        html += '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🎯 Cibles à viser</div>';
+        html += '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">';
+        // Valeurs scorées parmi les lancers déjà effectués
+        var scoredVals = S.throws.filter(t => t.hit).map(t => t.v);
+        var dartCount = S.throws.length;
+        targets.forEach(function(ft) {
+            var v = typeof ft === 'object' ? ft.val : ft;
+            var label = v === 25 ? 'BULL' : String(v);
+            var isHit = scoredVals.includes(v);
+            var allDone = dartCount === 3;
+            var col = isHit ? '#00ff88' : (allDone ? '#ff4444' : 'var(--c-accent)');
+            var bg = isHit ? 'rgba(0,255,136,0.15)' : (allDone ? 'rgba(255,68,68,0.15)' : 'rgba(249,211,66,0.15)');
+            var icon = isHit ? '✅ ' : (allDone ? '❌ ' : '');
+            html += '<div style="min-width:58px;padding:8px 12px;border-radius:12px;border:2px solid '+col+';background:'+bg+';text-align:center;font-weight:900;font-size:1.3rem;color:'+col+'">'+icon+label+'</div>';
+        });
+        html += '</div></div>';
+        return html;
+    }
+
     function render() { document.getElementById('app').innerHTML = (S.screen === 'setup') ? renderSetup() : renderGame(); }
     render();
-</script>
 
-<script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('Service Worker enregistré', reg))
-            .catch(err => console.log('Erreur SW', err));
-    });
+// Fonction pour générer un contrat aléatoire de 3 chiffres
+function generateRandomContract() {
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25];
+    // Doublons autorisés : chaque fléchette tire indépendamment
+    return [0,1,2].map(() => numbers[Math.floor(Math.random() * numbers.length)]);
+}
+
+// Fonction pour récupérer les chiffres touchés
+function getHitNumbers() {
+    const hitNumbers = [];
+    if (S.throws) {
+        S.throws.forEach(dart => {
+            const num = dart.value;
+            if (!hitNumbers.includes(num)) {
+                hitNumbers.push(num);
+            }
+        });
+    }
+    return hitNumbers.slice(0, 3);
+}
+
+// Fonction pour déterminer le vainqueur après 10 manches
+function finalizeGame() {
+    let maxPoints = -1;
+    let winner = null;
+    
+    if (S.players) {
+        S.players.forEach(player => {
+            if (S.scores && S.scores[player.name] && S.scores[player.name].points > maxPoints) {
+                maxPoints = S.scores[player.name].points;
+                winner = player.name;
+            }
+        });
+    }
+    
+    if (winner) {
+        alert(`Le vainqueur est ${winner} avec ${maxPoints} points !`);
+    }
 }
 </script>
 
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW enregistré'))
+                    .catch(err => console.log('Erreur SW', err));
+            });
+        }
+    </script>
 </body>
 </html>
