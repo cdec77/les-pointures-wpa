@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🎯 Les Pointures des fléchettes</title>
+    <title>🎯 Les Pointures des fléchette</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e94560">
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
@@ -667,7 +667,11 @@ box-shadow:0 0 12px #ff3131 !important;
 
         if (S.game === 'shanghai') {
             const hits = S.throws.filter(t => !t.isMiss && t.v === S.round);
-            if (hits.some(t => t.m === 1) && hits.some(t => t.m === 2) && hits.some(t => t.m === 3)) { finalizeManche(p); return; }
+            if (hits.some(t => t.m === 1) && hits.some(t => t.m === 2) && hits.some(t => t.m === 3)) {
+                // 🎯 SHANGHAI !
+                animShanghai(() => { finalizeManche(p); });
+                return;
+            }
         }
 
         if (S.game !== 'follow' && S.throws.length === (S.game==='follow'?1:3)) {
@@ -901,6 +905,28 @@ ${target ? `<span class="target-inline">${target}</span>` : ''}
     }
 
     function render() { document.getElementById('app').innerHTML = (S.screen === 'setup') ? renderSetup() : renderGame(); }
+
+// ── Parole utilitaire ────────────────────────────────────────────────
+function speak(text, pitch, rate) {
+    try {
+        speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'fr-FR';
+        utt.pitch = pitch !== undefined ? pitch : 1.1;
+        utt.rate  = rate  !== undefined ? rate  : 0.9;
+        utt.volume = 1;
+        const voices = speechSynthesis.getVoices();
+        const fr = voices.find(v => v.lang.startsWith('fr'));
+        if (fr) utt.voice = fr;
+        setTimeout(() => speechSynthesis.speak(utt), 80);
+    } catch(e) {}
+}
+
+// Précharger les voix dès que possible (nécessaire sur iOS/Android)
+if (window.speechSynthesis) {
+    speechSynthesis.getVoices();
+    speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices());
+}
     render();
 
 // Fonction pour générer un contrat aléatoire de 3 chiffres
@@ -942,6 +968,269 @@ function finalizeGame() {
         alert(`Le vainqueur est ${winner} avec ${maxPoints} points !`);
     }
 }
+
+// ═══════════════════════════════════════════════════════════════
+// 🔊 SONS + ANIMATIONS — injectés dans le même scope
+// ═══════════════════════════════════════════════════════════════
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let _actx = null;
+function getACtx() {
+    if (!_actx) _actx = new AudioCtx();
+    if (_actx.state === 'suspended') _actx.resume();
+    return _actx;
+}
+
+function playTone(opts) {
+    try {
+        const ctx = getACtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = opts.type || 'sine';
+        const t = ctx.currentTime;
+        osc.frequency.setValueAtTime(opts.freq || 440, t);
+        if (opts.slide) osc.frequency.linearRampToValueAtTime(opts.freq2 || 880, t + (opts.duration || 0.3));
+        gain.gain.setValueAtTime(opts.volume || 0.4, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + (opts.duration || 0.3));
+        osc.start(t); osc.stop(t + (opts.duration || 0.3));
+    } catch(e) {}
+}
+
+function playNoise(duration, volume) {
+    try {
+        const ctx = getACtx();
+        const bufSize = Math.floor(ctx.sampleRate * duration);
+        const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass'; filter.frequency.value = 800;
+        src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+        gain.gain.setValueAtTime(volume || 0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        src.start(); src.stop(ctx.currentTime + duration);
+    } catch(e) {}
+}
+
+// 🎯 SHANGHAI — animation explosive + voix synthétique
+function animShanghai(callback) {
+    // Son : voix synthétique "Shanghai !"
+    try {
+        const ctx = getACtx();
+        // Fanfare percutante
+        const notes = [440, 554, 659, 880, 1108];
+        notes.forEach((f, i) => {
+            setTimeout(() => {
+                playTone({ type: 'square', freq: f, duration: 0.15, volume: 0.5 });
+                playTone({ type: 'sawtooth', freq: f * 0.5, duration: 0.15, volume: 0.2 });
+            }, i * 80);
+        });
+        setTimeout(() => {
+            playTone({ type: 'sine', freq: 1108, duration: 0.5, volume: 0.6 });
+            playNoise(0.2, 0.3);
+        }, 420);
+    } catch(e) {}
+
+    // Voix "Chang-Haï !" via utilitaire
+    setTimeout(() => speak('Chang-Haï !', 1.4, 0.85), 300);
+
+    // Animation visuelle explosive
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position:fixed;inset:0;z-index:900;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        background:radial-gradient(circle at center, rgba(249,211,66,0.25) 0%, rgba(0,0,0,0.88) 70%);
+        animation:shanghaiIn 0.3s cubic-bezier(.175,.885,.32,1.275) forwards;
+        pointer-events:none;
+    `;
+
+    // Texte SHANGHAI
+    const txt = document.createElement('div');
+    txt.textContent = '🎯 SHANGHAI !';
+    txt.style.cssText = `
+        font-family:'Luckiest Guy',cursive;
+        font-size:clamp(3rem,15vw,6rem);
+        color:#f9d342;
+        text-shadow:0 0 40px #f9d342, 0 0 80px #f9d342, 4px 4px 0 #e94560;
+        animation:shanghaiPulse 0.4s ease infinite alternate;
+        text-align:center;
+        padding:0 20px;
+    `;
+
+    // Sous-titre
+    const sub = document.createElement('div');
+    sub.textContent = 'Simple · Double · Triple !';
+    sub.style.cssText = `
+        font-size:clamp(1rem,4vw,1.6rem);
+        color:white;
+        margin-top:16px;
+        letter-spacing:3px;
+        text-transform:uppercase;
+        opacity:0.85;
+    `;
+
+    overlay.appendChild(txt);
+    overlay.appendChild(sub);
+    document.body.appendChild(overlay);
+
+    // Confettis explosifs
+    launchConfetti();
+
+    // Retirer après 2.8s puis callback
+    setTimeout(() => {
+        overlay.style.animation = 'shanghaiOut 0.4s ease forwards';
+        setTimeout(() => {
+            overlay.remove();
+            if (callback) callback();
+        }, 400);
+    }, 2800);
+}
+
+function soundDart()      { playNoise(0.04, 0.25); playTone({ type:'triangle', freq:320, freq2:180, slide:true, duration:0.08, volume:0.15 }); }
+function soundHit()       { playTone({ type:'sine', freq:660, duration:0.12, volume:0.3 }); setTimeout(()=>playTone({ type:'sine', freq:880, duration:0.1, volume:0.25 }), 80); }
+function soundMiss()      { playTone({ type:'sawtooth', freq:220, freq2:100, slide:true, duration:0.18, volume:0.2 }); }
+function soundUndo()      { playTone({ type:'sine', freq:440, freq2:330, slide:true, duration:0.15, volume:0.2 }); }
+function soundKillerOut() { playTone({ type:'sawtooth', freq:300, freq2:50, slide:true, duration:0.5, volume:0.4 }); setTimeout(()=>playNoise(0.2,0.3),200); }
+function soundMancheWin() {
+    [523,659,784,1047].forEach((f,i) => setTimeout(()=>playTone({ type:'sine', freq:f, duration:0.18, volume:0.4 }), i*120));
+}
+function soundMatchWin() {
+    [523,659,784,659,784,1047,784,1047,1319].forEach((f,i) => setTimeout(()=>{ 
+        playTone({ type:'sine', freq:f, duration:0.2, volume:0.45 });
+        playTone({ type:'triangle', freq:f*0.5, duration:0.2, volume:0.2 });
+    }, i*140));
+}
+function soundBust() {
+    playTone({ type:'square', freq:400, freq2:60, slide:true, duration:0.4, volume:0.5 });
+    setTimeout(()=>playNoise(0.3,0.4), 100);
+    setTimeout(()=>playTone({ type:'sawtooth', freq:180, freq2:80, slide:true, duration:0.3, volume:0.3 }), 200);
+}
+
+// ── Animations ───────────────────────────────────────────────────────
+(function injectKeyframes() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-10px) rotate(-1deg)}30%{transform:translateX(10px) rotate(1deg)}45%{transform:translateX(-8px)}60%{transform:translateX(8px)}75%{transform:translateX(-4px)}90%{transform:translateX(4px)}}
+        @keyframes floatUp{0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}60%{opacity:1;transform:translateX(-50%) translateY(-60px) scale(1.3)}100%{opacity:0;transform:translateX(-50%) translateY(-110px) scale(0.8)}}
+        @keyframes bustFlash{0%{opacity:1}100%{opacity:0}}
+        @keyframes shanghaiIn{from{opacity:0;transform:scale(0.3) rotate(-5deg)}to{opacity:1;transform:scale(1) rotate(0deg)}}
+        @keyframes shanghaiOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.3)}}
+        @keyframes shanghaiPulse{from{transform:scale(1) rotate(-1deg)}to{transform:scale(1.06) rotate(1deg)}}
+        @keyframes fadeInPop{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+    `;
+    document.head.appendChild(style);
+})();
+
+function animBust() {
+    const flash = document.createElement('div');
+    flash.style.cssText = 'position:fixed;inset:0;background:rgba(233,69,96,0.5);z-index:500;pointer-events:none;animation:bustFlash 0.5s ease forwards';
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(), 550);
+    const el = document.getElementById('app');
+    if (el) { el.style.animation='shake 0.45s ease'; setTimeout(()=>el.style.animation='',500); }
+}
+
+function animHit(points) {
+    if (!points) return;
+    const el = document.createElement('div');
+    el.textContent = '+' + points;
+    el.style.cssText = 'position:fixed;left:50%;top:40%;transform:translateX(-50%);font-size:2.4rem;font-weight:900;color:#f9d342;text-shadow:0 0 20px #f9d342;pointer-events:none;z-index:600;animation:floatUp 1s ease forwards';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1000);
+}
+
+function animKillerOut(name) {
+    const el = document.createElement('div');
+    el.innerHTML = '<div style="font-size:4rem">💀</div><div style="font-size:1.3rem;font-weight:900;margin-top:8px">'+name+' éliminé !</div>';
+    el.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);z-index:550;color:#e94560;animation:fadeInPop 0.2s ease';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1400);
+}
+
+function launchConfetti() {
+    const canvas = document.getElementById('confetti');
+    if (!canvas) return;
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    const pieces = Array.from({length:200}, ()=>({
+        x:Math.random()*canvas.width, y:Math.random()*canvas.height-canvas.height,
+        r:Math.random()*9+4, c:`hsl(${Math.random()*360},100%,60%)`,
+        d:Math.random()*4+1, dx:(Math.random()-0.5)*5,
+        rot:Math.random()*360, drot:(Math.random()-0.5)*8,
+        shape:Math.random()>0.5?'rect':'circle'
+    }));
+    let frame=0;
+    function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        pieces.forEach(p=>{
+            ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180); ctx.fillStyle=p.c;
+            if(p.shape==='rect') ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r/2);
+            else { ctx.beginPath(); ctx.arc(0,0,p.r/2,0,Math.PI*2); ctx.fill(); }
+            ctx.restore();
+            p.y+=p.d; p.x+=p.dx; p.rot+=p.drot;
+            if(p.y>canvas.height){ p.y=-10; p.x=Math.random()*canvas.width; }
+        });
+        if(frame++<400) requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    draw();
+}
+
+// ── Patch des fonctions — même scope, remplacement direct ────────────
+const _origHandleInput = handleInput;
+handleInput = function(val, isMiss=false) {
+    const beforeBust   = S.bust;
+    const beforeWinner = S.winner;
+    const beforeScores = JSON.stringify(S.scores);
+    const beforeCp     = S.cp;
+    const beforeMult   = S.multiplier; // capturer avant que _orig le remette à 1
+
+    _origHandleInput(val, isMiss);
+
+    if (isMiss) { soundMiss(); return; }
+    if (S.bust && !beforeBust) {
+        soundBust(); animBust();
+        speak('Beust !', 1.0, 0.85);  // prononciation française : be-eust
+        return;
+    }
+    if (S.winner && !beforeWinner) { soundMatchWin(); return; }
+
+    const p = S.players[beforeCp]?.name;
+    if (p && S.scores[p]) {
+        const bef  = JSON.parse(beforeScores);
+        const pts  = (S.scores[p]?.points||0) - (bef[p]?.points||0);
+        const sc   = (bef[p]?.score||0)  - (S.scores[p]?.score||0);
+        const gained = pts>0 ? pts : sc>0 ? sc : 0;
+        if (gained>0) { soundHit(); animHit(gained); }
+        else soundDart();
+
+        // Noms spéciaux selon la valeur et le multiplicateur
+        if (!isMiss) {
+            const multLabel = { 1:'', 2:'Double ', 3:'Triple ' };
+            if (val === 18) {
+                speak(multLabel[beforeMult] + 'Jean-Pierre !', 1.2, 0.88);
+            } else if (val === 13) {
+                speak(multLabel[beforeMult] + 'Thérèse !', 1.3, 0.85);
+            }
+        }
+        S.players.forEach(pl=>{
+            if (!bef[pl.name]?.out && S.scores[pl.name]?.out) { soundKillerOut(); animKillerOut(pl.name); }
+        });
+    } else {
+        soundDart();
+    }
+};
+
+const _origUndo = undo;
+undo = function() { soundUndo(); _origUndo(); };
+
+const _origFinalizeManche = finalizeManche;
+finalizeManche = function(pName) { soundMancheWin(); _origFinalizeManche(pName); };
+
 </script>
 
     <script>
