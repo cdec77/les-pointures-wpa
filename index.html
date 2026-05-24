@@ -22,7 +22,7 @@
         .container { max-width: 950px; margin: 0 auto; padding: 8px; }
         
         .header { text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; position: relative; display: flex; align-items: center; justify-content: center; }
-        .header-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); position: absolute; left: 15px; top: 65%; transform: translateY(-50%); }
+        .header-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); position: absolute; left: 10px; top: 50%; transform: translateY(-50%); }
         .header-content { flex: 1; }
         .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.8rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); }
 
@@ -51,6 +51,12 @@
         .numpad.mult-3 .num-btn:not(.special-btn) { border-color: #a89dff; color: #a89dff; }
         .numpad.mult-2 .num-btn:not(.special-btn):active { background: var(--c-primary); color: #fff; }
         .numpad.mult-3 .num-btn:not(.special-btn):active { background: #4834d4; color: #fff; }
+
+        /* Language selector */
+        .lang-bar { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; z-index: 10; }
+        .lang-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer; font-size: 1.3rem; padding: 3px 7px; line-height: 1; transition: 0.15s; }
+        .lang-btn.active { background: var(--c-accent); border-color: var(--c-accent); box-shadow: 0 0 8px var(--c-accent); }
+        .lang-btn:hover { background: rgba(255,255,255,0.18); }
 
         /* Modale */
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
@@ -197,13 +203,162 @@ box-shadow:0 0 12px #ff3131 !important;
     let CURRENT_PLAYERS = JSON.parse(localStorage.getItem('darts_current')) || [];
     const PLAYER_COLORS = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#e056fd', '#7bed9f', '#70a1ff', '#535c68'];
 
+    // ── Système de langue ────────────────────────────────────────────────
+    let LANG = localStorage.getItem('darts_lang') || 'fr';
+
+    const TRANSLATIONS = {
+        fr: {
+            title: '🎯 Les Pointures des fléchettes',
+            subtitle: "Lucko's Darts Team",
+            gameMode: 'Mode de jeu :',
+            variant: 'Variante :',
+            matchFormat: 'Format du match :',
+            manche: n => `${n} Manche${n>1?'s':''}`,
+            addPlayer: '+ Nouveau Joueur',
+            launch: 'Lancer le match 🚀',
+            resume: '+ Reprendre...',
+            winner: 'VAINQUEUR',
+            backHome: 'Retour accueil',
+            chooseTarget: 'Choisis ton numéro cible :',
+            yourTurn: '🎯 À toi de jouer !',
+            double: 'DOUBLE',
+            triple: 'TRIPLE',
+            bull: 'BULL',
+            zero: 'ZÉRO',
+            outOfBoard: '❌ HORS CIBLE',
+            rien: '⚽ Rien',
+            undo: '↩ ANNULER',
+            endGame: 'FIN PARTIE',
+            mancheWon: pName => `Manche gagnée par ${pName} !`,
+            endGameConfirm: 'Terminer la partie ?',
+            addPlayerPrompt: 'Nom :',
+            tripleBullAlert: "Le Triple Bull n'existe pas sur une cible de fléchettes !",
+            noPlayers: 'Ajoutez des joueurs !',
+            mancheLabel: 'Manche',
+            tourLabel: 'Tour',
+            dartLeft: n => n === 1 ? '1 flèche restante' : `${n} flèches restantes`,
+            checkoutTitle: '🎯 CHECKOUT',
+            targetsLabel: '🎯 Cibles à viser',
+            ref: 'Réf:',
+            throwRef: 'Lancer Ref.',
+            target: 'Cible:',
+            choice: 'Choix...',
+            eliminated: name => `${name} éliminé !`,
+            bust: 'BUST !',
+            bustSpeak: 'Beust !',
+            shanghaiSub: 'Simple · Double · Triple !',
+        },
+        en_gb: {
+            title: '🎯 The Darts Masters',
+            subtitle: "Lucko's Darts Team",
+            gameMode: 'Game mode:',
+            variant: 'Variant:',
+            matchFormat: 'Match format:',
+            manche: n => `${n} Leg${n>1?'s':''}`,
+            addPlayer: '+ New Player',
+            launch: 'Start match 🚀',
+            resume: '+ Resume...',
+            winner: 'WINNER',
+            backHome: 'Back to home',
+            chooseTarget: 'Choose your target number:',
+            yourTurn: '🎯 Your turn!',
+            double: 'DOUBLE',
+            triple: 'TRIPLE',
+            bull: 'BULL',
+            zero: 'ZERO',
+            outOfBoard: '❌ OUT OF BOARD',
+            rien: '⚽ Nothing',
+            undo: '↩ UNDO',
+            endGame: 'END GAME',
+            mancheWon: pName => `Leg won by ${pName}!`,
+            endGameConfirm: 'End the game?',
+            addPlayerPrompt: 'Name:',
+            tripleBullAlert: 'Triple Bull does not exist on a dartboard!',
+            noPlayers: 'Add players!',
+            mancheLabel: 'Leg',
+            tourLabel: 'Round',
+            dartLeft: n => n === 1 ? '1 dart left' : `${n} darts left`,
+            checkoutTitle: '🎯 CHECKOUT',
+            targetsLabel: '🎯 Targets to hit',
+            ref: 'Ref:',
+            throwRef: 'Ref. throw',
+            target: 'Target:',
+            choice: 'Choose...',
+            eliminated: name => `${name} eliminated!`,
+            bust: 'BUST!',
+            bustSpeak: 'Bust!',
+            shanghaiSub: 'Single · Double · Triple!',
+        },
+        en_us: {
+            title: '🎯 The Darts Masters',
+            subtitle: "Lucko's Darts Team",
+            gameMode: 'Game mode:',
+            variant: 'Variant:',
+            matchFormat: 'Match format:',
+            manche: n => `${n} Leg${n>1?'s':''}`,
+            addPlayer: '+ New Player',
+            launch: 'Start match 🚀',
+            resume: '+ Resume...',
+            winner: 'WINNER',
+            backHome: 'Back to home',
+            chooseTarget: 'Choose your target number:',
+            yourTurn: '🎯 Your turn!',
+            double: 'DOUBLE',
+            triple: 'TRIPLE',
+            bull: 'BULL',
+            zero: 'ZERO',
+            outOfBoard: '❌ OUT OF BOARD',
+            rien: '⚽ Nothing',
+            undo: '↩ UNDO',
+            endGame: 'END GAME',
+            mancheWon: pName => `Leg won by ${pName}!`,
+            endGameConfirm: 'End the game?',
+            addPlayerPrompt: 'Name:',
+            tripleBullAlert: 'Triple Bull does not exist on a dartboard!',
+            noPlayers: 'Add players!',
+            mancheLabel: 'Leg',
+            tourLabel: 'Round',
+            dartLeft: n => n === 1 ? '1 dart left' : `${n} darts left`,
+            checkoutTitle: '🎯 CHECKOUT',
+            targetsLabel: '🎯 Targets to hit',
+            ref: 'Ref:',
+            throwRef: 'Ref. throw',
+            target: 'Target:',
+            choice: 'Choose...',
+            eliminated: name => `${name} eliminated!`,
+            bust: 'BUST!',
+            bustSpeak: 'Bust!',
+            shanghaiSub: 'Single · Double · Triple!',
+        }
+    };
+
+    function T() { return TRANSLATIONS[LANG]; }
+
+    function setLang(l) {
+        LANG = l;
+        localStorage.setItem('darts_lang', l);
+        render();
+    }
+
+    function langBar() {
+        return `<div class="lang-bar">
+            <button class="lang-btn ${LANG==='fr'?'active':''}" onclick="setLang('fr')" title="Français">🇫🇷</button>
+            <button class="lang-btn ${LANG==='en_gb'?'active':''}" onclick="setLang('en_gb')" title="English (UK)">🇬🇧</button>
+            <button class="lang-btn ${LANG==='en_us'?'active':''}" onclick="setLang('en_us')" title="English (US)">🇺🇸</button>
+        </div>`;
+    }
+
     const GAMES = {
         x01: { 
             name: 'X01', variants: ['201', '301', '501'],
             rules: `<b>Objectif Fondamental :</b> Le but du jeu est d'atteindre exactement le score de zéro en partant d'un capital de points défini (201, 301 ou 501). C'est le mode de compétition le plus pratiqué au monde. Chaque point marqué est déduit de votre total.<br><br>
             <b>Mécaniques de Jeu :</b> Chaque joueur dispose d'une volée de 3 fléchettes par tour. La somme des points obtenus (Simple, Double, Triple) est soustraite du reliquat actuel. Si un lancer vous amène en dessous de zéro, ou à un seul point (impossible de finir par un double), vous êtes déclaré "Bust" (Casse) : votre tour s'arrête immédiatement et votre score revient à ce qu'il était au début du tour.<br><br>
             <b>La Fin de Partie (Double Out) :</b> Pour remporter la manche, vous devez impérativement atteindre zéro en touchant un secteur "Double" ou le centre de la cible (Bull's Eye). Cette règle exige une précision chirurgicale en fin de parcours. Par exemple, s'il vous reste 32 points, vous devez viser le Double 16. Si vous touchez un simple 16, il vous reste 16, et vous devez alors viser le Double 8.<br><br>
-            <b>Stratégies :</b> Les joueurs expérimentés visent souvent le Triple 20 (60 points) pour descendre rapidement, mais anticipent leurs "sorties" dès qu'ils atteignent 170 points pour préparer les combinaisons de fin de match les plus simples techniquement.`
+            <b>Stratégies :</b> Les joueurs expérimentés visent souvent le Triple 20 (60 points) pour descendre rapidement, mais anticipent leurs "sorties" dès qu'ils atteignent 170 points pour préparer les combinaisons de fin de match les plus simples techniquement.`,
+            rules_en: `<b>Core Objective:</b> The goal is to reach exactly zero starting from a set number of points (201, 301 or 501). This is the most widely played competitive format in the world. Every point scored is deducted from your total.<br><br>
+            <b>Gameplay Mechanics:</b> Each player throws 3 darts per turn. The total scored (Single, Double, Triple) is subtracted from the current remaining score. If a throw takes you below zero, or leaves you on exactly 1 (impossible to finish on a double), you are declared "Bust": your turn ends immediately and your score reverts to what it was at the start of that turn.<br><br>
+            <b>Finishing (Double Out):</b> To win the leg, you must reach exactly zero by hitting a Double segment or the Bullseye. This rule demands surgical precision at the end. For example, if you have 32 left, you must hit Double 16. If you hit a Single 16, you now need Double 8.<br><br>
+            <b>Strategy:</b> Experienced players typically aim for Triple 20 (60 points) to reduce their score quickly, but start planning their "checkout" combinations once they reach 170, setting up the simplest technically achievable finishes.`
         },
         cricket: { 
             name: 'Cricket', variants: ['Standard', 'Inversé'],
@@ -212,14 +367,24 @@ box-shadow:0 0 12px #ff3131 !important;
             <b>Conditions de Victoire :</b> Le jeu s'arrête lorsqu'un joueur a fermé tous les secteurs requis (15-20 + Bulle). À ce moment-là, deux cas de figure se présentent : 
             1. En mode <b>Standard</b>, le vainqueur est celui qui a fermé tous les chiffres ET possède le score le plus élevé. 
             2. En mode <b>Inversé (Cut-Throat)</b>, l'objectif est d'avoir le score le plus BAS. Lorsque vous marquez sur un numéro que vous avez fermé, les points sont ajoutés aux scores de vos adversaires qui ne l'ont pas encore fermé.<br><br>
-            <b>Tactique :</b> Il faut jongler entre la fermeture rapide des chiffres pour empêcher l'adversaire de marquer, et le "pilonnage" des chiffres déjà fermés pour creuser l'écart au score.`
+            <b>Tactique :</b> Il faut jongler entre la fermeture rapide des chiffres pour empêcher l'adversaire de marquer, et le "pilonnage" des chiffres déjà fermés pour creuser l'écart au score.`,
+            rules_en: `<b>The Essence of Cricket:</b> Cricket is a territory control game. The goal is to "close" the key numbers from 15 to 20 and the Bullseye, while accumulating a higher (or lower in Cut-Throat mode) score than your opponents.<br><br>
+            <b>Closing Rules:</b> To close a number, a player must hit it three times. A single counts as 1, a double as 2, and a triple as 3. Once you have closed a number, each additional hit on that segment scores you points equal to that number's value — provided your opponents have not yet closed it.<br><br>
+            <b>Winning Conditions:</b> The game ends when a player has closed all required segments (15–20 + Bull). At that point: 
+            1. In <b>Standard</b> mode, the winner is the player who has closed all numbers AND has the highest score. 
+            2. In <b>Cut-Throat (Inversé)</b> mode, the goal is to have the LOWEST score. When you score on a number you have closed, points are added to opponents who haven't closed it yet.<br><br>
+            <b>Tactics:</b> You must balance closing numbers quickly to prevent opponents from scoring, against "pounding" already-closed numbers to build a score gap.`
         },
         capital: {
             name: 'Capital', variants: ['Départ 40', 'Départ 0'],
             rules: `<b>Le Concept :</b> Le Capital est un jeu de survie et de précision redoutable. Chaque joueur commence la partie avec un capital de points identique. Le but est de terminer la partie avec le capital le plus élevé possible après une série de cibles imposées.<br><br>
             <b>Déroulement Chronologique :</b> Le jeu se déroule en plusieurs manches fixes. À chaque manche, tous les joueurs doivent viser un secteur spécifique dans l'ordre suivant : 15, 16, Double (n'importe lequel), 17, 18, Triple (n'importe lequel), 19, 20 et enfin la Bulle (Centre).<br><br>
             <b>Le Risque de la Division :</b> Durant son tour (3 fléchettes), le joueur tente de toucher la cible en cours autant de fois que possible. Les points cumulés s'ajoutent à son capital. Cependant, si le joueur échoue totalement lors de ses 3 lancers (aucune fléchette ne touche la cible), son capital accumulé jusque-là est <b>divisé par deux</b> immédiatement !<br><br>
-            <b>Impact Psychologique :</b> La tension monte lors des manches "Double" et "Bulle", car rater ces secteurs peut anéantir une avance confortable. Le gagnant est celui qui préserve son capital jusqu'à la fin de la séquence. C'est un jeu idéal pour apprendre à gérer la pression du résultat sur des cibles spécifiques.`
+            <b>Impact Psychologique :</b> La tension monte lors des manches "Double" et "Bulle", car rater ces secteurs peut anéantir une avance confortable. Le gagnant est celui qui préserve son capital jusqu'à la fin de la séquence. C'est un jeu idéal pour apprendre à gérer la pression du résultat sur des cibles spécifiques.`,
+            rules_en: `<b>The Concept:</b> Capital is a game of survival and deadly precision. Each player starts with an identical point capital. The goal is to finish the game with the highest capital possible after a series of mandatory targets.<br><br>
+            <b>Round-by-Round Sequence:</b> The game runs through a fixed series of rounds. Each round, all players must aim at a specific target in the following order: 15, 16, Double (any), 17, 18, Triple (any), 19, 20, and finally the Bull (centre).<br><br>
+            <b>The Division Risk:</b> During your turn (3 darts), you try to hit the current target as many times as possible. Points scored are added to your capital. However, if you fail completely across all 3 throws (no dart hits the target), your capital is <b>halved immediately</b>!<br><br>
+            <b>Psychological Pressure:</b> Tension peaks on the Double and Bull rounds, as missing entirely can wipe out a comfortable lead. The winner is the player who preserves their capital through the full sequence. This game is ideal for learning to handle pressure on specific targets.`
         },
         chateau: { 
             name: 'Château', variants: ['5 Tours', '10 Tours', '15 Tours', '20 Tours'],
@@ -227,13 +392,21 @@ box-shadow:0 0 12px #ff3131 !important;
             <b>Phase de Construction :</b> Au début du match, chaque joueur choisit un numéro cible (entre 1 et 20). Toucher votre propre numéro ajoute des briques à votre château : un Simple vaut 1 brique, un Double 2, et un Triple 3.<br><br>
             <b>Phase de Destruction :</b> C'est là que le jeu devient cruel. Si vous touchez le numéro cible d'un adversaire, vous détruisez les briques de son château ! Chaque touche réussie lui retire le nombre de briques correspondant (Simple/Double/Triple). Un château ne peut pas descendre sous 0 briques.<br><br>
             <b>Conditions de Victoire :</b> Le premier joueur à atteindre <b>15 briques remporte immédiatement la partie</b>, même avant la fin des tours. Si aucun joueur n'atteint 15 briques, la partie dure le nombre de tours choisi et le joueur avec le plus de briques à la fin remporte la manche. En cas d'égalité, un tour supplémentaire départage les joueurs.`,
+            rules_en: `<b>Castle War:</b> In this fun and interactive mode, each player owns a virtual castle made of 15 bricks. The game is played over a chosen number of rounds (5, 10, 15 or 20).<br><br>
+            <b>Building Phase:</b> At the start of the match, each player picks a target number (1–20). Hitting your own number adds bricks to your castle: a Single = 1 brick, Double = 2, Triple = 3.<br><br>
+            <b>Destruction Phase:</b> This is where it gets ruthless. If you hit an opponent's target number, you destroy bricks from their castle! Each successful hit removes the corresponding number of bricks (Single/Double/Triple). A castle cannot go below 0 bricks.<br><br>
+            <b>Winning Conditions:</b> The first player to reach <b>15 bricks wins immediately</b>, even before all rounds are done. If no player reaches 15, the game runs its full course and the player with the most bricks at the end wins the leg. In case of a tie, a bonus round decides.`,
         },
         killer: { 
             name: 'Killer', variants: ['3 Vies', '5 Vies'],
             rules: `<b>Devenir le Prédateur :</b> Le Killer est un jeu d'élimination directe. Chaque joueur se voit attribuer un numéro cible unique en début de partie. Le jeu se divise en deux phases distinctes.<br><br>
             <b>Phase 1 - L'Initiation :</b> Vous devez d'abord toucher votre propre numéro pour accumuler des vies. Tant que vous n'avez pas atteint le nombre maximum de vies (3 ou 5 selon la variante), vous êtes un simple civil. Une fois le quota de vies atteint, vous changez de statut et devenez officiellement un "Killer".<br><br>
             <b>Phase 2 - La Traque :</b> En tant que Killer, votre objectif change. Vous ne visez plus votre numéro, mais ceux de vos adversaires. Chaque fois que vous touchez le numéro d'un rival, vous lui retirez une vie (ou plus si vous touchez un double/triple). Un joueur qui perd toutes ses vies est définitivement éliminé de la partie.<br><br>
-            <b>Règles de Survie :</b> Si un Killer touche par erreur son propre numéro, il perd une vie et peut même perdre son statut de tueur s'il retombe sous le seuil requis. Le dernier survivant sur la cible remporte la victoire. C'est le jeu idéal pour les groupes qui aiment la compétition directe.`
+            <b>Règles de Survie :</b> Si un Killer touche par erreur son propre numéro, il perd une vie et peut même perdre son statut de tueur s'il retombe sous le seuil requis. Le dernier survivant sur la cible remporte la victoire. C'est le jeu idéal pour les groupes qui aiment la compétition directe.`,
+            rules_en: `<b>Become the Predator:</b> Killer is a direct elimination game. Each player is assigned a unique target number at the start. The game is split into two distinct phases.<br><br>
+            <b>Phase 1 – Initiation:</b> You must first hit your own number to accumulate lives. Until you reach the maximum number of lives (3 or 5 depending on the variant), you are a civilian. Once you hit your life quota, you become an official "Killer".<br><br>
+            <b>Phase 2 – The Hunt:</b> As a Killer, your goal changes. You no longer aim at your own number, but at your opponents'. Every time you hit a rival's number, you remove a life from them (more if you hit a double or triple). A player who loses all their lives is permanently eliminated.<br><br>
+            <b>Survival Rules:</b> If a Killer accidentally hits their own number, they lose a life and may even lose their Killer status if they drop below the required threshold. The last player standing wins. This is the ideal game for groups who love direct head-to-head competition.`
         },
         follow: { 
             name: 'Follow Me', variants: ['Standard'],
@@ -242,22 +415,36 @@ box-shadow:0 0 12px #ff3131 !important;
             <b>Déroulement d'un tour :</b> Chaque joueur lance <b>3 fléchettes</b>. Pour chaque fléchette, si le chiffre touché figure parmi les 3 cibles affichées, les points sont comptabilisés — <b>Simple, Double et Triple comptent tous</b> (ex : Triple 20 sur une cible "20" rapporte 60 pts). Une fléchette qui ne touche pas l'une des 3 cibles ne rapporte rien. Les fléchettes hors cible (❌) ne rapportent rien non plus.<br><br>
             <b>Transmission des cibles :</b> Après les 3 lancers d'un joueur, les nouvelles cibles pour le joueur suivant sont les <b>chiffres réellement touchés</b> par ce joueur. Si un joueur a touché moins de 3 chiffres distincts, les cibles manquantes sont <b>complétées aléatoirement</b>.<br><br>
             <b>Stratégie :</b> Bien viser rapporte des points mais impose des chiffres faciles au joueur suivant. Viser des triples difficiles complique la tâche du suivant — mais rapporte gros si réussi !<br><br>
-            <b>Fin de partie :</b> Après 10 tours complets, le joueur ayant accumulé le plus de points est déclaré vainqueur.`
+            <b>Fin de partie :</b> Après 10 tours complets, le joueur ayant accumulé le plus de points est déclaré vainqueur.`,
+            rules_en: `<b>Objective:</b> Score as many points as possible in 10 rounds. The player with the highest total at the end wins the leg.<br><br>
+            <b>Start:</b> Before the first round, the app randomly draws <b>3 target numbers</b> displayed on screen for all players.<br><br>
+            <b>How a round works:</b> Each player throws <b>3 darts</b>. For each dart, if the number hit is one of the 3 displayed targets, the points count — <b>Single, Double and Triple all score</b> (e.g. Triple 20 on a "20" target = 60 pts). A dart that doesn't hit one of the 3 targets scores nothing. Out-of-board darts (❌) also score nothing.<br><br>
+            <b>Target handover:</b> After a player's 3 throws, the next player's targets become the <b>numbers actually hit</b> by the current player. If fewer than 3 distinct numbers were hit, the missing targets are <b>filled randomly</b>.<br><br>
+            <b>Strategy:</b> Accurate throwing scores points but gives easy numbers to the next player. Aiming for hard triples makes life harder for the next player — but pays big if you land them!<br><br>
+            <b>End of game:</b> After 10 complete rounds, the player with the most points wins.`
         },
         batard: { 
             name: 'Bâtard', variants: ['10 Tours', '15 Tours', '20 Tours'],
             rules: `<b>Le Calcul Mental :</b> Le Bâtard est un jeu original qui récompense la régularité et punit sévèrement l'imprécision. La partie se déroule sur un format fixe de 10 tours, chaque tour consistant en 3 fléchettes.<br><br>
             <b>La Fléchette de Référence :</b> À chaque nouveau tour, la toute première fléchette lancée sert de "mètre étalon". Les points de cette fléchette sont ajoutés à votre score total. Pour les deux fléchettes suivantes (la 2ème et la 3ème), tout change : si la valeur de la fléchette est supérieure ou égale à la première, on AJOUTE les points. Si elle est inférieure, on les SOUSTRAIT de votre total.<br><br>
             <b>Sanction Hors-Cible :</b> Attention, toute fléchette qui atterrit en dehors des zones scorables (Hors-Cible) entraîne une pénalité immédiate et forfaitaire de -10 points. Cette règle s'applique même pour la fléchette de référence.<br><br>
-            <b>Objectif Final :</b> Le but est d'accumuler le plus grand nombre de points possible à l'issue des 10 rotations. Il faut donc être capable de viser un score "moyen" avec la première fléchette pour s'assurer de pouvoir faire mieux avec les deux suivantes, ou prendre le risque de viser haut dès le départ.`
+            <b>Objectif Final :</b> Le but est d'accumuler le plus grand nombre de points possible à l'issue des 10 rotations. Il faut donc être capable de viser un score "moyen" avec la première fléchette pour s'assurer de pouvoir faire mieux avec les deux suivantes, ou prendre le risque de viser haut dès le départ.`,
+            rules_en: `<b>Mental Arithmetic:</b> Bâtard is an original game that rewards consistency and severely punishes imprecision. The game runs over a fixed number of rounds (default 10), each consisting of 3 darts.<br><br>
+            <b>The Reference Dart:</b> At the start of each round, the very first dart thrown sets the "benchmark." Its point value is added to your running total. For the 2nd and 3rd darts, the rules change: if the dart's value is greater than or equal to the first, those points are ADDED. If it is lower, they are SUBTRACTED from your total.<br><br>
+            <b>Out-of-Board Penalty:</b> Any dart landing outside the scoring areas results in an immediate fixed penalty of -10 points. This applies even to the reference dart.<br><br>
+            <b>Final Goal:</b> Accumulate the highest possible score across all rounds. The key is to aim for a "mid-range" reference dart so the next two can reasonably beat it — or take the risk of going high from the first throw.`
         },
         shanghai: { 
             name: 'Shanghai', variants: ['7 Tours', '14 Tours', '20 Tours'],
             rules: `<b>La Course aux Chiffres :</b> Le Shanghai est une progression numérique sur la cible. On joue traditionnellement sur les chiffres 1 à 7 (ou plus selon les envies). Au tour 1, seul le numéro 1 compte, au tour 2, seul le 2 compte, et ainsi de suite.<br><br>
             <b>Scoring Classique :</b> Chaque touche sur le numéro du tour rapporte des points (le double compte double, le triple compte triple). Le joueur qui accumule le plus de points à la fin du 7ème tour est déclaré vainqueur par points.<br><br>
             <b>Le Coup d'Éclat "Shanghai" :</b> Il existe une règle de victoire automatique qui donne son nom au jeu. Si un joueur parvient, durant le même tour, à toucher le Simple, le Double ET le Triple du numéro en cours, il réalise un "Shanghai". Dans ce cas, la partie s'arrête instantanément et ce joueur gagne le match, quel que soit l'écart de points au classement général.<br><br>
-            <b>Aptitudes :</b> Ce mode de jeu est excellent pour l'entraînement car il oblige à parcourir toute la cible et à maîtriser les zones de multiplication. Il garde tout le monde en haleine car même un joueur très retardé au score peut techniquement gagner sur un dernier coup de génie.`
-        }
+            <b>Aptitudes :</b> Ce mode de jeu est excellent pour l'entraînement car il oblige à parcourir toute la cible et à maîtriser les zones de multiplication. Il garde tout le monde en haleine car même un joueur très retardé au score peut techniquement gagner sur un dernier coup de génie.`,
+            rules_en: `<b>The Number Race:</b> Shanghai is a numerical progression across the board. Traditionally played on numbers 1 to 7 (or more). In round 1, only the number 1 scores; in round 2, only the 2; and so on.<br><br>
+            <b>Standard Scoring:</b> Each hit on the current round's number scores points (double counts double, triple counts triple). The player with the most points at the end of the 7th round wins on points.<br><br>
+            <b>The "Shanghai" Instant Win:</b> There is an automatic win rule that gives the game its name. If a player hits the Single, Double AND Triple of the current number all in the same turn, they score a "Shanghai." The game ends immediately and that player wins — regardless of the score standings.<br><br>
+            <b>Training Value:</b> This mode is excellent for practice as it forces players to visit every part of the board and master the multiplier zones. It keeps everyone in suspense because even a player far behind in points can technically win with one brilliant turn.`
+        },
     };
 
     let S = {
@@ -269,7 +456,8 @@ box-shadow:0 0 12px #ff3131 !important;
 
     function showRules(gameKey) {
         const game = GAMES[gameKey];
-        document.getElementById('modalText').innerHTML = `<h2>${game.name}</h2><p>${game.rules}</p>`;
+        const rulesText = (LANG !== 'fr' && game.rules_en) ? game.rules_en : game.rules;
+        document.getElementById('modalText').innerHTML = `<h2>${game.name}</h2><p>${rulesText}</p>`;
         document.getElementById('rulesModal').style.display = "block";
     }
 
@@ -278,7 +466,7 @@ box-shadow:0 0 12px #ff3131 !important;
 
     function pushHistory() { HISTORY.push(JSON.stringify(S)); }
     function undo() { if (HISTORY.length > 0) { S = JSON.parse(HISTORY.pop()); render(); } }
-    function endGame() { if(confirm("Terminer la partie ?")) location.reload(); }
+    function endGame() { if(confirm(T().endGameConfirm)) location.reload(); }
 
     // ── Checkout table X01 (Double Out, max 3 fléchettes) ──────────────────
     const CHECKOUT_TABLE = {
@@ -473,10 +661,10 @@ box-shadow:0 0 12px #ff3131 !important;
     const filtered = combos.filter(c => dartCount(c) <= darts).slice(0, 3);
     if (filtered.length === 0) return '';
 
-    const label = darts === 1 ? '1 flèche restante' : `${darts} flèches restantes`;
+    const label = darts === 1 ? T().dartLeft(1) : T().dartLeft(darts);
 
     return `<div class="checkout-box">
-        <div class="checkout-title">🧠 CHECKOUT — ${label}</div>
+        <div class="checkout-title">${T().checkoutTitle} — ${label}</div>
         ${filtered.map(c => `<div class="checkout-combo">${chipify(c)}</div>`).join('')}
     </div>`;
 }function addPlayer(name) {
@@ -494,7 +682,7 @@ box-shadow:0 0 12px #ff3131 !important;
     }
 
     function initGame(isNewMatch = true) {
-        if (S.players.length < 1) return alert("Ajoutez des joueurs !");
+        if (S.players.length < 1) return alert(T().noPlayers);
         if (isNewMatch) { S.players.forEach(p => S.wins[p.name] = 0); S.winnersHistory = []; S.currentManche = 1; }
         S.cp = 0; S.throws = []; S.round = 1; S.winner = null; S.targetValue = 0; S.bust = false;
         S.followTargets = generateRandomContract().map(v => ({val:v, m:1})); S.followPhase = 'set'; S.followSetter = 0; S.mancheCount = 0;
@@ -522,7 +710,7 @@ box-shadow:0 0 12px #ff3131 !important;
         if (S.winner || S.bust) return;
         // Interdit : Triple Bull (val=25 avec multiplicateur 3)
         if (val === 25 && S.multiplier === 3) {
-            alert("Le Triple Bull n'existe pas sur une cible de fléchettes !");
+            alert(T().tripleBullAlert);
             return;
         }
         if (S.setupPhase) {
@@ -739,7 +927,7 @@ box-shadow:0 0 12px #ff3131 !important;
         S.wins[pName]++;
         S.winnersHistory.push({ manche: S.currentManche, winner: pName });
         if (S.wins[pName] >= S.matchType) S.winner = pName;
-        else { alert("Manche gagnée par " + pName + " !"); S.currentManche++; initGame(false); }
+        else { alert(T().mancheWon(pName)); S.currentManche++; initGame(false); }
         render();
     }
 
@@ -758,9 +946,9 @@ box-shadow:0 0 12px #ff3131 !important;
     function renderSetup() {
         let dbOpt = PLAYER_DB.filter(n => !S.players.some(p => p.name === n));
         return `
-            <div class="header"><img class="header-logo" src="Lucko.png" alt="Lucko"><div class="header-content"><h1>🎯 Les Pointures des fléchettes</h1><p>Lucko's Darts Team</p><p>© Cyrille de Chanteloup</p></div></div>
+            <div class="header">${langBar()}<img class="header-logo" src="Lucko.png" alt="Lucko"><div class="header-content"><h1>${T().title}</h1><p>${T().subtitle}</p><p>© Cyrille de Chanteloup</p></div></div>
             <div class="card">
-                <label>Mode de jeu :</label>
+                <label>${T().gameMode}</label>
                 <div class="game-grid">
                     ${Object.keys(GAMES).map(g => `
                         <div class="game-item">
@@ -770,16 +958,16 @@ box-shadow:0 0 12px #ff3131 !important;
                     `).join('')}
                 </div>
                 
-                <label>Variante :</label>
+                <label>${T().variant}</label>
                 <div class="mult-row">${GAMES[S.game].variants.map(v => `<button class="v-btn ${S.variant===v?'active':''}" onclick="S.variant='${v}'; render()">${v}</button>`).join('')}</div>
                 
-                <label>Format du match :</label>
-                <div class="mult-row">${[1,2,3].map(n => `<button class="m-btn ${S.matchType===n?'active':''}" onclick="S.matchType=${n}; render()">${n} Manche${n>1?'s':''}</button>`).join('')}</div>
+                <label>${T().matchFormat}</label>
+                <div class="mult-row">${[1,2,3].map(n => `<button class="m-btn ${S.matchType===n?'active':''}" onclick="S.matchType=${n}; render()">${T().manche(n)}</button>`).join('')}</div>
 
                 <div style="margin:15px 0">${S.players.map((p, i) => `<div class="player-tag p-color-${i}"><span class="player-name">${p.name}</span><div class="reorder-btns"><button class="reorder-btn" onclick="movePlayer(${i},-1)">▲</button><button class="reorder-btn" onclick="movePlayer(${i},1)">▼</button></div><span onclick="S.players.splice(${i},1); render()" style="color:red; font-weight:bold; cursor:pointer">✕</span></div>`).join('')}</div>
-                ${dbOpt.length > 0 ? `<select class="selector" onchange="addPlayer(this.value); this.value=''"><option value="">+ Reprendre...</option>${dbOpt.map(n=>`<option>${n}</option>`)}</select>` : ''}
-                <button class="btn btn-add" onclick="addPlayer(prompt('Nom :'))">+ Nouveau Joueur</button>
-                <button class="btn btn-primary" style="margin-top:20px" onclick="initGame()">Lancer le match 🚀</button>
+                ${dbOpt.length > 0 ? `<select class="selector" onchange="addPlayer(this.value); this.value=''"><option value="">${T().resume}</option>${dbOpt.map(n=>`<option>${n}</option>`)}</select>` : ''}
+                <button class="btn btn-add" onclick="addPlayer(prompt('${T().addPlayerPrompt}'))">${T().addPlayer}</button>
+                <button class="btn btn-primary" style="margin-top:20px" onclick="initGame()">${T().launch}</button>
             </div>
         `;
     }
@@ -791,13 +979,13 @@ box-shadow:0 0 12px #ff3131 !important;
 <div class="winner-box">
 <h1>🏆</h1>
 <h2 style="font-size:3rem;color:#fff">${S.winner}</h2>
-<p style="font-size:1.5rem;color:gold">VAINQUEUR</p>
-<button class="btn btn-primary" onclick="location.reload()">Retour accueil</button>
+<p style="font-size:1.5rem;color:gold">${T().winner}</p>
+<button class="btn btn-primary" onclick="location.reload()">${T().backHome}</button>
 </div>
 </div>`;
         if (S.setupPhase) {
             const p = S.players[S.setupIndex].name;
-            return `<div class="card" style="text-align:center"><h2 class="p-color-${S.setupIndex}">${p}</h2><p>Choisis ton numéro cible :</p><div class="numpad">${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}</div></div>`;
+            return `<div class="card" style="text-align:center"><h2 class="p-color-${S.setupIndex}">${p}</h2><p>${T().chooseTarget}</p><div class="numpad">${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}</div></div>`;
         }
 
         const p = S.players[S.cp], sc = S.scores[p.name];
@@ -810,18 +998,18 @@ box-shadow:0 0 12px #ff3131 !important;
         if (S.game === 'follow') {
             target = ""; // affiché directement sous le nom via renderFollowChips
         }
-        if (S.game === 'batard') target = S.throws.length > 0 ? "Réf: " + (S.throws[0].isMiss ? -10 : S.throws[0].v * S.throws[0].m) : "Lancer Ref.";
-        if (S.game === 'killer') target = sc.target ? "Cible: " + sc.target : "?";
+        if (S.game === 'batard') target = S.throws.length > 0 ? T().ref + " " + (S.throws[0].isMiss ? -10 : S.throws[0].v * S.throws[0].m) : T().throwRef;
+        if (S.game === 'killer') target = sc.target ? T().target + " " + sc.target : "?";
 
         return `
-            <div class="manche-info">Manche ${S.currentManche} | Tour ${S.round} ${S.game==='batard'?'/ '+S.batardMaxTours:(S.game==='shanghai'?'/ '+S.shanghaiMaxTours:(S.game==='capital'?'/ 9':(S.game==='follow'?'/ 10':(S.game==='chateau'?'/ '+S.chateauMaxTours:''))))}</div>
+            <div class="manche-info">${T().mancheLabel} ${S.currentManche} | ${T().tourLabel} ${S.round} ${S.game==='batard'?'/ '+S.batardMaxTours:(S.game==='shanghai'?'/ '+S.shanghaiMaxTours:(S.game==='capital'?'/ 9':(S.game==='follow'?'/ 10':(S.game==='chateau'?'/ '+S.chateauMaxTours:''))))}</div>
             <div class="current-p-box p-color-${S.cp}">
-                <div class="turn-badge">🎮 ${GAMES[S.game].name}</div><div class="turn-badge">🎯 À toi de jouer !</div>
+                <div class="turn-badge">🎮 ${GAMES[S.game].name}</div><div class="turn-badge">${T().yourTurn}</div>
                 <h2 style="color:var(--p-col); font-size:1.6rem; text-shadow:0 0 12px var(--p-col)">
 ${p.name} ${sc.isKiller?'<span style="font-size:3em;display:inline-block">💀</span>':''}
 ${target ? `<span class="target-inline">${target}</span>` : ''}
 </h2>
-                <div style="font-size:3rem; color:var(--c-accent); font-weight:800">${S.game==='chateau'?(sc.target ? 'Cible: '+sc.target : 'Choix...'):(S.game==='follow'?sc.points:(S.game==='killer'?'❤️ '+sc.lives:(S.game==='x01'?sc.score:sc.points)))}</div>
+                <div style="font-size:3rem; color:var(--c-accent); font-weight:800">${S.game==='chateau'?(sc.target ? T().choice.replace('...','')+' '+sc.target : T().choice):(S.game==='follow'?sc.points:(S.game==='killer'?'❤️ '+sc.lives:(S.game==='x01'?sc.score:sc.points)))}</div>
                 ${S.game==='x01' && S.throws.length < 3 ? renderCheckout(sc.score, 3-S.throws.length) : ''}
                 ${S.game==='follow' ? renderFollowChips() : ''}
                 <div class="dart-throw">${S.throws.map(t => t.isMiss
@@ -834,20 +1022,20 @@ ${target ? `<span class="target-inline">${target}</span>` : ''}
                 ${S.game==='cricket' ? renderCricketTable() : renderSimpleTable()}
             </div>
             <div class="mult-row">
-                <button class="m-btn ${S.multiplier===2?'active-double':''}" onclick="S.multiplier=(S.multiplier===2?1:2); if(S.multiplier===2){S.multiplier=2;} render()">DOUBLE</button>
-                <button class="m-btn ${S.multiplier===3?'active-triple':''}" onclick="S.multiplier=(S.multiplier===3?1:3); if(S.multiplier===3){S.multiplier=3;} render()">TRIPLE</button>
+                <button class="m-btn ${S.multiplier===2?'active-double':''}" onclick="S.multiplier=(S.multiplier===2?1:2); if(S.multiplier===2){S.multiplier=2;} render()">${T().double}</button>
+                <button class="m-btn ${S.multiplier===3?'active-triple':''}" onclick="S.multiplier=(S.multiplier===3?1:3); if(S.multiplier===3){S.multiplier=3;} render()">${T().triple}</button>
             </div>
             
             <div class="numpad${S.multiplier===2?' mult-2':(S.multiplier===3?' mult-3':'')}">
                 ${[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1].map(n => `<button class="num-btn" onclick="handleInput(${n})">${n}</button>`).join('')}
-                <button class="num-btn special-btn" style="background:var(--c-primary)" onclick="handleInput(25)">BULL</button>
-                <button class="num-btn special-btn" onclick="handleInput(0)">ZÉRO</button>
-                <button class="num-btn special-btn" style="background:black; color:white; grid-column: span 2;" onclick="handleInput(0, true)">❌ HORS CIBLE</button>
-                <button class="num-btn special-btn" style="grid-column:span 3; background:#1a237e; color:#fff; font-size:0.72rem; border:2px solid #e53935;" onclick="rienBayern()"> 😡 Rien </button>
-                <button class="num-btn special-btn" style="grid-column:span 2; background:#555" onclick="undo()">↩ ANNULER</button>
-                <button class="num-btn special-btn" style="background:#e94560; font-size:0.7rem" onclick="endGame()">FIN PARTIE</button>
+                <button class="num-btn special-btn" style="background:var(--c-primary)" onclick="handleInput(25)">${T().bull}</button>
+                <button class="num-btn special-btn" onclick="handleInput(0)">${T().zero}</button>
+                <button class="num-btn special-btn" style="background:black; color:white; grid-column: span 2;" onclick="handleInput(0, true)">${T().outOfBoard}</button>
+                <button class="num-btn special-btn" style="grid-column:span 3; background:#1a237e; color:#fff; font-size:0.72rem; border:2px solid #e53935;" onclick="rienBayern()">${T().rien}</button>
+                <button class="num-btn special-btn" style="grid-column:span 2; background:#555" onclick="undo()">${T().undo}</button>
+                <button class="num-btn special-btn" style="background:#e94560; font-size:0.7rem" onclick="endGame()">${T().endGame}</button>
             </div>
-            ${S.bust ? `<div class="bust-overlay"><div class="bust-text">BUST !</div></div>` : ''}
+            ${S.bust ? `<div class="bust-overlay"><div class="bust-text">${T().bust}</div></div>` : ''}
         `;
     }
 
@@ -887,7 +1075,7 @@ ${target ? `<span class="target-inline">${target}</span>` : ''}
     function renderFollowChips() {
         var targets = S.followTargets || [];
         var html = '<div style="margin:8px 0 4px">';
-        html += '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🎯 Cibles à viser</div>';
+        html += '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">' + T().targetsLabel + '</div>';
         html += '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">';
         // Valeurs scorées parmi les lancers déjà effectués
         var scoredVals = S.throws.filter(t => t.hit).map(t => t.v);
@@ -913,13 +1101,14 @@ function speak(text, pitch, rate) {
     try {
         speechSynthesis.cancel();
         const utt = new SpeechSynthesisUtterance(text);
-        utt.lang = 'fr-FR';
+        utt.lang = LANG === 'fr' ? 'fr-FR' : (LANG === 'en_gb' ? 'en-GB' : 'en-US');
         utt.pitch = pitch !== undefined ? pitch : 1.1;
         utt.rate  = rate  !== undefined ? rate  : 0.9;
         utt.volume = 1;
         const voices = speechSynthesis.getVoices();
-        const fr = voices.find(v => v.lang.startsWith('fr'));
-        if (fr) utt.voice = fr;
+        const targetLang = utt.lang;
+        const match = voices.find(v => v.lang === targetLang) || voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
+        if (match) utt.voice = match;
         setTimeout(() => speechSynthesis.speak(utt), 80);
     } catch(e) {}
 }
@@ -1037,8 +1226,7 @@ function animShanghai(callback) {
         }, 420);
     } catch(e) {}
 
-    // Voix "Chang-Haï !" via utilitaire
-    setTimeout(() => speak('Chang-Haï !', 1.4, 0.85), 300);
+    setTimeout(() => speak(LANG === 'fr' ? 'Chang-Haï !' : 'Shanghai!', 1.4, 0.85), 300);
 
     // Animation visuelle explosive
     const overlay = document.createElement('div');
@@ -1065,7 +1253,7 @@ function animShanghai(callback) {
 
     // Sous-titre
     const sub = document.createElement('div');
-    sub.textContent = 'Simple · Double · Triple !';
+    sub.textContent = T().shanghaiSub;
     sub.style.cssText = `
         font-size:clamp(1rem,4vw,1.6rem);
         color:white;
@@ -1147,7 +1335,7 @@ function animHit(points) {
 
 function animKillerOut(name) {
     const el = document.createElement('div');
-    el.innerHTML = '<div style="font-size:4rem">💀</div><div style="font-size:1.3rem;font-weight:900;margin-top:8px">'+name+' éliminé !</div>';
+    el.innerHTML = '<div style="font-size:4rem">💀</div><div style="font-size:1.3rem;font-weight:900;margin-top:8px">'+T().eliminated(name)+'</div>';
     el.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);z-index:550;color:#e94560;animation:fadeInPop 0.2s ease';
     document.body.appendChild(el);
     setTimeout(()=>el.remove(), 1400);
@@ -1196,7 +1384,7 @@ handleInput = function(val, isMiss=false) {
     if (isMiss) { soundMiss(); return; }
     if (S.bust && !beforeBust) {
         soundBust(); animBust();
-        speak('Beust !', 1.0, 0.85);  // prononciation française : be-eust
+        speak(T().bustSpeak, 1.0, 0.85);
         return;
     }
     if (S.winner && !beforeWinner) { soundMatchWin(); return; }
