@@ -22,7 +22,7 @@
         .container { max-width: 950px; margin: 0 auto; padding: 8px; }
         
         .header { text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; position: relative; display: flex; align-items: center; justify-content: center; }
-        .header-logo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); position: absolute; left: 80px; top: 50%; transform: translateY(-50%); }
+        .header-logo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); position: absolute; left: 10px; top: 50%; transform: translateY(-50%); }
         .header-content { flex: 1; }
         .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.8rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); }
 
@@ -476,7 +476,7 @@ box-shadow:0 0 12px #ff3131 !important;
     const label = darts === 1 ? '1 flèche restante' : `${darts} flèches restantes`;
 
     return `<div class="checkout-box">
-        <div class="checkout-title">🎯 CHECKOUT — ${label}</div>
+        <div class="checkout-title">🧠 CHECKOUT — ${label}</div>
         ${filtered.map(c => `<div class="checkout-combo">${chipify(c)}</div>`).join('')}
     </div>`;
 }function addPlayer(name) {
@@ -843,7 +843,7 @@ ${target ? `<span class="target-inline">${target}</span>` : ''}
                 <button class="num-btn special-btn" style="background:var(--c-primary)" onclick="handleInput(25)">BULL</button>
                 <button class="num-btn special-btn" onclick="handleInput(0)">ZÉRO</button>
                 <button class="num-btn special-btn" style="background:black; color:white; grid-column: span 2;" onclick="handleInput(0, true)">❌ HORS CIBLE</button>
-                <button class="num-btn special-btn" style="grid-column:span 3; background:#1a237e; color:#fff; font-size:0.72rem; border:2px solid #e53935;" onclick="rienBayern()">⚽ Rien </button>
+                <button class="num-btn special-btn" style="grid-column:span 3; background:#1a237e; color:#fff; font-size:0.72rem; border:2px solid #e53935;" onclick="rienBayern()"> 😡 Rien </button>
                 <button class="num-btn special-btn" style="grid-column:span 2; background:#555" onclick="undo()">↩ ANNULER</button>
                 <button class="num-btn special-btn" style="background:#e94560; font-size:0.7rem" onclick="endGame()">FIN PARTIE</button>
             </div>
