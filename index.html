@@ -21,10 +21,21 @@
         body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: var(--c-text); min-height: 100vh; overflow-x: hidden; }
         .container { max-width: 950px; margin: 0 auto; padding: 8px; }
         
-        .header { text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; position: relative; display: flex; align-items: center; justify-content: center; }
-        .header-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); position: absolute; left: 10px; top: 65%; transform: translateY(-50%); }
-        .header-content { flex: 1; }
-        .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.8rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); }
+        .header { text-align: center; padding: 8px 8px 6px 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .header-top { display: flex; align-items: center; width: 100%; }
+        .header-logo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); flex-shrink: 0; margin-right: 10px; }
+        .header-content { flex: 1; text-align: center; }
+        .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.5rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); line-height: 1.1; }
+        .header-content p { font-size: 0.75rem; line-height: 1.3; }
+
+        /* Language selector — barre sous le titre */
+        .lang-bar { display: flex; gap: 6px; justify-content: center; margin-top: 6px; }
+        .lang-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer; font-size: 1.2rem; padding: 2px 8px; line-height: 1; transition: 0.15s; }
+        .lang-btn.active { background: var(--c-accent); border-color: var(--c-accent); box-shadow: 0 0 8px var(--c-accent); }
+        .lang-btn:hover { background: rgba(255,255,255,0.18); }
+
+        /* Player tags compacts */
+        .player-tag { background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 10px; display: flex; align-items: center; gap: 8px; border-left: 4px solid var(--p-col); margin-bottom: 5px; min-height: 36px; }
 
         .card { background: var(--c-surface); padding: 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         
@@ -52,12 +63,6 @@
         .numpad.mult-2 .num-btn:not(.special-btn):active { background: var(--c-primary); color: #fff; }
         .numpad.mult-3 .num-btn:not(.special-btn):active { background: #4834d4; color: #fff; }
 
-        /* Language selector */
-        .lang-bar { position: absolute; top: 15px; right: 8px; display: flex; gap: 4px; z-index: 10; }
-        .lang-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; cursor: pointer; font-size: 1.3rem; padding: 3px 7px; line-height: 1; transition: 0.15s; }
-        .lang-btn.active { background: var(--c-accent); border-color: var(--c-accent); box-shadow: 0 0 8px var(--c-accent); }
-        .lang-btn:hover { background: rgba(255,255,255,0.18); }
-
         /* Modale */
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
         .modal-content { background: var(--c-surface); margin: 5% auto; padding: 25px; border: 2px solid var(--c-accent); width: 90%; max-width: 600px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; }
@@ -67,7 +72,6 @@
         .modal-content b { color: var(--c-primary); }
 
         /* Rest of the styles */
-        .player-tag { background: rgba(0,0,0,0.4); padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; border-left: 5px solid var(--p-col); margin-bottom: 8px; }
         .player-name { flex: 1; font-weight: 600; color: var(--p-col); }
         .reorder-btns { display: flex; flex-direction: column; gap: 2px; }
         .reorder-btn { background: none; border: none; color: var(--c-accent); cursor: pointer; padding: 2px 5px; font-size: 1.2rem; }
@@ -946,7 +950,7 @@ box-shadow:0 0 12px #ff3131 !important;
     function renderSetup() {
         let dbOpt = PLAYER_DB.filter(n => !S.players.some(p => p.name === n));
         return `
-            <div class="header">${langBar()}<img class="header-logo" src="Lucko.png" alt="Lucko"><div class="header-content"><h1>${T().title}</h1><p>${T().subtitle}</p><p>© Cyrille de Chanteloup</p></div></div>
+            <div class="header"><div class="header-top"><img class="header-logo" src="Lucko.png" alt="Lucko"><div class="header-content"><h1>${T().title}</h1><p>${T().subtitle}</p><p>© Cyrille de Chanteloup</p></div></div>${langBar()}</div>
             <div class="card">
                 <label>${T().gameMode}</label>
                 <div class="game-grid">
