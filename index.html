@@ -21,7 +21,9 @@
         body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: var(--c-text); min-height: 100vh; overflow-x: hidden; }
         .container { max-width: 950px; margin: 0 auto; padding: 8px; }
         
-        .header { text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; }
+        .header { text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .header-logo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); position: absolute; left: 80px; top: 50%; transform: translateY(-50%); }
+        .header-content { flex: 1; }
         .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.8rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); }
 
         .card { background: var(--c-surface); padding: 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
@@ -756,7 +758,7 @@ box-shadow:0 0 12px #ff3131 !important;
     function renderSetup() {
         let dbOpt = PLAYER_DB.filter(n => !S.players.some(p => p.name === n));
         return `
-            <div class="header"><h1>🎯 Les Pointures des fléchettes</h1><p>Lucko's Darts Team</p></p>© Cyrille de Chanteloup</div>
+            <div class="header"><img class="header-logo" src="Lucko.png" alt="Lucko"><div class="header-content"><h1>🎯 Les Pointures des fléchettes</h1><p>Lucko's Darts Team</p><p>© Cyrille de Chanteloup</p></div></div>
             <div class="card">
                 <label>Mode de jeu :</label>
                 <div class="game-grid">
