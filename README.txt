@@ -264,3 +264,119 @@ les performances mobiles et le respect des standards du web :
       multiplier: 1,       // Multiplicateur sélectionné (1, 2, 3)
       round: 1             // Numéro du tour global
   };
+
+```
+
+* ARCHITECTURE CSS COMPACTE ET ÉLASTIQUE :
+L'interface utilise les variables CSS (`--c-primary`, `--p-col`) pour appliquer
+une identité visuelle personnalisée à chaque joueur. Le design est entièrement
+"Responsive" et s'adapte sans aucune distorsion des boutons de 320px de large
+(petits smartphones) à plus de 2000px (écrans de projection).
+
+# ================================================================================
+7. L'ALGORITHME DE "CHECKOUT" INTELLIGENT
+
+Pour le mode X01, l'application embarque un conseiller de fermeture digne des
+plus grands calculateurs de la PDC (Professional Darts Corporation). Dès que
+votre score descend en dessous de 170, l'application calcule et affiche en temps
+réel les combinaisons optimales de tirs pour fermer la partie en cours.
+
+L'affichage s'adapte dynamiquement au nombre de fléchettes qu'il vous reste
+en main (3, 2 ou 1 fléchette restante) :
+
+* Exemple de reliquat à 170 :
+Affichage de la combinaison ultime : [T20] + [T20] + [BULL] (Triple 20, Triple 20, Bullseye).
+* Exemple de reliquat à 141 :
+Affichage des options : [T20] + [T19] + [D12] ou [T20] + [T15] + [D18].
+* Exemple de reliquat à 40 :
+Affichage immédiat : [D20] (Double 20).
+
+L'algorithme filtre les données instantanément à chaque fléchette saisie pour
+éviter au joueur d'avoir à lever les yeux de sa ligne de tir.
+
+# ================================================================================
+8. SUPPORT MULTILINGUE INTÉGRÉ
+
+Afin de pouvoir s'exporter dans tous les clubs et cercles de jeux d'Europe et du
+monde, l'application propose un système de traduction à la volée via une barre
+de drapeaux discrets situés sous le titre principal. Un simple clic traduit
+l'intégralité des règles, des boutons, des modales explicatives et de la
+synthèse vocale dans les langues suivantes :
+
+🇫🇷 Français              -> "Les Pointures des fléchettes"
+🇬🇧 English (UK)          -> "The Darts Masters"
+🇺🇸 English (US)          -> "The Darts Masters"
+🇮🇪 Gaeilge (Éire)        -> "Máistrí na gCaitheamh"
+🇧🇪 Nederlands / Vlaams   -> "De Dartsmeesters"
+🇩🇪 Deutsch               -> "Die Dartmeister"
+🇪🇸 Español               -> "Los Maestros del Dardo"
+
+Chaque dictionnaire de traduction (`TRANSLATIONS`) possède ses propres fonctions
+de pluralisation pour afficher correctement les chaînes complexes ("1 flèche restante",
+"2 flèches restantes") de façon grammaticalement parfaite dans chaque langue.
+
+# ================================================================================
+9. GUIDE D'INSTALLATION ET DISPOSITIF PWA
+
+L'application est configurée pour agir comme une Progressive Web App (PWA). Elle
+répond à tous les critères modernes de distribution logicielle :
+
+1. COMPATIBILITÉ MANIFEST :
+Accompagnée de son fichier `manifest.json`, elle définit une icône dédiée,
+une couleur de thème (`#e94560`) et un mode d'affichage `standalone` pour
+retirer la barre d'adresse du navigateur web.
+2. INSTALLATION SUR ÉCRAN D'ACCUEIL :
+* Sur iOS (Safari) : Cliquez sur l'icône de partage ⎋ puis sélectionnez
+"Sur l'écran d'accueil".
+* Sur Android (Chrome) : Cliquez sur les 3 petits points verticaux puis
+sélectionnez "Installer l'application".
+L'application sera accessible sous forme d'icône d'application classique, sans
+aucune interface de navigateur autour, s'ouvrant en plein écran natif.
+
+
+3. OPTIMISATION DU ZOOM ET DES TAPES TACTILES :
+Le code intègre une balise méta `viewport` stricte empêchant les zooms
+accidentels lors des frappes rapides sur le pavé numérique (`user-scalable=no`).
+De plus, la propriété CSS `-webkit-tap-highlight-color: transparent` supprime
+le carré gris disgracieux au clic sur smartphone pour une sensation 100% native.
+
+# ================================================================================
+10. FEUILLE DE ROUTE & ÉVOLUTIONS FUTURES
+
+L'aventure "Les Pointures des fléchettes" ne s'arrête pas là ! L'équipe de
+développement de la Lucko's Darts Team a planifié plusieurs vagues de mises à
+jour majeures :
+
+* HISTORIQUE GLOBAL DES STATISTIQUES :
+Calcul de la moyenne de points par volée (3 fléchettes), taux de réussite sur
+les Doubles et suivi du joueur le plus performant sur le long terme.
+* JOUEURS VIRTUEURS (Bots IA) :
+Intégration d'adversaires gérés par intelligence artificielle avec différents
+niveaux de difficulté (Débutant, Amateur, Pro, Champion du Monde) pour
+pouvoir s'entraîner seul face à sa cible.
+* JEU EN RÉSEAU LOCAL (WebRTC) :
+Possibilité de synchroniser plusieurs smartphones ou tablettes. Un joueur au
+pied de la cible saisit les scores sur son téléphone, et le tableau général
+s'affiche en temps réel sur la TV du salon via un autre appareil connecté.
+
+# ================================================================================
+11. CRÉDITS & REMERCIEMENTS
+
+Ce projet est le fruit du travail passionné de la communauté des amoureux du
+triple 20. Merci à tous les testeurs de la première heure de la Lucko's Darts
+Team pour leurs retours intransigeants lors des parties endiablées du jeudi soir.
+
+Mentions spéciales aux créateurs des polices "Luckiest Guy" et "Poppins" qui
+donnent cette identité visuelle inimitable, dynamique et percutante à l'interface.
+
+Que vos fléchettes volent droit, que vos doubles se ferment au premier lancer,
+et rappelez-vous : "Le canard est toujours dans le secteur, mais les pointures
+visent le centre !"
+
+---
+
+## [ BON MATCH À TOUS ! 🎯 ]
+
+```
+
+```
