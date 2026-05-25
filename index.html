@@ -22,9 +22,9 @@
         .container { max-width: 950px; margin: 0 auto; padding: 8px; }
         
         .header { text-align: center; padding: 8px 8px 6px 8px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--c-primary); border-radius: 20px; margin-bottom: 15px; position: relative; display: flex; flex-direction: column; align-items: center; }
-        .header-top { display: flex; align-items: center; width: 100%; }
-        .header-logo { width: 80px; height: 80px; border-radius: 75%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); flex-shrink: 0; margin-right: 5px; }
-        .header-content { flex: 1; text-align: center; }
+        .header-top { display: flex; align-items: center; justify-content: center; width: 100%; position: relative; }
+        .header-logo { width: 80px; height: 80px; border-radius: 75%; object-fit: cover; border: 2px solid var(--c-accent); box-shadow: 0 0 12px var(--c-primary); flex-shrink: 0; position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+        .header-content { flex: 1; text-align: center; padding-right: 90px; padding-left: 90px; }
         .header h1 { font-family: 'Luckiest Guy', cursive; font-size: 1.5rem; color: var(--c-accent); text-shadow: 2px 2px 0 var(--c-primary); line-height: 1.1; }
         .header-content p { font-size: 0.75rem; line-height: 1.3; }
 
@@ -332,6 +332,170 @@ box-shadow:0 0 12px #ff3131 !important;
             bust: 'BUST!',
             bustSpeak: 'Bust!',
             shanghaiSub: 'Single · Double · Triple!',
+        },
+        ga: {
+            title: '🎯 Máistrí na gCaitheamh',
+            subtitle: "Foireann Darts Lucko",
+            gameMode: 'Mód cluiche:',
+            variant: 'Leagan:',
+            matchFormat: 'Formáid an chluiche:',
+            manche: n => `${n} Cluich${n>1?'e':''}`,
+            addPlayer: '+ Imreoir Nua',
+            launch: 'Tosaigh an cluiche 🚀',
+            resume: '+ Lean ar aghaidh...',
+            winner: 'BUAITEOIR',
+            backHome: 'Ar ais go dtí an baile',
+            chooseTarget: 'Roghnaigh do spriocuimhir:',
+            yourTurn: '🎯 Do sheal!',
+            double: 'DÚBAILTE',
+            triple: 'TRÍBAILTE',
+            bull: 'BULL',
+            zero: 'NIALAS',
+            outOfBoard: '❌ LASMUIGH DEN CHLÁR',
+            rien: '😡 Dada',
+            undo: '↩ CEALAIGH',
+            endGame: 'CRÍOCH CLUICHE',
+            mancheWon: pName => `Cluiche buaite ag ${pName}!`,
+            endGameConfirm: 'An bhfuil tú ag iarraidh an cluiche a chríochnú?',
+            addPlayerPrompt: 'Ainm:',
+            tripleBullAlert: 'Níl Triple Bull ann ar chlár darts!',
+            noPlayers: 'Cuir imreoirí leis!',
+            mancheLabel: 'Cluiche',
+            tourLabel: 'Babhta',
+            dartLeft: n => n === 1 ? '1 dart fágtha' : `${n} darts fágtha`,
+            checkoutTitle: '🧠 CRÍOCH',
+            targetsLabel: '🎯 Spriocanna le buladh',
+            ref: 'Tagairt:',
+            throwRef: 'Caitheamh Tagairt',
+            target: 'Sprioc:',
+            choice: 'Roghnaigh...',
+            eliminated: name => `${name} díothaithe!`,
+            bust: 'BUST!',
+            bustSpeak: 'Bust!',
+            shanghaiSub: 'Simplí · Dúbailte · Tríbailte!',
+        },
+        nl: {
+            title: '🎯 De Dartsmeesters',
+            subtitle: "Lucko's Dartsteam",
+            gameMode: 'Spelmodus:',
+            variant: 'Variant:',
+            matchFormat: 'Wedstrijdformaat:',
+            manche: n => `${n} Leg${n>1?'s':''}`,
+            addPlayer: '+ Nieuwe Speler',
+            launch: 'Start wedstrijd 🚀',
+            resume: '+ Doorgaan...',
+            winner: 'WINNAAR',
+            backHome: 'Terug naar home',
+            chooseTarget: 'Kies je doelnummer:',
+            yourTurn: '🎯 Jij bent aan de beurt!',
+            double: 'DUBBEL',
+            triple: 'TRIPLE',
+            bull: 'BULL',
+            zero: 'NUL',
+            outOfBoard: '❌ BUITEN HET BORD',
+            rien: '😡 Niets',
+            undo: '↩ ONGEDAAN',
+            endGame: 'EINDE SPEL',
+            mancheWon: pName => `Leg gewonnen door ${pName}!`,
+            endGameConfirm: 'Het spel beëindigen?',
+            addPlayerPrompt: 'Naam:',
+            tripleBullAlert: 'Triple Bull bestaat niet op een dartsbord!',
+            noPlayers: 'Voeg spelers toe!',
+            mancheLabel: 'Leg',
+            tourLabel: 'Ronde',
+            dartLeft: n => n === 1 ? '1 dart over' : `${n} darts over`,
+            checkoutTitle: '🧠 CHECKOUT',
+            targetsLabel: '🎯 Te raken doelen',
+            ref: 'Ref:',
+            throwRef: 'Referentieworp',
+            target: 'Doel:',
+            choice: 'Kiezen...',
+            eliminated: name => `${name} uitgeschakeld!`,
+            bust: 'BUST!',
+            bustSpeak: 'Bust!',
+            shanghaiSub: 'Enkel · Dubbel · Triple!',
+        },
+        de: {
+            title: '🎯 Die Dartmeister',
+            subtitle: "Luckos Dartteam",
+            gameMode: 'Spielmodus:',
+            variant: 'Variante:',
+            matchFormat: 'Spielformat:',
+            manche: n => `${n} Satz${n>1?'e':''}`,
+            addPlayer: '+ Neuer Spieler',
+            launch: 'Spiel starten 🚀',
+            resume: '+ Fortsetzen...',
+            winner: 'GEWINNER',
+            backHome: 'Zurück zur Startseite',
+            chooseTarget: 'Wähle deine Zielzahl:',
+            yourTurn: '🎯 Du bist dran!',
+            double: 'DOPPEL',
+            triple: 'TRIPLE',
+            bull: 'BULL',
+            zero: 'NULL',
+            outOfBoard: '❌ DANEBEN',
+            rien: '😡 Nichts',
+            undo: '↩ RÜCKGÄNGIG',
+            endGame: 'SPIEL BEENDEN',
+            mancheWon: pName => `Satz gewonnen von ${pName}!`,
+            endGameConfirm: 'Das Spiel beenden?',
+            addPlayerPrompt: 'Name:',
+            tripleBullAlert: 'Triple Bull existiert nicht auf einer Dartscheibe!',
+            noPlayers: 'Spieler hinzufügen!',
+            mancheLabel: 'Satz',
+            tourLabel: 'Runde',
+            dartLeft: n => n === 1 ? '1 Dart übrig' : `${n} Darts übrig`,
+            checkoutTitle: '🧠 CHECKOUT',
+            targetsLabel: '🎯 Zu treffende Felder',
+            ref: 'Ref:',
+            throwRef: 'Referenzwurf',
+            target: 'Ziel:',
+            choice: 'Wählen...',
+            eliminated: name => `${name} ausgeschieden!`,
+            bust: 'BUST!',
+            bustSpeak: 'Bust!',
+            shanghaiSub: 'Einfach · Doppel · Triple!',
+        },
+        es: {
+            title: '🎯 Los Maestros del Dardo',
+            subtitle: "Equipo de Dardos de Lucko",
+            gameMode: 'Modo de juego:',
+            variant: 'Variante:',
+            matchFormat: 'Formato del partido:',
+            manche: n => `${n} Set${n>1?'s':''}`,
+            addPlayer: '+ Nuevo Jugador',
+            launch: 'Iniciar partida 🚀',
+            resume: '+ Reanudar...',
+            winner: 'GANADOR',
+            backHome: 'Volver al inicio',
+            chooseTarget: 'Elige tu número objetivo:',
+            yourTurn: '🎯 ¡Tu turno!',
+            double: 'DOBLE',
+            triple: 'TRIPLE',
+            bull: 'BULL',
+            zero: 'CERO',
+            outOfBoard: '❌ FUERA DEL TABLERO',
+            rien: '😡 Nada',
+            undo: '↩ DESHACER',
+            endGame: 'FIN DEL JUEGO',
+            mancheWon: pName => `¡Set ganado por ${pName}!`,
+            endGameConfirm: '¿Terminar la partida?',
+            addPlayerPrompt: 'Nombre:',
+            tripleBullAlert: '¡El Triple Bull no existe en una diana de dardos!',
+            noPlayers: '¡Añade jugadores!',
+            mancheLabel: 'Set',
+            tourLabel: 'Ronda',
+            dartLeft: n => n === 1 ? '1 dardo restante' : `${n} dardos restantes`,
+            checkoutTitle: '🧠 CHECKOUT',
+            targetsLabel: '🎯 Objetivos a marcar',
+            ref: 'Ref:',
+            throwRef: 'Lanzamiento Ref.',
+            target: 'Objetivo:',
+            choice: 'Elegir...',
+            eliminated: name => `¡${name} eliminado!`,
+            bust: '¡BUST!',
+            bustSpeak: '¡Bust!',
+            shanghaiSub: 'Simple · Doble · Triple!',
         }
     };
 
@@ -348,6 +512,10 @@ box-shadow:0 0 12px #ff3131 !important;
             <button class="lang-btn ${LANG==='fr'?'active':''}" onclick="setLang('fr')" title="Français">🇫🇷</button>
             <button class="lang-btn ${LANG==='en_gb'?'active':''}" onclick="setLang('en_gb')" title="English (UK)">🇬🇧</button>
             <button class="lang-btn ${LANG==='en_us'?'active':''}" onclick="setLang('en_us')" title="English (US)">🇺🇸</button>
+            <button class="lang-btn ${LANG==='ga'?'active':''}" onclick="setLang('ga')" title="Gaeilge (Éire)">🇮🇪</button>
+            <button class="lang-btn ${LANG==='nl'?'active':''}" onclick="setLang('nl')" title="Nederlands / Vlaams">🇧🇪</button>
+            <button class="lang-btn ${LANG==='de'?'active':''}" onclick="setLang('de')" title="Deutsch">🇩🇪</button>
+            <button class="lang-btn ${LANG==='es'?'active':''}" onclick="setLang('es')" title="Español">🇪🇸</button>
         </div>`;
     }
 
@@ -361,7 +529,23 @@ box-shadow:0 0 12px #ff3131 !important;
             rules_en: `<b>Core Objective:</b> The goal is to reach exactly zero starting from a set number of points (201, 301 or 501). This is the most widely played competitive format in the world. Every point scored is deducted from your total.<br><br>
             <b>Gameplay Mechanics:</b> Each player throws 3 darts per turn. The total scored (Single, Double, Triple) is subtracted from the current remaining score. If a throw takes you below zero, or leaves you on exactly 1 (impossible to finish on a double), you are declared "Bust": your turn ends immediately and your score reverts to what it was at the start of that turn.<br><br>
             <b>Finishing (Double Out):</b> To win the leg, you must reach exactly zero by hitting a Double segment or the Bullseye. This rule demands surgical precision at the end. For example, if you have 32 left, you must hit Double 16. If you hit a Single 16, you now need Double 8.<br><br>
-            <b>Strategy:</b> Experienced players typically aim for Triple 20 (60 points) to reduce their score quickly, but start planning their "checkout" combinations once they reach 170, setting up the simplest technically achievable finishes.`
+            <b>Strategy:</b> Experienced players typically aim for Triple 20 (60 points) to reduce their score quickly, but start planning their "checkout" combinations once they reach 170, setting up the simplest technically achievable finishes.`,
+            rules_ga: `<b>Cuspóir Bunúsach:</b> Is é sprioc an chluiche ná dul go díreach go nialas ag tosú ó líon pointí socraithe (201, 301 nó 501). Is é seo an fhormáid iomaíoch is mó a imrítear ar fud an domhain. Déantar gach pointe a bhaintear a bhaint ó do iomlán.<br><br>
+            <b>Meicníocht an Chluiche:</b> Caithfidh gach imreoir 3 dharta sa bhabhta. Déantar iomlán na bpointí (Simplí, Dúbailte, Tríbailte) a bhaint ón scór atá fágtha. Má théann caitheamh faoi nialas thú, nó má fhágann sé go díreach 1 thú (dodhéanta críochnú le dúbailte), glactar leis go bhfuil tú "Bust": críochnaíonn do bhabhta láithreach agus filleann do scór ar an méid a bhí ann ag tús an bhabtha.<br><br>
+            <b>Críochnú (Double Out):</b> Chun an cluiche a bhuachan, ní mór duit nialas a bhaint amach go díreach trí bhualadh ar réimse Dúbailte nó an Bullseye. Éilíonn an riail seo cruinneas máinliachta ag an deireadh. Mar shampla, má tá 32 fágtha agat, ní mór duit Dúbailte 16 a bhualadh. Má bhuaileann tú Simplí 16, tá Dúbailte 8 ag teastáil uait anois.<br><br>
+            <b>Straitéis:</b> Is minic a bhíonn imreoirí taithíocha ag díriú ar an Triple 20 (60 pointe) chun a scór a laghdú go tapa, ach tosóidh siad ag pleanáil a gcomhcheangail "checkout" chomh luath agus a bhíonn 170 acu, ag ullmhú na gcríochnuithe is simplí ó thaobh teicniúlachta.`,
+            rules_nl: `<b>Kernobjectief:</b> Het doel is om vanuit een vastgesteld aantal punten (201, 301 of 501) precies op nul te eindigen. Dit is het meest gespeelde competitieve format ter wereld. Elk gescoord punt wordt afgetrokken van je totaal.<br><br>
+            <b>Spelmechanica:</b> Elke speler gooit 3 darts per beurt. Het gescoorde totaal (Enkel, Dubbel, Triple) wordt afgetrokken van de huidige resterende score. Als een worp je onder nul brengt, of je precies op 1 laat staan (onmogelijk af te sluiten met een dubbel), word je "Bust" verklaard: je beurt eindigt onmiddellijk en je score keert terug naar wat het was aan het begin van die beurt.<br><br>
+            <b>Afsluiting (Double Out):</b> Om de leg te winnen, moet je precies op nul eindigen door een Dubbelsegment of het Bullseye te raken. Deze regel vereist chirurgische precisie aan het einde. Als je bijvoorbeeld 32 over hebt, moet je Dubbel 16 raken. Als je een Enkel 16 raakt, heb je nu Dubbel 8 nodig.<br><br>
+            <b>Strategie:</b> Ervaren spelers richten zich doorgaans op Triple 20 (60 punten) om hun score snel te verlagen, maar beginnen hun "checkout" combinaties te plannen zodra ze 170 bereiken, waarbij ze de eenvoudigste technisch haalbare afsluitingen voorbereiden.`,
+            rules_de: `<b>Grundlegendes Ziel:</b> Das Ziel ist es, ausgehend von einer festgelegten Punktzahl (201, 301 oder 501) genau auf null zu kommen. Dies ist das weltweit meistgespielte Wettkampfformat. Jeder geworfene Punkt wird von deinem Gesamtstand abgezogen.<br><br>
+            <b>Spielmechanik:</b> Jeder Spieler wirft 3 Darts pro Runde. Die erzielte Gesamtpunktzahl (Einfach, Doppel, Triple) wird vom verbleibenden Punktestand abgezogen. Wenn ein Wurf dich unter null bringt oder genau bei 1 lässt (unmöglich mit einem Doppel abzuschließen), wirst du für "Bust" erklärt: Dein Zug endet sofort und dein Punktestand kehrt zu dem zurück, was er zu Beginn dieses Zuges war.<br><br>
+            <b>Abschluss (Double Out):</b> Um den Satz zu gewinnen, musst du genau null erreichen, indem du ein Doppelfeld oder das Bullseye triffst. Diese Regel erfordert chirurgische Präzision am Ende. Wenn du zum Beispiel noch 32 Punkte hast, musst du Doppel 16 treffen. Wenn du Einfach 16 triffst, brauchst du nun Doppel 8.<br><br>
+            <b>Strategie:</b> Erfahrene Spieler zielen typischerweise auf Triple 20 (60 Punkte), um ihren Punktestand schnell zu reduzieren, beginnen aber ihre "Checkout"-Kombinationen zu planen, sobald sie 170 Punkte erreichen, und bereiten die technisch einfachsten erreichbaren Abschlüsse vor.`,
+            rules_es: `<b>Objetivo Fundamental:</b> El objetivo del juego es llegar exactamente a cero partiendo de una cantidad de puntos definida (201, 301 o 501). Este es el formato competitivo más practicado en el mundo. Cada punto marcado se deduce de tu total.<br><br>
+            <b>Mecánica de Juego:</b> Cada jugador lanza 3 dardos por turno. La suma de los puntos obtenidos (Simple, Doble, Triple) se resta del resto actual. Si un lanzamiento te lleva por debajo de cero, o te deja exactamente en 1 (imposible terminar con un doble), eres declarado "Bust": tu turno termina inmediatamente y tu puntuación vuelve a lo que era al inicio de ese turno.<br><br>
+            <b>Final de Partida (Double Out):</b> Para ganar el set, debes llegar obligatoriamente a cero tocando un sector "Doble" o el centro de la diana (Bull's Eye). Esta regla exige una precisión quirúrgica al final del recorrido. Por ejemplo, si te quedan 32 puntos, debes apuntar al Doble 16. Si tocas un simple 16, te quedan 16, y debes apuntar al Doble 8.<br><br>
+            <b>Estrategias:</b> Los jugadores experimentados suelen apuntar al Triple 20 (60 puntos) para bajar rápido, pero anticipan sus "salidas" en cuanto alcanzan 170 puntos para preparar las combinaciones de final de partida más sencillas técnicamente.`
         },
         cricket: { 
             name: 'Cricket', variants: ['Standard', 'Inversé'],
@@ -376,7 +560,31 @@ box-shadow:0 0 12px #ff3131 !important;
             <b>Winning Conditions:</b> The game ends when a player has closed all required segments (15–20 + Bull). At that point: 
             1. In <b>Standard</b> mode, the winner is the player who has closed all numbers AND has the highest score. 
             2. In <b>Cut-Throat (Inversé)</b> mode, the goal is to have the LOWEST score. When you score on a number you have closed, points are added to opponents who haven't closed it yet.<br><br>
-            <b>Tactics:</b> You must balance closing numbers quickly to prevent opponents from scoring, against "pounding" already-closed numbers to build a score gap.`
+            <b>Tactics:</b> You must balance closing numbers quickly to prevent opponents from scoring, against "pounding" already-closed numbers to build a score gap.`,
+            rules_ga: `<b>Croí an Cricket:</b> Is cluiche rialú críche é Cricket. Is é an cuspóir ná na huimhreacha eochair ó 15 go 20 agus an Bullseye a "dhúnadh", agus scór níos airde (nó níos ísle i mód Cut-Throat) ná do chuid iomaitheoirí a charnadh.<br><br>
+            <b>Rialacha Dúnta:</b> Chun uimhir a dhúnadh, ní mór d'imreoir í a bhualadh trí huaire. Ritheann simplí mar 1, dúbailte mar 2, agus tríbailte mar 3. Nuair a dhúnann tú uimhir, gheobhaidh gach buille breise ar an réimse sin pointí comhionanna le luach na huimhreach duit — ar choinníoll nach bhfuil sí dúnta ag do chuid iomaitheoirí fós.<br><br>
+            <b>Coinníollacha Buachana:</b> Críochnaíonn an cluiche nuair a dhúnann imreoir na réimsí go léir atá ag teastáil (15–20 + Bull). Ag an bpointe sin: 
+            1. I mód <b>Caighdeánach</b>, is é an buaiteoir an t-imreoir a dhún gach uimhir AGUS a bhfuil an scór is airde aige. 
+            2. I mód <b>Cut-Throat (Inversé)</b>, is é an cuspóir an scór is ÍSLE a bheith agat. Nuair a scóráileann tú ar uimhir atá dúnta agat, cuirtear pointí le scóir na n-iomaitheoirí nár dhún í fós.<br><br>
+            <b>Tactic:</b> Ní mór duit comhardú a dhéanamh idir uimhreacha a dhúnadh go tapa chun iomaitheoirí a stopadh ó scóráil, agus "léasadh" uimhreacha atá dúnta cheana féin chun bearnas scóir a thógáil.`,
+            rules_nl: `<b>De essentie van Cricket:</b> Cricket is een gebiedscontrole spel. Het doel is om de sleutelgetallen van 15 tot 20 en het Bullseye te "sluiten", terwijl je een hogere (of lagere in Cut-Throat modus) score opbouwt dan je tegenstanders.<br><br>
+            <b>Sluitingsregels:</b> Om een getal te sluiten, moet een speler het drie keer raken. Een enkel telt als 1, een dubbel als 2 en een triple als 3. Zodra je een getal hebt gesloten, scoort elke extra treffer op dat segment punten gelijk aan de waarde van dat getal — op voorwaarde dat je tegenstanders het nog niet hebben gesloten.<br><br>
+            <b>Winnende condities:</b> Het spel eindigt wanneer een speler alle vereiste segmenten heeft gesloten (15–20 + Bull). Op dat moment: 
+            1. In de <b>Standaard</b> modus is de winnaar de speler die alle getallen heeft gesloten EN de hoogste score heeft. 
+            2. In de <b>Cut-Throat (Omgekeerde)</b> modus is het doel de LAAGSTE score te hebben. Wanneer je scoort op een getal dat je hebt gesloten, worden punten toegevoegd aan tegenstanders die het nog niet hebben gesloten.<br><br>
+            <b>Tactiek:</b> Je moet een balans vinden tussen het snel sluiten van getallen om tegenstanders van scoren te weerhouden, en het "beuken" op al gesloten getallen om een scoreverschil op te bouwen.`,
+            rules_de: `<b>Das Wesen von Cricket:</b> Cricket ist ein Territorialkontrollspiel. Das Ziel ist es, die Schlüsselzahlen von 15 bis 20 und das Bullseye zu "schließen", während man eine höhere (oder niedrigere im Cut-Throat-Modus) Punktzahl als die Gegner ansammelt.<br><br>
+            <b>Schließungsregeln:</b> Um eine Zahl zu schließen, muss ein Spieler sie dreimal treffen. Ein Einfacher zählt als 1, ein Doppel als 2 und ein Triple als 3. Sobald du eine Zahl geschlossen hast, erzielt jeder weitere Treffer auf diesem Segment Punkte in Höhe des Wertes dieser Zahl — vorausgesetzt, deine Gegner haben es noch nicht geschlossen.<br><br>
+            <b>Siegbedingungen:</b> Das Spiel endet, wenn ein Spieler alle erforderlichen Segmente geschlossen hat (15–20 + Bull). Zu diesem Zeitpunkt: 
+            1. Im <b>Standard</b>-Modus ist der Gewinner der Spieler, der alle Zahlen geschlossen UND die höchste Punktzahl hat. 
+            2. Im <b>Cut-Throat (Inversé)</b>-Modus ist das Ziel, die NIEDRIGSTE Punktzahl zu haben. Wenn du auf einer Zahl punktest, die du geschlossen hast, werden Punkte zu den Gegnern hinzugefügt, die sie noch nicht geschlossen haben.<br><br>
+            <b>Taktik:</b> Du musst die Balance finden zwischen dem schnellen Schließen von Zahlen, um Gegner am Punkten zu hindern, und dem "Bombardieren" bereits geschlossener Zahlen, um einen Punktevorsprung aufzubauen.`,
+            rules_es: `<b>La Esencia del Cricket:</b> El Cricket es un juego de control de territorio. El objetivo es "cerrar" los números clave del 15 al 20 y el Bullseye, acumulando una puntuación más alta (o más baja en modo Cut-Throat) que los adversarios.<br><br>
+            <b>Reglas de Cierre:</b> Para cerrar un número, un jugador debe tocarlo tres veces. Un simple cuenta como 1, un doble como 2 y un triple como 3. Una vez que has cerrado un número, cada toque adicional en ese sector te da puntos equivalentes al valor del número — siempre que tus adversarios no lo hayan cerrado todavía.<br><br>
+            <b>Condiciones de Victoria:</b> El juego termina cuando un jugador ha cerrado todos los sectores requeridos (15–20 + Bull). En ese momento: 
+            1. En modo <b>Estándar</b>, el ganador es quien ha cerrado todos los números Y posee la puntuación más alta. 
+            2. En modo <b>Invertido (Cut-Throat)</b>, el objetivo es tener la puntuación más BAJA. Cuando marcas en un número que has cerrado, los puntos se añaden a los adversarios que aún no lo han cerrado.<br><br>
+            <b>Táctica:</b> Hay que equilibrar el cierre rápido de números para impedir que el adversario marque, y el "bombardeo" de los números ya cerrados para ampliar la diferencia de puntuación.`
         },
         capital: {
             name: 'Capital', variants: ['Départ 40', 'Départ 0'],
@@ -387,7 +595,23 @@ box-shadow:0 0 12px #ff3131 !important;
             rules_en: `<b>The Concept:</b> Capital is a game of survival and deadly precision. Each player starts with an identical point capital. The goal is to finish the game with the highest capital possible after a series of mandatory targets.<br><br>
             <b>Round-by-Round Sequence:</b> The game runs through a fixed series of rounds. Each round, all players must aim at a specific target in the following order: 15, 16, Double (any), 17, 18, Triple (any), 19, 20, and finally the Bull (centre).<br><br>
             <b>The Division Risk:</b> During your turn (3 darts), you try to hit the current target as many times as possible. Points scored are added to your capital. However, if you fail completely across all 3 throws (no dart hits the target), your capital is <b>halved immediately</b>!<br><br>
-            <b>Psychological Pressure:</b> Tension peaks on the Double and Bull rounds, as missing entirely can wipe out a comfortable lead. The winner is the player who preserves their capital through the full sequence. This game is ideal for learning to handle pressure on specific targets.`
+            <b>Psychological Pressure:</b> Tension peaks on the Double and Bull rounds, as missing entirely can wipe out a comfortable lead. The winner is the player who preserves their capital through the full sequence. This game is ideal for learning to handle pressure on specific targets.`,
+            rules_ga: `<b>An Coincheap:</b> Is cluiche maireachtála agus cruinnis marfach é Capital. Cuirtear tús le gach imreoir le caipiteal pointí comhionann. Is é an cuspóir ná an cluiche a chríochnú leis an gcaipiteal is airde tar éis sraith de spriocanna éigeantacha.<br><br>
+            <b>Seicheamh Babhta ar Bhabhta:</b> Rithfidh an cluiche trí shraith bhabhta shocraithe. I ngach babhta, ní mór do gach imreoir sprioc shonrach a aimsiú san ord seo a leanas: 15, 16, Dúbailte (ar bith), 17, 18, Tríbailte (ar bith), 19, 20, agus an Bull ar deireadh (lár).<br><br>
+            <b>An Riosca Roinnte:</b> Le do bhabhta (3 dharta), déanann tú iarracht an sprioc reatha a bhualadh chomh minic agus is féidir. Cuirtear pointí scóráilte le do chaipiteal. Má theipeann ort go hiomlán thar na 3 caitheamh go léir (gan dart ar bith ag bualadh na sprice), déantar do chaipiteal a <b>leath láithreach</b>!<br><br>
+            <b>Brú Síceolaíoch:</b> Ardaíonn an teannas go dtí a bhuaic ar bhabhta an Dúbailte agus an Bull, toisc go bhféadfadh teip iomlán ceannasaíocht chompordach a scriosadh. Is é an buaiteoir an t-imreoir a chaomhnaíonn a gcaipiteal tríd an seicheamh iomlán. Tá an cluiche seo oiriúnach go hidéalach chun foghlaim conas déileáil le brú ar spriocanna sonracha.`,
+            rules_nl: `<b>Het concept:</b> Capital is een spel van overleving en dodelijke precisie. Elke speler begint met een identiek puntenkaptaal. Het doel is om het spel te eindigen met het hoogst mogelijke kapitaal na een reeks verplichte doelen.<br><br>
+            <b>Ronde-voor-ronde volgorde:</b> Het spel doorloopt een vaste reeks rondes. Elke ronde moeten alle spelers een specifiek doel raken in de volgende volgorde: 15, 16, Dubbel (willekeurig), 17, 18, Triple (willekeurig), 19, 20 en ten slotte de Bull (midden).<br><br>
+            <b>Het delingsrisico:</b> Tijdens je beurt (3 darts) probeer je het huidige doel zo vaak mogelijk te raken. Gescoorde punten worden toegevoegd aan je kapitaal. Als je echter volledig faalt in alle 3 worpen (geen dart raakt het doel), wordt je kapitaal <b>onmiddellijk gehalveerd</b>!<br><br>
+            <b>Psychologische druk:</b> De spanning piekt bij de Dubbel- en Bull-rondes, omdat volledig missen een comfortabele voorsprong kan wegvagen. De winnaar is de speler die zijn kapitaal door de volledige reeks behoudt. Dit spel is ideaal om te leren omgaan met druk op specifieke doelen.`,
+            rules_de: `<b>Das Konzept:</b> Capital ist ein Spiel der Überlebensstrategie und tödlicher Präzision. Jeder Spieler beginnt mit einem identischen Punktekapital. Das Ziel ist es, das Spiel mit dem höchstmöglichen Kapital nach einer Reihe von Pflichtzielen abzuschließen.<br><br>
+            <b>Runde-für-Runde-Abfolge:</b> Das Spiel durchläuft eine feste Reihe von Runden. In jeder Runde müssen alle Spieler ein bestimmtes Ziel in der folgenden Reihenfolge treffen: 15, 16, Doppel (beliebig), 17, 18, Triple (beliebig), 19, 20 und schließlich das Bull (Mitte).<br><br>
+            <b>Das Teilungsrisiko:</b> Während deines Zuges (3 Darts) versuchst du, das aktuelle Ziel so oft wie möglich zu treffen. Erzielte Punkte werden zu deinem Kapital hinzugefügt. Wenn du jedoch bei allen 3 Würfen vollständig scheitern solltest (kein Dart trifft das Ziel), wird dein Kapital <b>sofort halbiert</b>!<br><br>
+            <b>Psychologischer Druck:</b> Die Spannung erreicht beim Doppel- und Bull-Round ihren Höhepunkt, da ein vollständiges Verfehlen einen komfortablen Vorsprung zunichte machen kann. Der Gewinner ist der Spieler, der sein Kapital durch die gesamte Sequenz bewahrt. Dieses Spiel ist ideal, um zu lernen, mit dem Druck auf bestimmte Ziele umzugehen.`,
+            rules_es: `<b>El Concepto:</b> Capital es un juego de supervivencia y precisión mortal. Cada jugador comienza con un capital de puntos idéntico. El objetivo es terminar la partida con el capital más alto posible después de una serie de objetivos obligatorios.<br><br>
+            <b>Secuencia Ronda a Ronda:</b> El juego se desarrolla en una serie fija de rondas. Cada ronda, todos los jugadores deben apuntar a un objetivo específico en el siguiente orden: 15, 16, Doble (cualquiera), 17, 18, Triple (cualquiera), 19, 20 y finalmente el Bull (centro).<br><br>
+            <b>El Riesgo de la División:</b> Durante tu turno (3 dardos), intentas golpear el objetivo actual tantas veces como sea posible. Los puntos conseguidos se añaden a tu capital. Sin embargo, si fallas completamente en los 3 lanzamientos (ningún dardo toca el objetivo), ¡tu capital se <b>divide por dos inmediatamente</b>!<br><br>
+            <b>Impacto Psicológico:</b> La tensión sube durante las rondas de "Doble" y "Bull", ya que fallar por completo puede aniquilar una ventaja cómoda. El ganador es quien preserva su capital hasta el final de la secuencia. Es un juego ideal para aprender a gestionar la presión del resultado sobre objetivos específicos.`
         },
         chateau: { 
             name: 'Château', variants: ['5 Tours', '10 Tours', '15 Tours', '20 Tours'],
@@ -399,6 +623,22 @@ box-shadow:0 0 12px #ff3131 !important;
             <b>Building Phase:</b> At the start of the match, each player picks a target number (1–20). Hitting your own number adds bricks to your castle: a Single = 1 brick, Double = 2, Triple = 3.<br><br>
             <b>Destruction Phase:</b> This is where it gets ruthless. If you hit an opponent's target number, you destroy bricks from their castle! Each successful hit removes the corresponding number of bricks (Single/Double/Triple). A castle cannot go below 0 bricks.<br><br>
             <b>Winning Conditions:</b> The first player to reach <b>15 bricks wins immediately</b>, even before all rounds are done. If no player reaches 15, the game runs its full course and the player with the most bricks at the end wins the leg. In case of a tie, a bonus round decides.`,
+            rules_ga: `<b>Cogadh na gCaisleán:</b> Sa mhód spraíúil agus idirghníomhach seo, tá caisleán fíorúil déanta as 15 brící ag gach imreoir. Imrítear an cluiche thar líon roghnaíodh de bhabhta (5, 10, 15 nó 20).<br><br>
+            <b>Céim Tógála:</b> Ag tús an chluiche, roghnaíonn gach imreoir uimhir sprice (1–20). Má bhuaileann tú d'uimhir féin, cuirtear brící le do chaisleán: Simplí = 1 bríce, Dúbailte = 2, Tríbailte = 3.<br><br>
+            <b>Céim Scartála:</b> Anseo a éiríonn sé fíochmhar. Má bhuaileann tú uimhir sprice iomaitheoirí, scriosann tú brící óna gcaisleán! Baineann gach buille rathúil an líon comhfhreagrach brícea (Simplí/Dúbailte/Tríbailte). Ní féidir le caisleán dul faoi bhun 0 bríce.<br><br>
+            <b>Coinníollacha Buachana:</b> Is é an chéad imreoir a shroicheann <b>15 bríce buann láithreach</b>, fiú roimh dheireadh na mbabhta go léir. Mura sroicheann aon imreoir 15, rithfidh an cluiche a chúrsa iomlán agus buann an t-imreoir leis an gcuid is mó brícea ag an deireadh an cluiche. I gcás comhscóir, déanann babhta bónais an réiteach.`,
+            rules_nl: `<b>Kasteeloorlog:</b> In deze leuke en interactieve modus heeft elke speler een virtueel kasteel van 15 stenen. Het spel wordt gespeeld over een gekozen aantal rondes (5, 10, 15 of 20).<br><br>
+            <b>Bouwfase:</b> Aan het begin van de wedstrijd kiest elke speler een doelgetal (1–20). Je eigen getal raken voegt stenen toe aan je kasteel: Enkel = 1 steen, Dubbel = 2, Triple = 3.<br><br>
+            <b>Vernietigingsfase:</b> Hier wordt het meedogenloos. Als je het doelgetal van een tegenstander raakt, vernietig je stenen van hun kasteel! Elke succesvolle treffer verwijdert het overeenkomstige aantal stenen (Enkel/Dubbel/Triple). Een kasteel kan niet onder 0 stenen komen.<br><br>
+            <b>Winnende condities:</b> De eerste speler die <b>15 stenen bereikt wint onmiddellijk</b>, zelfs voordat alle rondes zijn gespeeld. Als geen enkele speler 15 bereikt, loopt het spel zijn volledige loop en wint de speler met de meeste stenen aan het einde de leg. Bij gelijkspel beslist een bonusronde.`,
+            rules_de: `<b>Burgkrieg:</b> In diesem spaßigen und interaktiven Modus besitzt jeder Spieler eine virtuelle Burg aus 15 Ziegeln. Das Spiel wird über eine gewählte Anzahl von Runden gespielt (5, 10, 15 oder 20).<br><br>
+            <b>Bauphase:</b> Zu Beginn des Spiels wählt jeder Spieler eine Zielzahl (1–20). Das Treffen deiner eigenen Zahl fügt deiner Burg Ziegel hinzu: Einfach = 1 Ziegel, Doppel = 2, Triple = 3.<br><br>
+            <b>Zerstörungsphase:</b> Hier wird es gnadenlos. Wenn du die Zielzahl eines Gegners triffst, zerstörst du Ziegel von ihrer Burg! Jeder erfolgreiche Treffer entfernt die entsprechende Anzahl von Ziegeln (Einfach/Doppel/Triple). Eine Burg kann nicht unter 0 Ziegel fallen.<br><br>
+            <b>Siegbedingungen:</b> Der erste Spieler, der <b>15 Ziegel erreicht, gewinnt sofort</b>, noch bevor alle Runden beendet sind. Wenn kein Spieler 15 erreicht, läuft das Spiel seinen vollen Kurs und der Spieler mit den meisten Ziegeln am Ende gewinnt den Satz. Bei einem Unentschieden entscheidet eine Bonusrunde.`,
+            rules_es: `<b>La Guerra de los Castillos:</b> En este modo lúdico e interactivo, cada jugador posee un castillo virtual compuesto por 15 ladrillos. La partida se juega durante un número de turnos elegido al principio (5, 10, 15 o 20 turnos).<br><br>
+            <b>Fase de Construcción:</b> Al inicio del partido, cada jugador elige un número objetivo (entre 1 y 20). Tocar tu propio número añade ladrillos a tu castillo: un Simple vale 1 ladrillo, un Doble 2, y un Triple 3.<br><br>
+            <b>Fase de Destrucción:</b> Aquí es donde el juego se vuelve cruel. ¡Si tocas el número objetivo de un adversario, destruyes los ladrillos de su castillo! Cada toque exitoso le quita el número de ladrillos correspondiente (Simple/Doble/Triple). Un castillo no puede bajar de 0 ladrillos.<br><br>
+            <b>Condiciones de Victoria:</b> El primer jugador en alcanzar <b>15 ladrillos gana inmediatamente la partida</b>, incluso antes de que terminen los turnos. Si ningún jugador llega a 15, la partida dura el número de turnos elegido y el jugador con más ladrillos al final gana el set. En caso de empate, un turno adicional decide al ganador.`
         },
         killer: { 
             name: 'Killer', variants: ['3 Vies', '5 Vies'],
@@ -409,7 +649,23 @@ box-shadow:0 0 12px #ff3131 !important;
             rules_en: `<b>Become the Predator:</b> Killer is a direct elimination game. Each player is assigned a unique target number at the start. The game is split into two distinct phases.<br><br>
             <b>Phase 1 – Initiation:</b> You must first hit your own number to accumulate lives. Until you reach the maximum number of lives (3 or 5 depending on the variant), you are a civilian. Once you hit your life quota, you become an official "Killer".<br><br>
             <b>Phase 2 – The Hunt:</b> As a Killer, your goal changes. You no longer aim at your own number, but at your opponents'. Every time you hit a rival's number, you remove a life from them (more if you hit a double or triple). A player who loses all their lives is permanently eliminated.<br><br>
-            <b>Survival Rules:</b> If a Killer accidentally hits their own number, they lose a life and may even lose their Killer status if they drop below the required threshold. The last player standing wins. This is the ideal game for groups who love direct head-to-head competition.`
+            <b>Survival Rules:</b> If a Killer accidentally hits their own number, they lose a life and may even lose their Killer status if they drop below the required threshold. The last player standing wins. This is the ideal game for groups who love direct head-to-head competition.`,
+            rules_ga: `<b>Bí i do Chreachadóir:</b> Is cluiche díothaithe díreach é Killer. Sannaítear uimhir sprice uathúil do gach imreoir ag an tús. Roinntear an cluiche i dhá chéim ar leith.<br><br>
+            <b>Céim 1 – Tionscnamh:</b> Ní mór duit d'uimhir féin a bhualadh ar dtús chun beatha a charnadh. Go dtí go sroicheann tú an líon uasta beatha (3 nó 5 ag brath ar an leagan), is sibhialtach thú. Nuair a bhíonn do chuóta beatha bainte amach agat, éiríonn tú i do "Killer" oifigiúil.<br><br>
+            <b>Céim 2 – An Tóraíocht:</b> Mar Killer, athraíonn do chuspóir. Ní dhíríonn tú ar d'uimhir féin a thuilleadh, ach ar uimhreacha d'iomaitheoirí. Gach uair a bhuaileann tú uimhir iomaitheoirí, baineann tú beatha díobh (níos mó má bhuaileann tú dúbailte nó tríbailte). Déantar imreoir a chailleann a chuid beatha go léir a dhíothú go buan.<br><br>
+            <b>Rialacha Maireachtála:</b> Má bhuaileann Killer a uimhir féin de thaisme, cailleann sé beatha agus d'fhéadfadh sé fiú a stádas Killer a chailleadh má thiteann sé faoin tairseach riachtanach. Buann an t-imreoir deireanach atá fós sa chluiche. Is é seo an cluiche idéalach do ghrúpaí a bhfuil grá acu don iomaíocht dhíreach.`,
+            rules_nl: `<b>Word de Predator:</b> Killer is een direct eliminatiespel. Elke speler krijgt aan het begin een uniek doelgetal toegewezen. Het spel is verdeeld in twee afzonderlijke fasen.<br><br>
+            <b>Fase 1 – Initiatie:</b> Je moet eerst je eigen getal raken om levens te verzamelen. Totdat je het maximale aantal levens bereikt (3 of 5 afhankelijk van de variant), ben je een burger. Zodra je je levensquotum hebt bereikt, word je een officiële "Killer".<br><br>
+            <b>Fase 2 – De Jacht:</b> Als Killer verandert je doel. Je richt je niet meer op je eigen getal, maar op dat van je tegenstanders. Elke keer dat je het getal van een tegenstander raakt, neem je een leven van hen af (meer als je een dubbel of triple raakt). Een speler die al zijn levens verliest, is permanent uitgeschakeld.<br><br>
+            <b>Overlevingsregels:</b> Als een Killer per ongeluk zijn eigen getal raakt, verliest hij een leven en kan zelfs zijn Killerstatus verliezen als hij onder de vereiste drempel zakt. De laatste overlevende wint. Dit is het ideale spel voor groepen die van directe competitie houden.`,
+            rules_de: `<b>Werde zum Raubtier:</b> Killer ist ein direktes Eliminationsspiel. Jedem Spieler wird zu Beginn eine eindeutige Zielzahl zugewiesen. Das Spiel ist in zwei verschiedene Phasen aufgeteilt.<br><br>
+            <b>Phase 1 – Initiierung:</b> Du musst zuerst deine eigene Zahl treffen, um Leben anzusammeln. Bis du die maximale Anzahl an Leben erreichst (3 oder 5 je nach Variante), bist du ein Zivilist. Sobald du dein Lebenskontingent erreicht hast, wirst du offiziell ein "Killer".<br><br>
+            <b>Phase 2 – Die Jagd:</b> Als Killer ändert sich dein Ziel. Du zielst nicht mehr auf deine eigene Zahl, sondern auf die deiner Gegner. Jedes Mal, wenn du die Zahl eines Rivalen triffst, nimmst du ihm ein Leben ab (mehr, wenn du ein Doppel oder Triple triffst). Ein Spieler, der alle Leben verliert, wird dauerhaft eliminiert.<br><br>
+            <b>Überlebensregeln:</b> Wenn ein Killer versehentlich seine eigene Zahl trifft, verliert er ein Leben und kann sogar seinen Killer-Status verlieren, wenn er unter den erforderlichen Schwellenwert fällt. Der letzte Überlebende gewinnt. Dies ist das ideale Spiel für Gruppen, die direkte Kopf-an-Kopf-Konkurrenz lieben.`,
+            rules_es: `<b>Conviértete en el Depredador:</b> El Killer es un juego de eliminación directa. A cada jugador se le asigna un número objetivo único al principio. El juego se divide en dos fases distintas.<br><br>
+            <b>Fase 1 – La Iniciación:</b> Primero debes tocar tu propio número para acumular vidas. Mientras no hayas alcanzado el número máximo de vidas (3 o 5 según la variante), eres un simple civil. Una vez alcanzado el cupo de vidas, cambias de estatus y te conviertes oficialmente en un "Killer".<br><br>
+            <b>Fase 2 – La Caza:</b> Como Killer, tu objetivo cambia. Ya no apuntas a tu número, sino a los de tus adversarios. Cada vez que tocas el número de un rival, le quitas una vida (o más si tocas un doble/triple). Un jugador que pierde todas sus vidas queda definitivamente eliminado de la partida.<br><br>
+            <b>Reglas de Supervivencia:</b> Si un Killer toca por error su propio número, pierde una vida e incluso puede perder su estatus de asesino si cae por debajo del umbral requerido. El último superviviente gana la victoria. Es el juego ideal para grupos que disfrutan de la competición directa.`
         },
         follow: { 
             name: 'Follow Me', variants: ['Standard'],
@@ -424,7 +680,31 @@ box-shadow:0 0 12px #ff3131 !important;
             <b>How a round works:</b> Each player throws <b>3 darts</b>. For each dart, if the number hit is one of the 3 displayed targets, the points count — <b>Single, Double and Triple all score</b> (e.g. Triple 20 on a "20" target = 60 pts). A dart that doesn't hit one of the 3 targets scores nothing. Out-of-board darts (❌) also score nothing.<br><br>
             <b>Target handover:</b> After a player's 3 throws, the next player's targets become the <b>numbers actually hit</b> by the current player. If fewer than 3 distinct numbers were hit, the missing targets are <b>filled randomly</b>.<br><br>
             <b>Strategy:</b> Accurate throwing scores points but gives easy numbers to the next player. Aiming for hard triples makes life harder for the next player — but pays big if you land them!<br><br>
-            <b>End of game:</b> After 10 complete rounds, the player with the most points wins.`
+            <b>End of game:</b> After 10 complete rounds, the player with the most points wins.`,
+            rules_ga: `<b>Cuspóir:</b> Chomh mó pointí agus is féidir a scóráil i 10 mbabhta. Buann an t-imreoir leis an iomlán is airde ag an deireadh an cluiche.<br><br>
+            <b>Tús:</b> Roimh an gcéad bhabhta, tarraingíonn an aip go randamach <b>3 uimhir sprice</b> a thaispeántar ar an scáileán do gach imreoir.<br><br>
+            <b>Conas a oibríonn babhta:</b> Caithfidh gach imreoir <b>3 dharta</b>. Le haghaidh gach darta, má tá an uimhir a buaileadh ar cheann de na 3 sprioc taispeánta, áirítear na pointí — <b>Simplí, Dúbailte agus Tríbailte uilig scóráil</b> (m.sh. Triple 20 ar sprioc "20" = 60 pointe). Ní scórálfaidh dart nach mbuaileann ceann de na 3 sprioc aon rud. Ní scórálfaidh darts lasmuigh den chlár (❌) aon rud ach oiread.<br><br>
+            <b>Aistriú sprice:</b> Tar éis 3 chaitheamh imreora, éiríonn spriocanna an chéad imreora eile ina <b>huimhreacha a buaileadh go hiarbhír</b> ag an imreoir reatha. Má buaileadh níos lú ná 3 uimhir ar leith, <b>líontar na spriocanna atá in easnamh go randamach</b>.<br><br>
+            <b>Straitéis:</b> Scóráil bheacht pointí ach tugann sé uimhreacha éasca don chéad imreoir eile. Díriú ar thriples deacra déanann saol níos deacra don chéad imreoir eile — ach íocann sé go mór má éiríonn leat!<br><br>
+            <b>Deireadh an chluiche:</b> Tar éis 10 mbabhta iomlán, buann an t-imreoir leis an gcuid is mó pointí.`,
+            rules_nl: `<b>Doel:</b> Zo veel mogelijk punten scoren in 10 rondes. De speler met het hoogste totaal aan het einde wint de leg.<br><br>
+            <b>Start:</b> Vóór de eerste ronde trekt de app willekeurig <b>3 doelgetallen</b> die voor alle spelers op het scherm worden weergegeven.<br><br>
+            <b>Hoe een ronde werkt:</b> Elke speler gooit <b>3 darts</b>. Voor elke dart, als het geraakt getal een van de 3 weergegeven doelen is, tellen de punten — <b>Enkel, Dubbel en Triple scoren allemaal</b> (bijv. Triple 20 op een "20" doel = 60 pnt). Een dart die geen van de 3 doelen raakt, scoort niets. Buitenbord darts (❌) scoren ook niets.<br><br>
+            <b>Doeloverdracht:</b> Na de 3 worpen van een speler worden de doelen voor de volgende speler de <b>werkelijk geraakt getallen</b> door de huidige speler. Als minder dan 3 verschillende getallen werden geraakt, worden de ontbrekende doelen <b>willekeurig aangevuld</b>.<br><br>
+            <b>Strategie:</b> Nauwkeurig gooien scoort punten maar geeft gemakkelijke getallen aan de volgende speler. Mikken op moeilijke triples maakt het leven moeilijker voor de volgende speler — maar betaalt groot als je ze raakt!<br><br>
+            <b>Einde van het spel:</b> Na 10 volledige rondes wint de speler met de meeste punten.`,
+            rules_de: `<b>Ziel:</b> So viele Punkte wie möglich in 10 Runden erzielen. Der Spieler mit dem höchsten Gesamtstand am Ende gewinnt den Satz.<br><br>
+            <b>Start:</b> Vor der ersten Runde zieht die App zufällig <b>3 Zielzahlen</b>, die für alle Spieler auf dem Bildschirm angezeigt werden.<br><br>
+            <b>Wie eine Runde funktioniert:</b> Jeder Spieler wirft <b>3 Darts</b>. Für jeden Dart gilt: Wenn die getroffene Zahl eines der 3 angezeigten Ziele ist, werden die Punkte gezählt — <b>Einfach, Doppel und Triple zählen alle</b> (z.B. Triple 20 auf einem "20"-Ziel = 60 Punkte). Ein Dart, der keines der 3 Ziele trifft, erzielt keine Punkte. Außerhalb des Feldes landende Darts (❌) erzielen ebenfalls keine Punkte.<br><br>
+            <b>Zielübergabe:</b> Nach den 3 Würfen eines Spielers werden die Ziele für den nächsten Spieler zu den <b>tatsächlich getroffenen Zahlen</b> des aktuellen Spielers. Wenn weniger als 3 unterschiedliche Zahlen getroffen wurden, werden die fehlenden Ziele <b>zufällig ergänzt</b>.<br><br>
+            <b>Strategie:</b> Genaues Werfen erzielt Punkte, gibt aber dem nächsten Spieler leichte Zahlen. Auf schwierige Triples zu zielen, macht das Leben für den nächsten Spieler schwerer — zahlt sich aber gut aus, wenn du sie triffst!<br><br>
+            <b>Spielende:</b> Nach 10 vollständigen Runden gewinnt der Spieler mit den meisten Punkten.`,
+            rules_es: `<b>Objetivo:</b> Marcar el máximo de puntos posible en 10 rondas. El jugador con el total más alto al final gana el set.<br><br>
+            <b>Inicio:</b> Antes de la primera ronda, la aplicación sortea al azar <b>3 números objetivo</b> que se muestran en pantalla para todos los jugadores.<br><br>
+            <b>Desarrollo de una ronda:</b> Cada jugador lanza <b>3 dardos</b>. Por cada dardo, si el número tocado figura entre los 3 objetivos mostrados, los puntos se contabilizan — <b>Simple, Doble y Triple cuentan todos</b> (ej.: Triple 20 en objetivo "20" = 60 pts). Un dardo que no toque uno de los 3 objetivos no puntúa. Los dardos fuera de la diana (❌) tampoco puntúan.<br><br>
+            <b>Transmisión de objetivos:</b> Tras los 3 lanzamientos de un jugador, los nuevos objetivos para el siguiente jugador son los <b>números realmente tocados</b> por ese jugador. Si se han tocado menos de 3 números distintos, los objetivos que faltan se <b>completan aleatoriamente</b>.<br><br>
+            <b>Estrategia:</b> Apuntar bien da puntos pero impone números fáciles al siguiente jugador. Apuntar a triples difíciles complica la tarea del siguiente — ¡pero da muchos puntos si se consigue!<br><br>
+            <b>Fin de partida:</b> Tras 10 rondas completas, el jugador que haya acumulado más puntos es declarado vencedor.`
         },
         batard: { 
             name: 'Bâtard', variants: ['10 Tours', '15 Tours', '20 Tours'],
@@ -435,7 +715,23 @@ box-shadow:0 0 12px #ff3131 !important;
             rules_en: `<b>Mental Arithmetic:</b> Bâtard is an original game that rewards consistency and severely punishes imprecision. The game runs over a fixed number of rounds (default 10), each consisting of 3 darts.<br><br>
             <b>The Reference Dart:</b> At the start of each round, the very first dart thrown sets the "benchmark." Its point value is added to your running total. For the 2nd and 3rd darts, the rules change: if the dart's value is greater than or equal to the first, those points are ADDED. If it is lower, they are SUBTRACTED from your total.<br><br>
             <b>Out-of-Board Penalty:</b> Any dart landing outside the scoring areas results in an immediate fixed penalty of -10 points. This applies even to the reference dart.<br><br>
-            <b>Final Goal:</b> Accumulate the highest possible score across all rounds. The key is to aim for a "mid-range" reference dart so the next two can reasonably beat it — or take the risk of going high from the first throw.`
+            <b>Final Goal:</b> Accumulate the highest possible score across all rounds. The key is to aim for a "mid-range" reference dart so the next two can reasonably beat it — or take the risk of going high from the first throw.`,
+            rules_ga: `<b>Mata Intinne:</b> Is cluiche bunaidh é Bâtard a thugann luach saothair as comhsheasmhacht agus a phionósaíonn mí-chruinneas go trom. Rithfidh an cluiche thar líon socraithe babhta (10 de réir réamhshocraithe), gach ceann ina bhfuil 3 dharta.<br><br>
+            <b>An Dart Tagartha:</b> Ag tús gach babtha, socraíonn an chéad dart a chaitear an "tagarmharc." Cuirtear a luach pointí le d'iomlán reatha. Maidir leis an 2ú agus 3ú dart, athraíonn na rialacha: má tá luach an darta níos mó ná nó comhionann leis an gcéad cheann, CUIRTEAR na pointí sin LEIS. Má tá sé níos ísle, BAINFEAR iad ó do iomlán.<br><br>
+            <b>Pionós Lasmuigh den Chlár:</b> Is é toradh aon dart a thiteann lasmuigh de na limistéir scórála ná pionós socraithe láithreach de -10 pointe. Baineann sé seo fiú leis an dart tagartha.<br><br>
+            <b>Sprioc Dheireanach:</b> An scór is airde is féidir a charnadh thar na babhtaí go léir. Is é an eochair ná díriú ar dharta tagartha "meánraon" ionas go bhféadfadh an dá cheann eile é a shárú go réasúnta — nó an riosca a ghlacadh dul ard ón gcéad chaitheamh.`,
+            rules_nl: `<b>Mentaal Rekenen:</b> Bâtard is een origineel spel dat consistentie beloont en onnauwkeurigheid zwaar bestraft. Het spel loopt over een vast aantal rondes (standaard 10), elk bestaande uit 3 darts.<br><br>
+            <b>De Referentiedart:</b> Aan het begin van elke ronde stelt de allereerste geworpen dart de "benchmark" in. De puntwaarde wordt opgeteld bij je lopend totaal. Voor de 2e en 3e darts veranderen de regels: als de waarde van de dart groter is dan of gelijk is aan de eerste, worden die punten OPGETELD. Als het lager is, worden ze AFGETROKKEN van je totaal.<br><br>
+            <b>Buitenbord straf:</b> Elke dart die buiten de scorende gebieden landt, resulteert in een onmiddellijke vaste straf van -10 punten. Dit geldt ook voor de referentiedart.<br><br>
+            <b>Einddoel:</b> Zoveel mogelijk punten verzamelen over alle rondes. De sleutel is om te mikken op een "middenbereik" referentiedart zodat de volgende twee het redelijkerwijs kunnen overtreffen — of het risico te nemen om hoog te gaan vanaf de eerste worp.`,
+            rules_de: `<b>Kopfrechnen:</b> Bâtard ist ein originelles Spiel, das Beständigkeit belohnt und Ungenauigkeit schwer bestraft. Das Spiel läuft über eine feste Anzahl von Runden (Standard 10), die jeweils aus 3 Darts bestehen.<br><br>
+            <b>Der Referenz-Dart:</b> Zu Beginn jeder Runde setzt der erste geworfene Dart den "Richtwert". Sein Punktwert wird zu deinem laufenden Gesamtstand hinzugefügt. Für den 2. und 3. Dart ändern sich die Regeln: Wenn der Wert des Darts größer oder gleich dem ersten ist, werden diese Punkte ADDIERT. Wenn er niedriger ist, werden sie von deinem Gesamtstand SUBTRAHIERT.<br><br>
+            <b>Außerfeld-Strafe:</b> Jeder Dart, der außerhalb der Wertungsbereiche landet, führt zu einer sofortigen festen Strafe von -10 Punkten. Dies gilt auch für den Referenz-Dart.<br><br>
+            <b>Endziel:</b> Über alle Runden hinweg die höchstmögliche Punktzahl erzielen. Der Schlüssel liegt darin, auf einen "mittleren" Referenz-Dart zu zielen, damit die nächsten beiden ihn vernünftigerweise übertreffen können — oder das Risiko einzugehen, vom ersten Wurf an hoch zu gehen.`,
+            rules_es: `<b>Cálculo Mental:</b> El Bâtard es un juego original que recompensa la regularidad y penaliza severamente la imprecisión. La partida se desarrolla en un formato fijo de rondas (10 por defecto), cada una con 3 dardos.<br><br>
+            <b>El Dardo de Referencia:</b> Al inicio de cada ronda, el primer dardo lanzado sirve de "metro patrón". Sus puntos se añaden a tu total acumulado. Para los dos dardos siguientes (el 2.º y el 3.º), todo cambia: si el valor del dardo es mayor o igual al primero, se SUMAN los puntos. Si es inferior, se RESTAN de tu total.<br><br>
+            <b>Sanción Fuera de Diana:</b> Cualquier dardo que aterrice fuera de las zonas puntuables conlleva una penalización inmediata y fija de -10 puntos. Esta regla se aplica incluso al dardo de referencia.<br><br>
+            <b>Objetivo Final:</b> El objetivo es acumular el mayor número de puntos posible al término de todas las rondas. La clave está en ser capaz de apuntar a una puntuación "media" con el primer dardo para asegurarse poder mejorarla con los dos siguientes, o asumir el riesgo de apuntar alto desde el principio.`
         },
         shanghai: { 
             name: 'Shanghai', variants: ['7 Tours', '14 Tours', '20 Tours'],
@@ -446,7 +742,23 @@ box-shadow:0 0 12px #ff3131 !important;
             rules_en: `<b>The Number Race:</b> Shanghai is a numerical progression across the board. Traditionally played on numbers 1 to 7 (or more). In round 1, only the number 1 scores; in round 2, only the 2; and so on.<br><br>
             <b>Standard Scoring:</b> Each hit on the current round's number scores points (double counts double, triple counts triple). The player with the most points at the end of the 7th round wins on points.<br><br>
             <b>The "Shanghai" Instant Win:</b> There is an automatic win rule that gives the game its name. If a player hits the Single, Double AND Triple of the current number all in the same turn, they score a "Shanghai." The game ends immediately and that player wins — regardless of the score standings.<br><br>
-            <b>Training Value:</b> This mode is excellent for practice as it forces players to visit every part of the board and master the multiplier zones. It keeps everyone in suspense because even a player far behind in points can technically win with one brilliant turn.`
+            <b>Training Value:</b> This mode is excellent for practice as it forces players to visit every part of the board and master the multiplier zones. It keeps everyone in suspense because even a player far behind in points can technically win with one brilliant turn.`,
+            rules_ga: `<b>An Rás Uimhreach:</b> Is dul chun cinn uimhriúil trasna an chláir é Shanghai. Imrítear go traidisiúnta ar uimhreacha 1 go 7 (nó níos mó). Sa chéad bhabhta, ní scóráíonn ach an uimhir 1; sa dara babhta, ní scóráíonn ach an 2; agus mar sin de.<br><br>
+            <b>Scóráil Chaighdeánach:</b> Scóráíonn gach buille ar uimhir an bhabtha reatha pointí (áirítear an dúbailte faoi dhó, áirítear an tríbailte faoi thrí). Buann an t-imreoir leis an gcuid is mó pointí ag deireadh an 7ú babhta ar phointí.<br><br>
+            <b>An "Shanghai" Bua Láithreach:</b> Tá riail bua uathoibríoch ann a thugann a ainm don chluiche. Má bhuaileann imreoir an Simplí, an Dúbailte AGUS an Tríbailte den uimhir reatha sa bhabhta céanna, scóráíonn sé "Shanghai". Críochnaíonn an cluiche láithreach agus buann an t-imreoir sin — beag beann ar na seasaimh scóir.<br><br>
+            <b>Luach Oiliúna:</b> Tá an mód seo ar fheabhas le haghaidh cleachtadh toisc go gcuireann sé d'iallach ar imreoirí gach cuid den chlár a chuairt agus na limistéir iolraitheora a mháistriú. Coinníonn sé gach duine ar bís toisc go bhféadfadh imreoir atá i bhfad chun deiridh i bpointí bua theicniúil a bhaint amach le babhta géiniúil amháin.`,
+            rules_nl: `<b>De Getalsrace:</b> Shanghai is een numerieke progressie over het bord. Traditioneel gespeeld op nummers 1 tot 7 (of meer). In ronde 1 scoort alleen het nummer 1; in ronde 2 alleen de 2; enzovoort.<br><br>
+            <b>Standaard scoring:</b> Elke treffer op het nummer van de huidige ronde scoort punten (dubbel telt dubbel, triple telt triple). De speler met de meeste punten aan het einde van de 7e ronde wint op punten.<br><br>
+            <b>De "Shanghai" onmiddellijke winst:</b> Er is een automatische winstregel die het spel zijn naam geeft. Als een speler de Enkel, Dubbel EN Triple van het huidige nummer allemaal in dezelfde beurt raakt, scoort hij een "Shanghai". Het spel eindigt onmiddellijk en die speler wint — ongeacht de puntenstanden.<br><br>
+            <b>Trainingswaarde:</b> Deze modus is uitstekend voor oefening omdat het spelers dwingt elk deel van het bord te bezoeken en de vermenigvuldigingszones te beheersen. Het houdt iedereen in spanning omdat zelfs een speler die ver achterligt in punten technisch kan winnen met één briljante beurt.`,
+            rules_de: `<b>Das Zahlenrennen:</b> Shanghai ist eine numerische Progression über die Scheibe. Traditionell auf den Zahlen 1 bis 7 (oder mehr) gespielt. In Runde 1 erzielt nur die Zahl 1 Punkte; in Runde 2 nur die 2; und so weiter.<br><br>
+            <b>Standard-Wertung:</b> Jeder Treffer auf die Zahl der aktuellen Runde erzielt Punkte (Doppel zählt doppelt, Triple zählt dreifach). Der Spieler mit den meisten Punkten am Ende der 7. Runde gewinnt auf Punkte.<br><br>
+            <b>Der "Shanghai" Sofortsieg:</b> Es gibt eine automatische Gewinnregel, die dem Spiel seinen Namen gibt. Wenn ein Spieler das Einfach, das Doppel UND das Triple der aktuellen Zahl alle im gleichen Zug trifft, erzielt er ein "Shanghai". Das Spiel endet sofort und dieser Spieler gewinnt — unabhängig vom Punktestand.<br><br>
+            <b>Trainingswert:</b> Dieser Modus eignet sich hervorragend zum Üben, da er Spieler zwingt, jeden Teil der Scheibe zu besuchen und die Multiplikatorzonen zu meistern. Es hält jeden in Spannung, da selbst ein Spieler, der bei den Punkten weit zurückliegt, technisch gesehen mit einem brillanten Zug gewinnen kann.`,
+            rules_es: `<b>La Carrera Numérica:</b> El Shanghai es una progresión numérica sobre la diana. Se juega tradicionalmente sobre los números 1 a 7 (o más según los deseos). En el turno 1, solo cuenta el número 1; en el turno 2, solo el 2; y así sucesivamente.<br><br>
+            <b>Puntuación Clásica:</b> Cada toque sobre el número del turno da puntos (el doble cuenta el doble, el triple cuenta el triple). El jugador que acumula más puntos al final del 7.º turno es declarado vencedor por puntos.<br><br>
+            <b>El Golpe de Gracia "Shanghai":</b> Existe una regla de victoria automática que da nombre al juego. Si un jugador logra, durante el mismo turno, tocar el Simple, el Doble Y el Triple del número en curso, realiza un "Shanghai". En ese caso, la partida se detiene instantáneamente y ese jugador gana el partido, sin importar la diferencia de puntos en la clasificación general.<br><br>
+            <b>Aptitudes:</b> Este modo de juego es excelente para el entrenamiento porque obliga a recorrer toda la diana y a dominar las zonas de multiplicación. Mantiene a todos en vilo porque incluso un jugador muy rezagado en la clasificación puede técnicamente ganar con un último golpe de genio.`
         },
     };
 
@@ -459,7 +771,14 @@ box-shadow:0 0 12px #ff3131 !important;
 
     function showRules(gameKey) {
         const game = GAMES[gameKey];
-        const rulesText = (LANG !== 'fr' && game.rules_en) ? game.rules_en : game.rules;
+        let rulesText;
+        if (LANG === 'fr') rulesText = game.rules;
+        else if (LANG === 'ga' && game.rules_ga) rulesText = game.rules_ga;
+        else if (LANG === 'nl' && game.rules_nl) rulesText = game.rules_nl;
+        else if (LANG === 'de' && game.rules_de) rulesText = game.rules_de;
+        else if (LANG === 'es' && game.rules_es) rulesText = game.rules_es;
+        else if (game.rules_en) rulesText = game.rules_en;
+        else rulesText = game.rules;
         document.getElementById('modalText').innerHTML = `<h2>${game.name}</h2><p>${rulesText}</p>`;
         document.getElementById('rulesModal').style.display = "block";
     }
@@ -1108,7 +1427,8 @@ function speak(text, pitch, rate) {
     try {
         speechSynthesis.cancel();
         const utt = new SpeechSynthesisUtterance(text);
-        utt.lang = LANG === 'fr' ? 'fr-FR' : (LANG === 'en_gb' ? 'en-GB' : 'en-US');
+        const langMap = { fr:'fr-FR', en_gb:'en-GB', en_us:'en-US', ga:'ga-IE', nl:'nl-NL', de:'de-DE', es:'es-ES' };
+        utt.lang = langMap[LANG] || 'fr-FR';
         utt.pitch = pitch !== undefined ? pitch : 1.1;
         utt.rate  = rate  !== undefined ? rate  : 0.9;
         utt.volume = 1;
@@ -1233,7 +1553,8 @@ function animShanghai(callback) {
         }, 420);
     } catch(e) {}
 
-    setTimeout(() => speak(LANG === 'fr' ? 'Chang-Haï !' : 'Shanghai!', 1.4, 0.85), 300);
+    const shanghaiSpeakMap = { fr:'Chang-Haï !', en_gb:'Shanghai!', en_us:'Shanghai!', ga:'Shanghai!', nl:'Shanghai!', de:'Shanghai!', es:'¡Shanghái!' };
+    setTimeout(() => speak(shanghaiSpeakMap[LANG] || 'Shanghai!', 1.4, 0.85), 300);
 
     // Animation visuelle explosive
     const overlay = document.createElement('div');
