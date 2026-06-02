@@ -1796,34 +1796,6 @@ renderGame = function() {
     }
     return _origRenderGame();
 };
-
-    // =========================================================================
-// AFFICHAGE DES NUMÉROS CHOISIS DANS L'ENCADRÉ DU HAUT (JEU CHÂTEAU)
-// =========================================================================
-const _origRenderGame = renderGame;
-renderGame = function() {
-    let html = _origRenderGame();
-    
-    // Si nous sommes dans le jeu Château et qu'aucun vainqueur n'est déclaré
-    if (S.game === 'chateau' && !S.winner) {
-        // Construction de la section "CHOIX" avec la liste des cibles colorées des joueurs
-        let choixHtml = `<div style="text-align: center; margin-top: 5px; font-family: 'Poppins', sans-serif;">
-            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--c-accent); font-weight: 800; letter-spacing: 1px; opacity: 0.9; margin-bottom: 2px;">CHOIX</div>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 12px; max-height: 34px; overflow: hidden; font-size: 0.85rem; font-weight: bold; padding: 0 10px;">`;
-        
-        S.players.forEach((p, idx) => {
-            const target = S.scores[p.name]?.target || '-';
-            // Utilisation des classes de couleur natives de l'application (p-color-0, p-color-1, etc.)
-            choixHtml += `<span class="p-color-${idx}" style="color: var(--p-col); white-space: nowrap;">${p.name}&nbsp;:&nbsp;${target}</span>`;
-        });
-        
-        choixHtml += `</div></div>`;
-        
-        // Injection automatique dans l'encadré du haut (juste en dessous du texte des règles/Objectif)
-        html = html.replace('</div>\n        </div>\n\n        ', choixHtml + '</div>\n        </div>\n\n        ');
-    }
-    return html;
-};
 </script>
 
     <script>
