@@ -1699,14 +1699,19 @@ function launchConfetti() {
 }
 
 // =========================================================================
-// MODIFICATION 1 : AFFICHAGE PERMANENT DE LA CIBLE CHÂTEAU EN HAUT À DROITE
+// =========================================================================
+// MODIFICATION 1 (CORRIGÉE) : AFFICHAGE PERMANENT DE LA CIBLE CHÂTEAU
 // =========================================================================
 const _origRenderPyramid = renderPyramid;
 renderPyramid = function(score, plName) {
+    // 1. On récupère le rendu de base du château (la pyramide de briques)
     let baseHtml = _origRenderPyramid(score, plName);
+    
+    // 2. Si c'est le jeu Château et que le joueur a choisi un numéro cible
     if (S.game === 'chateau' && S.scores[plName]?.target) {
+        // On englobe le château dans un bloc de position relative et on y ancre le badge en haut à droite
         return `<div style="position: relative; width: fit-content; margin: 0 auto;">
-            <div style="position: absolute; top: -5px; right: -25px; background: var(--c-accent); color: #000; font-weight: 900; padding: 2px 6px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5);" title="Numéro cible">
+            <div style="position: absolute; top: -10px; right: -20px; background: var(--c-accent); color: #000; font-weight: 900; padding: 2px 6px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5); z-index: 10;" title="Numéro cible">
                 🎯 ${S.scores[plName].target}
             </div>
             ${baseHtml}
