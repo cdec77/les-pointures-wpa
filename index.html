@@ -1801,8 +1801,8 @@ renderGame = function() {
         
         classement.forEach((item, index) => {
             classementHtml += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; font-family: sans-serif; color: #fff;">
-                <span>${index + 2}e. <b>$ {item.name} </b></span>
-                <span style="color: var(--c-accent); font-weight: bold;">${item.text}</span>
+                <span>${index + 2}e.&nbsp;&nbsp;<b>${item.name}</b>&nbsp;</span>
+                <span style="color: var(--c-accent); font-weight: bold; margin-left: 15px;">${item.text}</span>
             </div>`;
         });
         classementHtml += `</div>`;
