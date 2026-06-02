@@ -1698,57 +1698,6 @@ function launchConfetti() {
     draw();
 }
 
-// ── Patch des fonctions — même scope, remplacement direct ────────────
-const _origHandleInput = handleInput;
-handleInput = function(val, isMiss=false) {
-    const beforeBust   = S.bust;
-    const beforeWinner = S.winner;
-    const beforeScores = JSON.stringify(S.scores);
-    const beforeCp     = S.cp;
-    const beforeMult   = S.multiplier; // capturer avant que _orig le remette à 1
-
-    _origHandleInput(val, isMiss);
-
-    if (isMiss) { soundMiss(); return; }
-    if (S.bust && !beforeBust) {
-        soundBust(); animBust();
-        speak(T().bustSpeak, 1.0, 0.85);
-        return;
-    }
-    if (S.winner && !beforeWinner) { soundMatchWin(); return; }
-
-    const p = S.players[beforeCp]?.name;
-    if (p && S.scores[p]) {
-        const bef  = JSON.parse(beforeScores);
-        const pts  = (S.scores[p]?.points||0) - (bef[p]?.points||0);
-        const sc   = (bef[p]?.score||0)  - (S.scores[p]?.score||0);
-        const gained = pts>0 ? pts : sc>0 ? sc : 0;
-        if (gained>0) { soundHit(); animHit(gained); }
-        else soundDart();
-
-        // Noms spéciaux selon la valeur et le multiplicateur
-        if (!isMiss) {
-            const multLabel = { 1:'', 2:'Double ', 3:'Triple ' };
-            if (val === 18) {
-                speak(multLabel[beforeMult] + 'Jean-Pierre !', 1.2, 0.88);
-            } else if (val === 13) {
-                speak(multLabel[beforeMult] + 'Thérèse !', 1.3, 0.85);
-            }
-        }
-        S.players.forEach(pl=>{
-            if (!bef[pl.name]?.out && S.scores[pl.name]?.out) { soundKillerOut(); animKillerOut(pl.name); }
-        });
-    } else {
-        soundDart();
-    }
-};
-
-const _origUndo = undo;
-undo = function() { soundUndo(); _origUndo(); };
-
-const _origFinalizeManche = finalizeManche;
-finalizeManche = function(pName) { soundMancheWin(); _origFinalizeManche(pName); };
-
 // =========================================================================
 // MODIFICATION 1 : AFFICHAGE PERMANENT DE LA CIBLE CHÂTEAU EN HAUT À DROITE
 // =========================================================================
