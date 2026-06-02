@@ -1271,7 +1271,7 @@ box-shadow:0 0 12px #ff3131 !important;
             <div class="header">
                 <div class="header-top">
                 <img class="header-logo" src="Lucko.png" alt="Lucko">
-                <div class="header-content"><h1>${T().title}</h1><p>${T().subtitle}</p><p>© cdc</p>
+                <div class="header-content"><h1>${T().title}</h1><p>${T().subtitle}</p><p>© Cyrille de Chanteloup</p>
                 </div></div>${langBar()}</div>
             <div class="card">
                 <label>${T().gameMode}</label>
@@ -1749,6 +1749,121 @@ undo = function() { soundUndo(); _origUndo(); };
 const _origFinalizeManche = finalizeManche;
 finalizeManche = function(pName) { soundMancheWin(); _origFinalizeManche(pName); };
 
+// =========================================================================
+// MODIFICATION 1 : AFFICHAGE PERMANENT DE LA CIBLE CHÂTEAU EN HAUT À DROITE
+// =========================================================================
+const _origRenderPyramid = renderPyramid;
+renderPyramid = function(score, plName) {
+    let baseHtml = _origRenderPyramid(score, plName);
+    if (S.game === 'chateau' && S.scores[plName]?.target) {
+        return `<div style="position: relative; width: fit-content; margin: 0 auto;">
+            <div style="position: absolute; top: -5px; right: -25px; background: var(--c-accent); color: #000; font-weight: 900; padding: 2px 6px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5);" title="Numéro cible">
+                🎯 ${S.scores[plName].target}
+            </div>
+            ${baseHtml}
+        </div>`;
+    }
+    return baseHtml;
+};
+
+// =========================================================================
+// MODIFICATION 2 : SONS EXCLAMATIFS + AJOUT DE "JOJO" AU 19
+// =========================================================================
+const _origHandleInput = handleInput;
+handleInput = function(val, isMiss=false) {
+    const beforeBust = S.bust;
+    const beforeWinner = S.winner;
+    const beforeScores = JSON.stringify(S.scores);
+    const beforeCp = S.cp;
+    const beforeMult = S.multiplier; 
+
+    _origHandleInput(val, isMiss);
+
+    if (isMiss) { soundMiss(); return; }
+    if (S.bust && !beforeBust) { soundBust(); animBust(); speak(T().bustSpeak, 1.0, 0.85); return; }
+
+    const p = S.players[beforeCp]?.name;
+    if (p && S.scores[p]) {
+        const bef  = JSON.parse(beforeScores);
+        const pts  = (S.scores[p]?.points||0) - (bef[p]?.points||0);
+        const sc   = (bef[p]?.score||0)  - (S.scores[p]?.score||0);
+        const gained = pts>0 ? pts : sc>0 ? sc : 0;
+        if (gained>0) { soundHit(); animHit(gained); }
+        else soundDart();
+
+        if (!isMiss) {
+            const multLabel = { 1:'', 2:'Double ', 3:'Triple ' };
+            // Style exclamati : Pitch bas (0.60-0.65) et Volume 1.0 redonnent un effet "micro/stade" puissant
+            if (val === 18) {
+                speak(multLabel[beforeMult] + 'Jean-Pierre !', 1.0, 0.60);
+            } else if (val === 13) {
+                speak(multLabel[beforeMult] + 'Thérèse !', 1.0, 0.65);
+            } else if (val === 19) {
+                // "Djo djo" s'adapte parfaitement à la synthèse vocale pour prononcer à l'anglo-saxonne
+                speak(multLabel[beforeMult] + 'Djo djo !', 1.0, 0.62);
+            }
+        }
+        S.players.forEach(pl=>{
+            if (!bef[pl.name]?.out && S.scores[pl.name]?.out) { soundKillerOut(); animKillerOut(pl.name); }
+        });
+    } else {
+        soundDart();
+    }
+};
+
+const _origUndo = undo;
+undo = function() { soundUndo(); _origUndo(); };
+
+// =========================================================================
+// MODIFICATION 3 : ANNONCE DU VAINQUEUR & LEADERBOARD DES AUTRES JOUEURS
+// =========================================================================
+const _origFinalizeManche = finalizeManche;
+finalizeManche = function(pName) {
+    soundMancheWin();
+    speak("Victoire de " + pName + " !", 1.0, 0.85);
+    _origFinalizeManche(pName);
+};
+
+const _origRenderGame = renderGame;
+renderGame = function() {
+    if (S.winner) {
+        // Collecte et formatage des scores des perdants
+        let classement = S.players
+            .filter(p => p.name !== S.winner)
+            .map(p => {
+                let scoreText = '';
+                if (S.game === 'x01') scoreText = (S.scores[p.name]?.score ?? 0) + ' pts restants';
+                else if (S.game === 'chateau') scoreText = (S.scores[p.name]?.bricks ?? 0) + ' briques';
+                else if (S.game === 'cricket' || S.game === 'capital' || S.game === 'follow') scoreText = (S.scores[p.name]?.points ?? 0) + ' points';
+                else if (S.game === 'killer') scoreText = S.scores[p.name]?.out ? 'Éliminé' : (S.scores[p.name]?.lives ?? 0) + ' vies';
+                
+                return {
+                    name: p.name,
+                    scoreVal: S.scores[p.name]?.points || S.scores[p.name]?.bricks || -(S.scores[p.name]?.score || 0),
+                    text: scoreText
+                };
+            });
+
+        // Tri du meilleur score au moins bon (déjà inversé mathématiquement pour le x01)
+        classement.sort((a, b) => b.scoreVal - a.scoreVal);
+
+        let classementHtml = `<div style="margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: left; max-width: 320px; margin-left: auto; margin-right: auto;">
+            <h3 style="color: var(--c-accent); margin-bottom: 12px; font-size: 1.1rem; text-align: center; font-family: sans-serif;">📊 CLASSEMENT</h3>`;
+        
+        classement.forEach((item, index) => {
+            classementHtml += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; font-family: sans-serif; color: #fff;">
+                <span>${index + 2}e. <b>${item.name}</b></span>
+                <span style="color: var(--c-accent); font-weight: bold;">${item.text}</span>
+            </div>`;
+        });
+        classementHtml += `</div>`;
+
+        // Injecter le tableau juste en dessous des boutons sur l'écran de fin
+        let baseHtml = _origRenderGame();
+        return baseHtml.replace('</button>', '</button>' + classementHtml);
+    }
+    return _origRenderGame();
+};
 </script>
 
     <script>
