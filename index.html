@@ -1697,35 +1697,6 @@ function launchConfetti() {
     }
     draw();
 }
-
-// =========================================================================
-// MODIFICATION 1 (CORRIGÉE & STABLE) : CIBLE CHÂTEAU & PROTECTION DES COULEURS
-// =========================================================================
-const _origRenderPyramid = renderPyramid;
-renderPyramid = function(score) {
-    // 1. On appelle d'abord la fonction d'origine pour fabriquer le château et ses briques colorées
-    let baseHtml = _origRenderPyramid(score);
-    
-    // 2. Si on est dans le jeu Château, on cherche le joueur qui correspond à ce nombre de briques
-    if (S.game === 'chateau') {
-        // Recherche du joueur dans l'état de la partie
-        const playerObj = S.players.find(p => S.scores[p.name]?.bricks === score);
-        const target = playerObj ? S.scores[playerObj.name]?.target : null;
-        
-        if (target) {
-            // On crée un badge 🎯 discret et élégant calé en haut à droite
-            const targetBadge = `<div style="position: absolute; top: -8px; right: -8px; background: var(--c-accent); color: #000; font-weight: 900; padding: 1px 6px; border-radius: 5px; font-size: 0.75rem; border: 1px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.4); z-index: 10;">🎯 ${target}</div>`;
-            
-            // On enveloppe le château généré dans un bloc conteneur 'relative'
-            // Cela permet de positionner le badge sans toucher ni casser la structure interne des briques
-            return `<div style="position: relative; width: fit-content; margin: 0 auto;">
-                ${targetBadge}
-                ${baseHtml}
-            </div>`;
-        }
-    }
-    return baseHtml;
-};
     
 // =========================================================================
 // MODIFICATION 2 : SONS EXCLAMATIFS + AJOUT DE "JOJO" AU 19
