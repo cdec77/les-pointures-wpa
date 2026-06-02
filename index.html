@@ -1699,33 +1699,31 @@ function launchConfetti() {
 }
 
 // =========================================================================
-// MODIFICATION 1 (CORRIGÉE) : AFFICHAGE PERMANENT DE LA CIBLE CHÂTEAU
+// MODIFICATION 1 (VERSION FINALE) : CIBLE PERMANENTE & FIX DES BRIQUES CHÂTEAU
 // =========================================================================
 const _origRenderSimpleTable = renderSimpleTable;
 renderSimpleTable = function() {
-    // 1. On récupère le code HTML d'origine du tableau des scores
+    // 1. On récupère le rendu de base généré par l'application
     let html = _origRenderSimpleTable();
     
-    // 2. Si c'est le jeu Château, on injecte dynamiquement la cible de chaque joueur
+    // 2. Si c'est le jeu Château, on injecte de manière chirurgicale le badge cible
     if (S.game === 'chateau') {
-        S.players.forEach(p => {
+        S.players.forEach((p, idx) => {
             const target = S.scores[p.name]?.target;
             if (target) {
-                // Création d'un badge élégant pour la cible en haut à droite
-                const targetBadge = `<div style="position: absolute; top: -10px; right: -15px; background: var(--c-accent); color: #000; font-weight: 900; padding: 2px 6px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5); z-index: 10;">🎯 ${target}</div>`;
+                // Construction du badge cible positionné au-dessus du château
+                const targetBadge = `<div style="position: absolute; top: -12px; right: -12px; background: var(--c-accent); color: #000; font-weight: 900; padding: 2px 7px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,0.5); z-index: 99;">🎯 ${target}</div>`;
                 
-                // On localise l'affichage de la pyramide propre au joueur
-                // On lui applique un positionnement relatif pour caler correctement le badge
-                html = html.replace(
-                    `class="pyramid"`, 
-                    `class="pyramid" style="position: relative; width: fit-content; margin: 10px auto;"`
-                );
+                // On recherche l'élément "pyramid" qui se trouve dans la zone du joueur (contenant sa variable de couleur --p-brick-col)
+                // et on lui ajoute un positionnement relatif pour fixer le badge sans altérer le style des briques
+                const searchStr = `style="--p-brick-col: var(--p-col); font-weight: bold;"`;
+                const replaceStr = `style="--p-brick-col: var(--p-col); font-weight: bold; position: relative; width: fit-content; margin: 0 auto;"`;
                 
-                // On injecte le badge cible au début de la pyramide correspondante
-                html = html.replace(
-                    `<div class="pyramid" style="position: relative; width: fit-content; margin: 10px auto;">`,
-                    `<div class="pyramid" style="position: relative; width: fit-content; margin: 10px auto;">${targetBadge}`
-                );
+                if (html.includes(searchStr)) {
+                    html = html.replace(searchStr, replaceStr);
+                    // On injecte le badge cible juste après l'ouverture du conteneur de la pyramide
+                    html = html.replace(replaceStr + `>`, replaceStr + `>${targetBadge}`);
+                }
             }
         });
     }
